@@ -1,0 +1,59 @@
+// src/styles/_navbar.scss
+@import "variables";
+
+.glassmorphism {
+  background: $glass-bg !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  background-color: #EEF1F687 !important;
+  
+}
+
+.underline-custom {
+  position: relative;
+
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30% !important; // Half the width of the text
+    height: 2px !important;
+    background-color: inherit; // Matches the text color
+    transition: all 0.3s ease;
+  }
+}
+
+.nav-link {
+  color: $primary-color;
+
+  &:hover {
+    color: $hover-color;
+  }
+
+  &.active {
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: -2px;
+      left: 20%;
+      transform: translateX(-50%);
+      width: 30% !important; // Half the width of the text
+      height: 1px !important;
+      background-color: $primary-color !important; // Matches the text color
+      transition: all 0.3s ease;
+    }
+    &:hover {
+      color: $hover-color;
+    }
+  }
+  &.inactive {
+    color: #000000b2 !important;
+     
+    &:hover {
+      color: $primary-color !important;
+      
+    }
+  }
+}
