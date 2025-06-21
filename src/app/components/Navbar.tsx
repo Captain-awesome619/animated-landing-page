@@ -103,7 +103,7 @@ export default function Navbar() {
               { href: "/features", label: "Features" },
               { href: "/reviews", label: "Reviews" },
               { href: "/contact", label: "Contact" },
-              { href: "/faq", label: "FAQ" },
+              { href: "#faq", label: "FAQ" },
             ].map((link) => (
               <Link
                 key={link.href}

@@ -1,19 +1,25 @@
-"use client";
-import { useState } from "react";
+'use client';
+import { useState, useEffect } from 'react';
+import { useGSAP } from '@gsap/react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import Image from 'next/image';
+
 type FAQ = {
   question: string;
   answer: string;
 };
 
 type FAQCategories = {
-  "Saving & Rewards": FAQ[];
-  "Using the App": FAQ[];
-  "Community & Referral": FAQ[];
-  "Reward & Savings": FAQ[]
+  'Saving & Rewards': FAQ[];
+  'Using the App': FAQ[];
+  'Community & Referral': FAQ[];
+  'Reward & Savings': FAQ[];
 };
+
 // === SVG Icons ===
 const PlusIcon = () => (
-  <div className="border-1 border-[#151515] bg-transparent rounded-full text-center  flex items-center justify-center h-[24px] w-[24px] me-2 ">
+  <div className="border border-[#151515] bg-transparent rounded-full text-center flex items-center justify-center h-[24px] w-[24px] me-2">
     <svg
       className="w-3 h-3"
       fill="none"
@@ -27,16 +33,16 @@ const PlusIcon = () => (
 );
 
 const MinusIcon = () => (
-     <div className="border-1 border-[#151515] bg-transparent rounded-full text-center  flex items-center justify-center h-[24px] w-[24px] me-2 ">
-  <svg
-    className="w-3 h-3"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    viewBox="0 0 24 24"
-  >
-    <path strokeLinecap="round" strokeLinejoin="round" d="M20 12H4" />
-  </svg>
+  <div className="border border-[#151515] bg-transparent rounded-full text-center flex items-center justify-center h-[24px] w-[24px] me-2">
+    <svg
+      className="w-3 h-3"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      viewBox="0 0 24 24"
+    >
+      <path strokeLinecap="round" strokeLinejoin="round" d="M20 12H4" />
+    </svg>
   </div>
 );
 
@@ -54,64 +60,64 @@ const ChevronRightIcon = () => (
 
 // === Data ===
 const faqData: FAQCategories = {
-  "Saving & Rewards": [
+  'Saving & Rewards': [
     {
-      question: "What is Xtrempay?",
-      answer: "Xtrempay is a smart savings and rewards platform...",
+      question: 'What is Xtrempay?',
+      answer: 'Xtrempay is a smart savings and rewards platform...',
     },
     {
-      question: "How does Raffle Saving work?",
-      answer: "Raffle Saving lets you win by saving regularly...",
+      question: 'How does Raffle Saving work?',
+      answer: 'Raffle Saving lets you win by saving regularly...',
     },
     {
-      question: "How does Trivia Saving work?",
-      answer: "You earn rewards by answering trivia while saving...",
+      question: 'How does Trivia Saving work?',
+      answer: 'You earn rewards by answering trivia while saving...',
     },
     {
-      question: "What’s Spin & Win?",
-      answer: "Spin & Win is a gamified reward mechanism...",
+      question: 'What’s Spin & Win?',
+      answer: 'Spin & Win is a gamified reward mechanism...',
     },
     {
-      question: "Can I lose my savings if I don’t win?",
-      answer: "No, your savings are always safe...",
-    },
-  ],
-  "Using the App": [
-    {
-      question: "How do I sign up?",
-      answer: "Go to the signup page and fill in your details.",
-    },
-    {
-      question: "Is the app free?",
-      answer: "Yes, it’s free to download and use.",
+      question: 'Can I lose my savings if I don’t win?',
+      answer: 'No, your savings are always safe...',
     },
   ],
-  "Community & Referral": [
+  'Using the App': [
     {
-      question: "How does referral work?",
-      answer: "Invite friends and earn rewards when they save.",
+      question: 'How do I sign up?',
+      answer: 'Go to the signup page and fill in your details.',
+    },
+    {
+      question: 'Is the app free?',
+      answer: 'Yes, it’s free to download and use.',
     },
   ],
-  "Reward & Savings": [
+  'Community & Referral': [
     {
-      question: "What is Xtrempay?",
-      answer: "Xtrempay is a smart savings and rewards platform...",
+      question: 'How does referral work?',
+      answer: 'Invite friends and earn rewards when they save.',
+    },
+  ],
+  'Reward & Savings': [
+    {
+      question: 'What is Xtrempay?',
+      answer: 'Xtrempay is a smart savings and rewards platform...',
     },
     {
-      question: "How does Raffle Saving work?",
-      answer: "Raffle Saving lets you win by saving regularly...",
+      question: 'How does Raffle Saving work?',
+      answer: 'Raffle Saving lets you win by saving regularly...',
     },
     {
-      question: "How does Trivia Saving work?",
-      answer: "You earn rewards by answering trivia while saving...",
+      question: 'How does Trivia Saving work?',
+      answer: 'You earn rewards by answering trivia while saving...',
     },
     {
-      question: "What’s Spin & Win?",
-      answer: "Spin & Win is a gamified reward mechanism...",
+      question: 'What’s Spin & Win?',
+      answer: 'Spin & Win is a gamified reward mechanism...',
     },
     {
-      question: "Can I lose my savings if I don’t win?",
-      answer: "No, your savings are always safe...",
+      question: 'Can I lose my savings if I don’t win?',
+      answer: 'No, your savings are always safe...',
     },
   ],
 };
@@ -131,9 +137,38 @@ export default function FaqSection() {
     );
   };
 
+  // Use useGSAP for continuous scroll-based animation
+  useGSAP(() => {
+    // Animate Categories card swiping in from the left
+    gsap.from('.categories-card', {
+      x: '-100%', // Swipe in from left
+      opacity: 0,
+      duration: 1,
+      ease: 'power2.out',
+      scrollTrigger: {
+        trigger: '.categories-card',
+        start: 'top 80%', // Start when 80% of the section is in view
+        toggleActions: 'play none none reverse', // Play on enter, reverse on leave
+      },
+    });
+
+    // Animate FAQs section swiping in from the right
+    gsap.from('.faqs-section', {
+      x: '100%', // Swipe in from right
+      opacity: 0,
+      duration: 1,
+      ease: 'power2.out',
+      scrollTrigger: {
+        trigger: '.faqs-section',
+        start: 'top 80%', // Start when 80% of the section is in view
+        toggleActions: 'play none none reverse', // Play on enter, reverse on leave
+      },
+    });
+  }, []); // Empty dependency array ensures setup runs once on mount
+
   return (
     <>
-      <div className="bg-[#F5F5F5] py-16 px-4 md:px-16 hero">
+      <div id="faq" className="bg-[#F5F5F5] py-16 px-4 md:px-16 hero">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-4 md:gap-8">
           {/* Left - Heading */}
           <div className="md:w-2/1">
@@ -147,7 +182,7 @@ export default function FaqSection() {
           <div className="md:w-1/1.2 text-lg sm:text-[.875rem] text-gray-600">
             <p>
               Everything you need to know about us. Can’t find the answer you’re
-              looking for? Please chat with{" "}
+              looking for? Please chat with{' '}
               <a
                 href="#"
                 className="font-semibold text-black underline underline-offset-2"
@@ -160,7 +195,7 @@ export default function FaqSection() {
 
         <div className="flex flex-col md:flex-row gap-6">
           {/* Left - Categories */}
-          <div className="md:w-1/3">
+          <div className="md:w-1/3 categories-card">
             <div className="bg-white rounded-xl p-6 shadow">
               <h3 className="text-xl font-semibold mb-4">Categories</h3>
               {categories.map((cat) => (
@@ -172,8 +207,8 @@ export default function FaqSection() {
                   }}
                   className={`w-full flex items-center justify-between px-4 py-3 rounded-md text-left mb-4 transition ${
                     selectedCategory === cat
-                      ? "bg-[#4257D0] text-white"
-                      : "bg-[#E9E9E9] text-black"
+                      ? 'bg-[#4257D0] text-white'
+                      : 'bg-[#E9E9E9] text-black'
                   }`}
                 >
                   <span>{cat}</span>
@@ -184,7 +219,7 @@ export default function FaqSection() {
           </div>
 
           {/* Right - FAQs */}
-          <div className="md:w-2/3  md:px-8">
+          <div className="md:w-2/3 md:px-8 faqs-section">
             <div className="bg-white rounded-xl p-6 shadow">
               <h3 className="text-xl font-semibold mb-4">FAQs</h3>
               {faqData[selectedCategory].map((faq, index: number) => (

@@ -1,6 +1,9 @@
 'use client';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useGSAP } from '@gsap/react'; // Import useGSAP
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 interface Testimonial {
   id: number;
@@ -18,6 +21,36 @@ interface TestimonialSectionProps {
 }
 
 const TestimonialSection = ({ bgColor = 'bg-gray-100', testimonials = defaultTestimonials }: TestimonialSectionProps) => {
+    gsap.registerPlugin(ScrollTrigger);
+
+     useGSAP(() => {
+    // Animate testimonial cards
+    gsap.from('.testimonial-card', {
+      opacity: 0,
+      y: 50,
+      duration: 1,
+      stagger: 0.2,
+      ease: 'power2.out',
+      scrollTrigger: {
+        trigger: '.testimonial-grid',
+        start: 'top 80%',
+        toggleActions: 'play none none none',
+      },
+    });
+
+    // Animate CTA banner
+    gsap.from('.cta-banner', {
+      opacity: 0,
+      y: 30,
+      duration: 1,
+      ease: 'power2.out',
+      scrollTrigger: {
+        trigger: '.cta-banner',
+        start: 'top 90%',
+        toggleActions: 'play none none none',
+      },
+    });
+  });
   return (
     <section className={`${bgColor} py-12 lg:py-20 px-4 lg:px-8 hero`}>
       {/* Container */}
@@ -28,7 +61,7 @@ const TestimonialSection = ({ bgColor = 'bg-gray-100', testimonials = defaultTes
         {/* Testimonial Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6 place-items-center">
           {testimonials.map((testimonial) => (
-            <div key={testimonial.id} className="bg-white p-8 rounded-lg shadow-md h-full">
+            <div key={testimonial.id} className="testimonial-card bg-white p-8 rounded-lg shadow-md h-full">
             <b>{testimonial.heading}</b>
               <p className="text-gray-600 mb-4">{testimonial.quote}</p>
               <div className="flex items-center">
@@ -49,7 +82,7 @@ const TestimonialSection = ({ bgColor = 'bg-gray-100', testimonials = defaultTes
         </div>
 
         {/* CTA Banner */}
-        <div className="bg-[#4257D0] text-white mt-15 p-6 rounded-lg text-center flex flex-col md:flex-row items-center justify-between">
+        <div className="cta-banner  bg-[#4257D0] text-white mt-15 p-6 rounded-lg text-center flex flex-col md:flex-row items-center justify-between">
           <p className="text-base md:text-lg mb-4 md:mb-0">
             Join the X-Force winning big and paying smarter every day.
           </p>

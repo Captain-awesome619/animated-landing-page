@@ -16,7 +16,7 @@ const BackgroundHero = ({
   backgroundImageSrc = "/images/african-man.png",
   backgroundImageAlt = "Xtrempay Background",
   imageClassName,
-  bgColor = "bg-[brown]",
+  bgColor = "bg-[#e6a69b]",
 }: BackgroundHeroProps) => {
   return (
     <section
