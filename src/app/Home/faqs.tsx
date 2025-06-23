@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -137,31 +137,50 @@ export default function FaqSection() {
     );
   };
 
-  // Use useGSAP for continuous scroll-based animation
+  // Refs for DOM elements
+  const categoriesRef = useRef<HTMLDivElement>(null);
+  const faqsRef = useRef<HTMLDivElement>(null);
+
+  // Initial load animation
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.from([categoriesRef.current, faqsRef.current], {
+        x: (index) => (index === 0 ? '-100%' : '100%'), // Categories from left, FAQs from right
+        opacity: 0,
+        duration: 1,
+        ease: 'power2.out',
+        stagger: 0.2, // Slight delay between animations
+      });
+    });
+
+    return () => ctx.revert(); // Cleanup on unmount
+  }, []); // Runs once on mount
+
+  // Scroll-based animation
   useGSAP(() => {
-    // Animate Categories card swiping in from the left
-    gsap.from('.categories-card', {
+    // Animate Categories card swiping in from the left on scroll
+    gsap.from(categoriesRef.current, {
       x: '-100%', // Swipe in from left
       opacity: 0,
       duration: 1,
       ease: 'power2.out',
       scrollTrigger: {
-        trigger: '.categories-card',
+        trigger: categoriesRef.current,
         start: 'top 80%', // Start when 80% of the section is in view
-        toggleActions: 'play none none reverse', // Play on enter, reverse on leave
+        toggleActions: 'play none none none', // Play on enter, do nothing on leave
       },
     });
 
-    // Animate FAQs section swiping in from the right
-    gsap.from('.faqs-section', {
+    // Animate FAQs section swiping in from the right on scroll
+    gsap.from(faqsRef.current, {
       x: '100%', // Swipe in from right
       opacity: 0,
       duration: 1,
       ease: 'power2.out',
       scrollTrigger: {
-        trigger: '.faqs-section',
+        trigger: faqsRef.current,
         start: 'top 80%', // Start when 80% of the section is in view
-        toggleActions: 'play none none reverse', // Play on enter, reverse on leave
+        toggleActions: 'play none play none', // Play on enter, do nothing on leave
       },
     });
   }, []); // Empty dependency array ensures setup runs once on mount
@@ -195,7 +214,7 @@ export default function FaqSection() {
 
         <div className="flex flex-col md:flex-row gap-6">
           {/* Left - Categories */}
-          <div className="md:w-1/3 categories-card">
+          <div ref={categoriesRef} className="md:w-1/3 categories-card">
             <div className="bg-white rounded-xl p-6 shadow">
               <h3 className="text-xl font-semibold mb-4">Categories</h3>
               {categories.map((cat) => (
@@ -219,7 +238,7 @@ export default function FaqSection() {
           </div>
 
           {/* Right - FAQs */}
-          <div className="md:w-2/3 md:px-8 faqs-section">
+          <div ref={faqsRef} className="md:w-2/3 md:px-8 faqs-section">
             <div className="bg-white rounded-xl p-6 shadow">
               <h3 className="text-xl font-semibold mb-4">FAQs</h3>
               {faqData[selectedCategory].map((faq, index: number) => (
