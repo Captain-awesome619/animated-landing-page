@@ -87,7 +87,7 @@ const TestimonialSection = ({
 
         {/* Testimonial Grid */}
          <div className="flex justify-center">
-        <div className="grid grid-cols-1 md:grid-cols-2 px-27 md:px-0 lg:grid-cols-3 gap-6 mb-6 place-items-center">
+        <div className="grid grid-cols-1 md:grid-cols-2  md:px-0 lg:grid-cols-3 gap-6 mb-6 place-items-center">
           {testimonials.map((testimonial) => (
             <div
               key={testimonial.id}

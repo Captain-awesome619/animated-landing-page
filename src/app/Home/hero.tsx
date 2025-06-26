@@ -85,7 +85,7 @@ const Hero = ({
                       <path d="M8 5.14v14.72a1 1 0 001.55.832l11.98-7.36a1 1 0 000-1.664L9.55 4.308A1 1 0 008 5.14z" />
                     </svg>
                   </div>
-                  <span className="text-[#151515] mt-1.5 text-sm sm:text-[12px] md:text-lg lg:text-lg">{videoText}</span>
+                  <span className="text-[#151515] mt-1.5 text-sm sm:text-[12px] md:text-lg lg:text-lg ps-2">{videoText}</span>
                 </div>
               </div>
             </div>
