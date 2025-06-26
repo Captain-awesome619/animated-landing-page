@@ -138,57 +138,9 @@ export default function FaqSection() {
   };
 
   // Refs for DOM elements
-  const categoriesRef = useRef<HTMLDivElement>(null);
-  const faqsRef = useRef<HTMLDivElement>(null);
 
-  // Initial load animation
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.from([categoriesRef.current, faqsRef.current], {
-        x: (index) => (index === 0 ? '-100%' : '100%'), // Categories from left, FAQs from right
-        opacity: 0,
-        duration: 1,
-        ease: 'power2.out',
-        stagger: 0.2, // Slight delay between animations
-      });
-    });
 
-    return () => ctx.revert(); // Cleanup on unmount
-  }, []); // Runs once on mount
 
- useGSAP(() => {
-  if (!categoriesRef.current || !faqsRef.current) return;
-
-  gsap.registerPlugin(ScrollTrigger);
-
-  const ctx = gsap.context(() => {
-    gsap.from(categoriesRef.current, {
-      x: '-100%',
-      opacity: 0,
-      duration: 1,
-      ease: 'power2.out',
-      scrollTrigger: {
-        trigger: categoriesRef.current,
-        start: 'top 80%',
-        toggleActions: 'play none none none',
-      },
-    });
-
-    gsap.from(faqsRef.current, {
-      x: '100%',
-      opacity: 0,
-      duration: 1,
-      ease: 'power2.in',
-      scrollTrigger: {
-        trigger: faqsRef.current,
-        start: 'top 80%',
-        toggleActions: 'play none none none',
-      },
-    });
-  });
-
-  return () => ctx.revert();
-}, [categoriesRef, faqsRef]);
   return (
     <>
       <div id="faq" className="bg-[#F5F5F5] py-16 px-4 md:px-16 hero">
@@ -218,7 +170,7 @@ export default function FaqSection() {
 
         <div className="flex flex-col md:flex-row gap-6">
           {/* Left - Categories */}
-          <div ref={categoriesRef} className="md:w-1/3 categories-card">
+          <div  className="md:w-1/3 categories-card">
             <div className="bg-white rounded-xl p-6 shadow">
               <h3 className="text-xl font-semibold mb-4">Categories</h3>
               {categories.map((cat) => (
@@ -242,7 +194,7 @@ export default function FaqSection() {
           </div>
 
           {/* Right - FAQs */}
-          <div ref={faqsRef} className="md:w-2/3 md:px-8 faqs-section">
+          <div  className="md:w-2/3 md:px-8 faqs-section">
             <div className="bg-white rounded-xl p-6 shadow">
               <h3 className="text-xl font-semibold mb-4">FAQs</h3>
               {faqData[selectedCategory].map((faq, index: number) => (
