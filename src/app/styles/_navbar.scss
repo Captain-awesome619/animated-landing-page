@@ -3,10 +3,12 @@
 
 .glassmorphism {
   background: $glass-bg !important;
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(60px);
   -webkit-backdrop-filter: blur(10px);
   background-color: #EEF1F687 !important;
-  
+  z-index: 9999999999999 !important;
+  border: 1px solid $border-color !important;
+  overflow: hidden;
 }
 
 .underline-custom {

@@ -156,35 +156,39 @@ export default function FaqSection() {
     return () => ctx.revert(); // Cleanup on unmount
   }, []); // Runs once on mount
 
-  // Scroll-based animation
-  useGSAP(() => {
-    // Animate Categories card swiping in from the left on scroll
+ useGSAP(() => {
+  if (!categoriesRef.current || !faqsRef.current) return;
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  const ctx = gsap.context(() => {
     gsap.from(categoriesRef.current, {
-      x: '-100%', // Swipe in from left
+      x: '-100%',
       opacity: 0,
       duration: 1,
       ease: 'power2.out',
       scrollTrigger: {
         trigger: categoriesRef.current,
-        start: 'top 80%', // Start when 80% of the section is in view
-        toggleActions: 'play none none none', // Play on enter, do nothing on leave
+        start: 'top 80%',
+        toggleActions: 'play none none none',
       },
     });
 
-    // Animate FAQs section swiping in from the right on scroll
     gsap.from(faqsRef.current, {
-      x: '100%', // Swipe in from right
+      x: '100%',
       opacity: 0,
       duration: 1,
-      ease: 'power2.out',
+      ease: 'power2.in',
       scrollTrigger: {
         trigger: faqsRef.current,
-        start: 'top 80%', // Start when 80% of the section is in view
-        toggleActions: 'play none play none', // Play on enter, do nothing on leave
+        start: 'top 80%',
+        toggleActions: 'play none none none',
       },
     });
-  }, []); // Empty dependency array ensures setup runs once on mount
+  });
 
+  return () => ctx.revert();
+}, [categoriesRef, faqsRef]);
   return (
     <>
       <div id="faq" className="bg-[#F5F5F5] py-16 px-4 md:px-16 hero">

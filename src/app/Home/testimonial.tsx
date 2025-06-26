@@ -1,9 +1,9 @@
-'use client';
-import Image from 'next/image';
-import Link from 'next/link';
-import { useGSAP } from '@gsap/react'; // Import useGSAP
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+"use client";
+import Image from "next/image";
+import Link from "next/link";
+import { useGSAP } from "@gsap/react"; // Import useGSAP
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 interface Testimonial {
   id: number;
@@ -12,7 +12,7 @@ interface Testimonial {
   title: string;
   imageSrc: string;
   imageAlt: string;
-  heading: string
+  heading: string;
 }
 
 interface TestimonialSectionProps {
@@ -20,49 +20,80 @@ interface TestimonialSectionProps {
   testimonials?: Testimonial[];
 }
 
-const TestimonialSection = ({ bgColor = 'bg-gray-100', testimonials = defaultTestimonials }: TestimonialSectionProps) => {
-    gsap.registerPlugin(ScrollTrigger);
+const TestimonialSection = ({
+  bgColor = "bg-gray-100",
+  testimonials = defaultTestimonials,
+}: TestimonialSectionProps) => {
+  gsap.registerPlugin(ScrollTrigger);
 
-     useGSAP(() => {
+  useGSAP(() => {
     // Animate testimonial cards
-    gsap.from('.testimonial-card', {
+    gsap.from(".testimonial-card", {
       opacity: 0,
       y: 50,
       duration: 1,
       stagger: 0.2,
-      ease: 'power2.out',
+      ease: "power2.out",
       scrollTrigger: {
-        trigger: '.testimonial-grid',
-        start: 'top 80%',
-        toggleActions: 'play none none none',
+        trigger: ".testimonial-grid",
+        start: "top 80%",
+        toggleActions: "play none none none",
       },
     });
 
     // Animate CTA banner
-    gsap.from('.cta-banner', {
+    gsap.from(".cta-banner", {
       opacity: 0,
       y: 30,
       duration: 1,
-      ease: 'power2.out',
+      ease: "power2.out",
       scrollTrigger: {
-        trigger: '.cta-banner',
-        start: 'top 90%',
-        toggleActions: 'play none none none',
+        trigger: ".cta-banner",
+        start: "top 90%",
+        toggleActions: "play none none none",
       },
     });
   });
+  const data = [
+    {
+      id: 4,
+      heading: "Xtrempay fits my hustle. ",
+      quote:
+        "Between saving for rent and helping my mum’s shop with a POS, Xtrempay has become my go-to app. It’s not just a savings app, it’s a financial hack.",
+      name: "Kemi O.",
+      title: "Side Hustler | Abeokuta",
+      imageSrc: "/images/avatar-2.png", // Placeholder
+      imageAlt: "Kemi O.",
+    },
+    {
+      id: 5,
+      heading: "Free POS helped me grow my shop.",
+      quote:
+        " I got a free POS from Xtrempay. No rent, no stress. Now customers pay easily, and I earn commissions daily. It’s the best decision I made for my business.",
+      name: "Blessing E.",
+      title: "Seller | Benin City",
+      imageSrc: "/images/avatar-1.png", // Placeholder
+      imageAlt: "Blessing E.",
+    },
+  ];
   return (
     <section className={`${bgColor} py-12 lg:py-20 px-4 lg:px-8 hero`}>
       {/* Container */}
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Heading */}
-        <h1 className="text-3xl md:text-5xl font-bold text-gray-900 text-start mb-12">What they say about us</h1>
+        <h1 className="text-3xl md:text-5xl font-bold text-gray-900 text-start mb-12">
+          What they say about us
+        </h1>
 
         {/* Testimonial Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6 place-items-center">
+         <div className="flex justify-center">
+        <div className="grid grid-cols-1 md:grid-cols-2 px-27 md:px-0 lg:grid-cols-3 gap-6 mb-6 place-items-center">
           {testimonials.map((testimonial) => (
-            <div key={testimonial.id} className="testimonial-card bg-white p-8 rounded-lg shadow-md h-full">
-            <b>{testimonial.heading}</b>
+            <div
+              key={testimonial.id}
+              className="testimonial-card bg-white p-8 rounded-lg shadow-md h-full"
+            >
+              <b>{testimonial.heading}</b>
               <p className="text-gray-600 mb-4">{testimonial.quote}</p>
               <div className="flex items-center">
                 <Image
@@ -79,6 +110,33 @@ const TestimonialSection = ({ bgColor = 'bg-gray-100', testimonials = defaultTes
               </div>
             </div>
           ))}
+        </div>
+          </div>
+        <div className="flex justify-center">
+          <div className="grid grid-cols-1  md:grid-cols-2 gap-6 mb-6 max-w-4xl w-full place-items-center">
+            {data.map((testimonial) => (
+              <div
+                key={testimonial.id}
+                className="testimonial-card bg-white p-8 rounded-lg shadow-md w-full max-w-md h-full"
+              >
+                <b>{testimonial.heading}</b>
+                <p className="text-gray-600 mb-4">{testimonial.quote}</p>
+                <div className="flex items-center">
+                  <Image
+                    src={testimonial.imageSrc}
+                    alt={testimonial.imageAlt}
+                    width={50}
+                    height={50}
+                    className="rounded-full mr-4"
+                  />
+                  <div>
+                    <p className="font-semibold">{testimonial.name}</p>
+                    <p className="text-gray-500 text-sm">{testimonial.title}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* CTA Banner */}
@@ -143,26 +201,6 @@ const defaultTestimonials: Testimonial[] = [
     title: "Corp Member | Kano",
     imageSrc: "/images/avatar-2.png", // Placeholder
     imageAlt: "Ahmed S.",
-  },
-  {
-    id: 4,
-    heading: "Xtrempay fits my hustle. ",
-    quote:
-      "Between saving for rent and helping my mum’s shop with a POS, Xtrempay has become my go-to app. It’s not just a savings app, it’s a financial hack.",
-    name: "Kemi O.",
-    title: "Side Hustler | Abeokuta",
-    imageSrc: "/images/avatar-2.png", // Placeholder
-    imageAlt: "Kemi O.",
-  },
-  {
-    id: 5,
-    heading: "Free POS helped me grow my shop.",
-    quote:
-      " I got a free POS from Xtrempay. No rent, no stress. Now customers pay easily, and I earn commissions daily. It’s the best decision I made for my business.",
-    name: "Blessing E.",
-    title: "Seller | Benin City",
-    imageSrc: "/images/avatar-1.png", // Placeholder
-    imageAlt: "Blessing E.",
   },
 ];
 

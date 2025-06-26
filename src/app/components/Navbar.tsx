@@ -1,5 +1,5 @@
 "use client"; // Required for client-side state and interactivity
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
@@ -7,9 +7,20 @@ import { usePathname } from "next/navigation";
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
+ const [isColored, setIsColored] = useState(false);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      // Change 100 to the scroll position where you want the color to change
+      setIsColored(window.scrollY > 100);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [isColored]);
   return (
-    <nav className="bg-[#EEF1F687] p-4 md:px-9 lg:px-20 border-gray-300 glassmorphism ">
+    <nav className={`fixed w-full z-100 shadow p-4 md:px-9 lg:px-20 border-gray-300 glassmorphism transition-colors duration-300 ${
+        isColored ?  "bg-transparent backdrop-blur" : "bg-transparent"
+      }`}>
       <div className="flex justify-between items-center">
         <div className="flex items-center">
           <Image
@@ -65,13 +76,13 @@ export default function Navbar() {
         </div>
 
         {/* Download Button and Hamburger Icon */}
-        <div className="flex items-center">
-          <button className="bg-[#4257D0] text-white px-8 py-2 rounded-full hover:bg-blue-700 md:block hidden transition-all">
+        <div className="flex items-center sticky  inset-0 top-[72px] z-350">
+          <button className="bg-[#4257D0] text-white px-8 py-2 rounded-full hover:bg-blue-700 md:block hidden transition-all outline-0">
             Download
           </button>
           {/* Hamburger Icon On Mobile View */}
           <button
-            className="md:hidden text-black focus:outline-none ml-4 z-50"
+            className="border-none md:hidden text-black focus:outline-none ml-4 z-50 bg-transparent"
             onClick={() => setIsOpen(!isOpen)}
             aria-label="Toggle menu"
             aria-expanded={isOpen}
@@ -96,7 +107,7 @@ export default function Navbar() {
 
       {/* Mobile menu */}
       {isOpen && (
-        <div className="md:hidden fixed inset-0 top-[72px] bg-[#F8F9FF] shadow-xl z-350">
+        <div className="md:hidden glassmorphism fixed inset-0 top-[72px] bg-[#F8F9FF] shadow-xl z-350">
           <div className="p-2 flex flex-col space-y-1 max-w-md mx-auto bg-gradient-to-b from-[#F8F9FF] to-[#EEF1F6]">
             {[
               { href: "/", label: "Home" },

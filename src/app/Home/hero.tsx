@@ -1,6 +1,8 @@
 'use client';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useLayoutEffect, useRef } from 'react';
+import { gsap } from 'gsap';
 
 interface HeroSectionProps {
   title: string;
@@ -35,16 +37,28 @@ const Hero = ({
   imgColset,
   layoutVariant = 'split',
 }: HeroSectionProps) => {
+    const heroRef = useRef<HTMLElement | null>(null);
+  const imgRef = useRef<HTMLImageElement | null>(null);
+   useLayoutEffect(() => {
+    gsap.fromTo(heroRef.current,
+      { y: 80, opacity: 0 },
+      { y: 0, opacity: 1, duration: .2, ease: 'power4.out' }
+    );
+    gsap.fromTo(imgRef.current,
+      { scale: 1.2, opacity: 0 },
+      { scale: 1, opacity: 1, duration: .4, ease: 'power4.out', delay: 0.3 }
+    );
+  }, []);
   return (
     <>
-    <section className={`${bgColor} sm:py-0 lg:pt-40 lg:pb-6.5 px-4 lg:px-8 items-center justify-center p sm:px-6 hero z-0`}>
+    <section className={`${bgColor} sm:py-0  lg:pt-40 lg:pb-6.5 px-4 lg:px-8 items-center justify-center p sm:px-6 hero z-0`} ref={heroRef}>
       {/* Container */}
       <div className="max-w-7xl mx-auto w-full font-medium">
         {layoutVariant === 'split' ? (
           <div className={`flex flex-col lg:flex-row items-end justify-between ${colSet || 'lg:w-1/2'}`}>
             {/* Text Section */}
             <div className="text-center lg:text-left lg:w-1/3 mt-12 lg:mt-0 mb-8">
-              <h1 className="text-2xl md:text-5xl font-medium text-gray-900 mb-4 leading-tight hero__title">
+              <h1 className="text-2xlmd:text-5xl font-medium text-gray-900 mb-4 leading-tight hero__title">
                 {title}
               </h1>
               <p className="text-sm sm:text-base md:text-lg lg:text-lg mb-5.5 text-[#151515]">
@@ -71,15 +85,16 @@ const Hero = ({
                       <path d="M8 5.14v14.72a1 1 0 001.55.832l11.98-7.36a1 1 0 000-1.664L9.55 4.308A1 1 0 008 5.14z" />
                     </svg>
                   </div>
-                  <span className="text-[#151515] mt-1.5 text-sm sm:text-[10px] md:text-lg lg:text-lg">{videoText}</span>
+                  <span className="text-[#151515] mt-1.5 text-sm sm:text-[12px] md:text-lg lg:text-lg">{videoText}</span>
                 </div>
               </div>
             </div>
 
             {/* Image Section */}
             <div className={`flex justify-center lg:justify-end relative ${imgColset || 'w-full lg:w-2/3'}`}>
-              <div className="relative z-1">
+              <div className="relative ">
                 <Image
+                ref={imgRef}
                   src={imageSrc}
                   alt={imageAlt}
                   className={imageClassName}
@@ -93,6 +108,7 @@ const Hero = ({
           <div className="flex flex-col items-start text-start justify-start mb-6">
             <div className="mb-12 ">
               <Image
+              ref={imgRef}
                 src={imageSrc}
                 alt={imageAlt}
                 className={imageClassName}
@@ -141,3 +157,4 @@ const Hero = ({
 };
 
 export default Hero;
+

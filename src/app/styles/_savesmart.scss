@@ -22,21 +22,23 @@
 
 .hero {
   font-family: "GilroyRegular", sans-serif;
-
+  z-index: -9999999 99 !important;
+overflow: hidden;
   &__title {
     font-family: "GilroyBold", sans-serif;
   }
   &__img1{
     right: 10%;
-    transform: translate(-0% ,4%);
+    transform: translate(5% ,3.5%);
+    z-index: -5555 !important;
   }
   &__img {
     right: -10%;
-    transform: translate(-190%,-10%);
+    transform: translate(-95%,-8%);
   }
   &__img3{
-    left: 50%;
-    transform: translate(80%, -5%);
+    left: 10%;
+    transform: translate(33%, 15%);
   }
   &__title2{
     font-family: "GilroyLight", sans-serif;
@@ -45,9 +47,10 @@
 @media screen and (max-width: 768px) {
   .hero {
     &__img {
-      right: auto;
+      right: 0;
       transform: none;
-      margin: 0 auto;
+      // margin: 0 auto;
+      height: 100%;
     }
     &__img1{
         right: auto;

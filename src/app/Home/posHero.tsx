@@ -19,7 +19,7 @@ const PosSection = ({
     <div className="text-center mx-auto">
           <h3 className="text-blue-600 text-xl md:text-2xl mb-2">Xtrempay POS?</h3>
           <h1 className="text-3xl md:text-5xl font-bold mb-4">Free POS for Agents & Merchants</h1>
-          <p className="text-gray-600 text-base md:text-lg mb-6">
+          <p className="text-gray-600 text-base md:text-lg mb-10">
             Xtrempay gives you a POS machine at no cost, so you can grow your hustle and serve your community.
           </p>
     </div>
@@ -30,7 +30,7 @@ const PosSection = ({
           <Image
             src={posImageSrc}
             alt={posImageAlt}
-            width={500}
+            width={610}
             height={600}
             className="object-contain mx-auto"
           />
@@ -41,7 +41,7 @@ const PosSection = ({
           
           <div className="space-y-6">
             <div>
-              <h4 className="text-lg md:text-xl font-semibold mb-2">What You Get</h4>
+              <h4 className="text-xl md:text-xl font-bold mb-2">What You Get</h4>
               <ul className="list-disc list-inside space-y-2 text-base md:text-lg">
                 <div className='flex'> <Image src="/images/bullet.svg" height={20} width={20} alt='icon' className='me-2'/>Free POS device</div>
                 <div className='flex'>  <Image src="/images/bullet.svg" height={20} width={20} alt='icon' className='me-2'/> Fast & secure</div>

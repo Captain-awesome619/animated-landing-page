@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import "../app/styles/main.scss";
 import Header from "./components/Header";
+import PageTransition from "./components/pageTransitioning";
 
 
 
@@ -31,8 +32,11 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+         <PageTransition>
+
         <Header />
         {children}
+         </PageTransition>
       </body>
     </html>
   );

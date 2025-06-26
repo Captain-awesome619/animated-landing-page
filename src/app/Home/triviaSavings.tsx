@@ -1,9 +1,9 @@
-'use client';
-import { useState, useEffect } from 'react';
-import { useGSAP } from '@gsap/react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import Image from 'next/image';
+"use client";
+import { useState, useEffect } from "react";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Image from "next/image";
 
 interface SavingsData {
   id: number;
@@ -20,97 +20,96 @@ interface SavingsSectionProps {
   bgColor?: string;
 }
 
-const SavingsSection = ({ bgColor = 'bg-[#1F2526]' }: SavingsSectionProps) => {
+const SavingsSection = ({ bgColor = "bg-[#1F2526]" }: SavingsSectionProps) => {
   // Data array for different savings sections
   const savingsData: SavingsData[] = [
     {
       id: 1,
-      title: 'Trivia',
-      subTitle: 'Savings',
-      description:
-        'Save Weekly. Answer Smart. Win Cash. Trivia Savings makes saving fun, you save money, answer trivia, and stand a chance to win cool cash!',
+      title: "Trivia",
+      subTitle: "Savings",
+      description: `Save Weekly  Answer Smart Win Cash. Trivia Savings makes saving fun, you save money, answer trivia, and stand a chance to win cool cash!`,
       howItWorks: {
-        title: 'How it works:',
-        text: 'Save ₦3000/week = Entry unlocked Play our weekly trivia quiz',
+        title: "How it works:",
+        text: "Save ₦3000/week = Entry unlocked Play our weekly trivia quiz",
         items: [
-          'Get answers right! Boost your chance',
-          'Winners get picked and rewarded with real cash!',
+          "Get answers right! Boost your chance",
+          "Winners get picked and rewarded with real cash!",
         ],
       },
       whyItBangs: [
-        'Fun + saving in one',
-        'Real rewards for being smart',
-        'For sharp minds & goal-getters',
-        'Don’t just save. Outsmart. Outwin. Trivia Saving only on Xtrempay.',
+        "Fun + saving in one",
+        "Real rewards for being smart",
+        "For sharp minds & goal-getters",
+        "Don’t just save. Outsmart. Outwin. Trivia Saving only on Xtrempay.",
       ],
-      imageSrc: '/images/phone2.png', // Placeholder
-      imageAlt: 'Trivia Savings App',
+      imageSrc: "/images/phone2.png", // Placeholder
+      imageAlt: "Trivia Savings App",
     },
     {
       id: 2,
-      title: 'Spin & Win',
-      subTitle: 'Savings',
+      title: "Spin & Win",
+      subTitle: "Savings",
       description:
-        'Spin & Win - Save. Spin. Win Big. With Spin & Win Savings, every token you spin gives a chance to win instant rewards, fun, fast, and built for the bold.',
+        "Spin & Win - Save. Spin. Win Big. With Spin & Win Savings, every token you spin gives a chance to win instant rewards, fun, fast, and built for the bold.",
       howItWorks: {
-        title: 'How it works:',
-        text: 'Save ₦500 = 1 spin token',
+        title: "How it works:",
+        text: "Save ₦500 = 1 spin token",
         items: [
-          'Use your token to spin the wheel',
-          'Could you win airtime, saving boosts, or even real cash',
+          "Use your token to spin the wheel",
+          "Could you win airtime, saving boosts, or even real cash",
         ],
       },
       whyItBangs: [
-        'Every spin is a shot at winning instant rewards',
-        'Fun, fast, and built for the bold',
-        'Only on Xtrempay where saving gets exciting!',
+        "Every spin is a shot at winning instant rewards",
+        "Fun, fast, and built for the bold",
+        "Only on Xtrempay where saving gets exciting!",
       ],
-      imageSrc: '/images/phone2_spin.png', // Placeholder
-      imageAlt: 'Spin & Win Savings App',
+      imageSrc: "/images/phone2_spin.png", // Placeholder
+      imageAlt: "Spin & Win Savings App",
     },
     {
       id: 3,
-      title: 'Raffle',
-      subTitle: 'Savings',
+      title: "Raffle",
+      subTitle: "Savings",
       description:
-        'Raffle Savings on Xtrempay rewards you with cash prizes just for saving, no interest, no stress.',
+        "Raffle Savings on Xtrempay rewards you with cash prizes just for saving, no interest, no stress.",
       howItWorks: {
-        title: 'How it works:',
-        text: 'Save ₦1000 = 1 ticket',
+        title: "How it works:",
+        text: "Save ₦1000 = 1 ticket",
         items: [
-          'More savings = more tickets = Higher chances',
-          'We draw winners weekly/monthly and yes, it’s real cash',
+          "More savings = more tickets = Higher chances",
+          "We draw winners weekly/monthly and yes, it’s real cash",
         ],
       },
       whyItBangs: [
-        'No boring interest',
-        'Real wins, made for hustlers & dreamers like you',
-        'Stack your savings. Stack your chances. Join the Raffle.',
+        "No boring interest",
+        "Real wins, made for hustlers & dreamers like you",
+        "Stack your savings. Stack your chances. Join the Raffle.",
       ],
-      imageSrc: '/images/phone2_raffle.png', // Placeholder
-      imageAlt: 'Raffle Savings App',
+      imageSrc: "/images/phone2_raffle.png", // Placeholder
+      imageAlt: "Raffle Savings App",
     },
-     {
+    {
       id: 4,
-      title: 'Send Money. ',
-      subTitle: 'Pay Bills',
+      title: "Send Money. ",
+      subTitle: "Pay Bills",
       description:
-        'Raffle Savings on Xtrempay rewards you with cash prizes just for saving, no interest, no stress.',
+        "Raffle Savings on Xtrempay rewards you with cash prizes just for saving, no interest, no stress.",
       howItWorks: {
-        title: 'How it works:',
-        text: 'Save ₦1000 = 1 ticket',
+        title: "How it works:",
+        text: "Save ₦1000 = 1 ticket",
         items: [
-          'More savings = more tickets = Higher chances',
-          'We draw winners weekly/monthly and yes, it’s real cash',
+          "More savings = more tickets = Higher chances",
+          "We draw winners weekly/monthly and yes, it’s real cash",
         ],
       },
       whyItBangs: [
-        'No boring interest',
-        'Real wins, made for hustlers & dreamers like you',
-        'Stack your savings. Stack your chances. Join the Raffle.',
+        "No boring interest",
+        "Real wins, made for hustlers & dreamers like you",
+        "Stack your savings. Stack your chances. Join the Raffle.",
       ],
-      imageSrc: '/images/savemoney.png', // Placeholder
-      imageAlt: 'Raffle Savings App',
+      imageSrc: "/images/savemoney.png", // Placeholder
+      imageAlt: "Raffle Savings App",
     },
   ];
 
@@ -127,53 +126,57 @@ const SavingsSection = ({ bgColor = 'bg-[#1F2526]' }: SavingsSectionProps) => {
     // Animate title parts swiping in from left and right
     const tlTitle = gsap.timeline({
       scrollTrigger: {
-        trigger: '.hero__title2',
-        start: 'top 80%',
-        toggleActions: 'play none none none',
+        trigger: ".hero__title2",
+        start: "top 80%",
+        toggleActions: "play none none none",
       },
     });
 
     tlTitle
-      .from('.hero__title2:first-child', {
-        x: '-100%',
+      .from(".hero__title2:first-child", {
+        x: "-100%",
         opacity: 0,
         duration: 1,
-        ease: 'power2.out',
+        ease: "power2.out",
       })
-      .from('.hero__title2:last-child', {
-        x: '100%',
-        opacity: 0,
-        duration: 1,
-        ease: 'power2.out',
-      }, '<0.5');
+      .from(
+        ".hero__title2:last-child",
+        {
+          x: "100%",
+          opacity: 0,
+          duration: 1,
+          ease: "power2.out",
+        },
+        "<0.5"
+      );
 
     // Animate text content sliding in from the right
     const tlText = gsap.timeline({
       scrollTrigger: {
-        trigger: '.hero',
-        start: 'top 70%',
-        toggleActions: 'play none none none',
+        trigger: ".hero",
+        start: "top 70%",
+        toggleActions: "play none none none",
       },
     });
 
-    tlText.from('.hero > div:nth-child(2) > div', {
-      x: '100%',
+    tlText.from(".hero > div:nth-child(2) > div", {
+      x: "100%",
       opacity: 0,
       duration: 1.2,
       stagger: 0.3,
-      ease: 'power2.out',
+      ease: "power2.out",
     });
 
     // Animate phone image rising from the bottom
-    gsap.from('.phone-image', {
-      y: '100%',
+    gsap.from(".phone-image", {
+      y: "100%",
       opacity: 0,
       duration: 1.2,
-      ease: 'power2.out',
+      ease: "power2.out",
       scrollTrigger: {
-        trigger: '.hero',
-        start: 'top 70%',
-        toggleActions: 'play none none none',
+        trigger: ".hero",
+        start: "top 70%",
+        toggleActions: "play none none none",
       },
     });
   }, [activeSection]); // Re-run animations when activeSection changes
@@ -194,13 +197,15 @@ const SavingsSection = ({ bgColor = 'bg-[#1F2526]' }: SavingsSectionProps) => {
               <li
                 key={data.id}
                 className={`border-s-4 ps-3 ${
-                  activeSection === data.id ? 'border-[#4257D0]' : 'border-transparent'
+                  activeSection === data.id
+                    ? "border-[#4257D0]"
+                    : "border-transparent"
                 }`}
               >
                 <a
                   href="#"
                   className={`text-[#ffffff] hover:text-blue-300 ${
-                    activeSection === data.id ? 'font-bold' : ''
+                    activeSection === data.id ? "font-bold" : ""
                   }`}
                   onClick={(e) => {
                     e.preventDefault();
@@ -211,7 +216,6 @@ const SavingsSection = ({ bgColor = 'bg-[#1F2526]' }: SavingsSectionProps) => {
                 </a>
               </li>
             ))}
-           
           </ul>
         </nav>
 
@@ -226,14 +230,29 @@ const SavingsSection = ({ bgColor = 'bg-[#1F2526]' }: SavingsSectionProps) => {
           <div className="space-y-6 ">
             <div>
               <p className="text-sm sm:text-base md:text-[1rem] lg:text-lg">
-                {activeData?.description}
+                {(() => {
+                  const desc = activeData?.description || "";
+                  const parts = desc.split(",");
+
+                  const chunks = [];
+                  for (let i = 0; i < parts.length; i += 3) {
+                    chunks.push(parts.slice(i, i + 1).join(","));
+                  }
+
+                  return chunks.map((chunk, idx) => (
+                    <span key={idx}>
+                      {chunk}
+                      {idx < chunks.length - 1 && <br />}
+                    </span>
+                  ));
+                })()}
               </p>
             </div>
             <div>
               <div className="mb-2">
                 <b className="text-base md:text-xl font-semibold">
                   {activeData?.howItWorks.title}
-                </b>{' '}
+                </b>{" "}
                 <span>{activeData?.howItWorks.text}</span>
               </div>
               <ul className="list-disc list-inside space-y-2 text-sm sm:text-base md:text-lg lg:text-lg">
@@ -267,8 +286,8 @@ const SavingsSection = ({ bgColor = 'bg-[#1F2526]' }: SavingsSectionProps) => {
         {/* Smartphone Mockup */}
         <div className="hidden lg:block absolute lg:top-1/8 transform lg:-translate-x-[-1/3] lg:translate-y-0 lg:right-0 phone-image">
           <Image
-            src={activeData?.imageSrc || '/images/phone2.png'}
-            alt={activeData?.imageAlt || 'Savings App'}
+            src={activeData?.imageSrc || "/images/phone2.png"}
+            alt={activeData?.imageAlt || "Savings App"}
             width={300}
             height={600}
             className="object-contain"

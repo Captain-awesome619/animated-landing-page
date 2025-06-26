@@ -20,7 +20,7 @@ const BackgroundHero = ({
 }: BackgroundHeroProps) => {
   return (
     <section
-      className={`${bgColor} min-h-screen relative overflow-hidden hero`}
+      className={`${bgColor} min-h-screen relative overflow-hidden hero z-0`}
     >
       {/* Background Image */}
       <div className="absolute inset-0 z-0 ">
@@ -28,16 +28,16 @@ const BackgroundHero = ({
           src={backgroundImageSrc}
           alt={backgroundImageAlt}
           fill
-          className={`object-contain ${imageClassName}`}
-          style={{ zIndex: -1 }}
+          className={`object-cover ${imageClassName}`}
+      
         />
       </div>
 
       {/* Container */}
-      <div className="max-w-7xl mx-auto relative z-10 h-full flex items-center justify-between py-12 lg:py-20 px-4 lg:px-8">
+      <div className="max-w-7xl mx-auto relative z-10 lg:h-[125vh] flex items-center justify-between py-12 lg:py-10 px-4 lg:px-8">
         {/* Card on the Left with Glassmorphism */}
-        <div className="bg-black/30 backdrop-blur-md mb-28 text-white p-6 rounded-lg w-full lg:w-1/3 shadow-lg">
-          <h2 className="text-xl md:text-2xl font-bold mb-4">Why Xtrempay?</h2>
+        <div className="bg-black/30 backdrop-blur-md mb-28 text-white p-6 rounded-lg  w-2/3 lg:w-90 shadow-lg">
+          <h2 className="text-3xl md:text-2xl font-bold mb-4">Why Xtrempay?</h2>
           <div className="text-sm md:text-base space-y-2">
             <div className="flex justify-between items-start">
               <Image
@@ -96,7 +96,7 @@ const BackgroundHero = ({
         </div>
 
         {/* Numbers Overlay */}
-        <div className="absolute inset-0 flex items-center justify-around text-white text-center z-10 w-full top-11/12 mt-15">
+        <div className="absolute inset-0 flex items-center justify-around text-white text-center z-10 w-full top-8/12 mt-15">
           {/* 10M (Odd, up) */}
           <div className="transform -translate-y-16 text-4xl md:text-8xl font-bold border-s px-8 h-50">
             10M
@@ -109,13 +109,13 @@ const BackgroundHero = ({
           </div>
           {/* 100M (Odd, up) */}
           <div className="transform -translate-y-16 text-4xl md:text-8xl font-bold border-s px-8 h-50">
-            100M
-            <p className="text-sm md:text-base">Weekly savings</p>
+            24/7
+            <p className="text-sm md:text-base">Customer Support</p>
           </div>
           {/* 24/7 (Even, down) */}
           <div className="transform translate-y-16 text-4xl md:text-8xl font-bold border-s px-8 h-50">
-            24/7
-            <p className="text-sm md:text-base">Customer Support</p>
+           100M 
+            <p className="text-sm md:text-base">Weekly savings</p>
           </div>
         </div>
 
