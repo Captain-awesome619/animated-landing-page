@@ -58,7 +58,7 @@ const Hero = ({
           <div className={`flex flex-col lg:flex-row items-end justify-between ${colSet || 'lg:w-1/2'}`}>
             {/* Text Section */}
             <div className="text-center lg:text-left lg:w-1/3 mt-12 lg:mt-0 mb-8">
-              <h1 className="text-2xlmd:text-5xl font-medium text-gray-900 mb-4 leading-tight hero__title">
+              <h1 className="text-2xl md:text-5xl font-bold text-gray-900 mb-4 leading-tight hero__title">
                 {title}
               </h1>
               <p className="text-sm sm:text-base md:text-lg lg:text-lg mb-5.5 text-[#151515]">
