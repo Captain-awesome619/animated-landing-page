@@ -51,7 +51,7 @@ const Hero = ({
   }, []);
   return (
     <>
-    <section className={`${bgColor} sm:py-0  lg:pt-40 lg:pb-6.5 px-4 lg:px-8 items-center justify-center p sm:px-6 hero z-0`} ref={heroRef}>
+    <section className={`${bgColor} sm:py-0 pt-6 lg:pt-40 lg:pb-6.5 px-4 lg:px-8 items-center justify-center p sm:px-6 hero z-0`} ref={heroRef}>
       {/* Container */}
       <div className="max-w-7xl mx-auto w-full font-medium">
         {layoutVariant === 'split' ? (

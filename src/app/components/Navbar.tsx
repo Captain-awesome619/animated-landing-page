@@ -107,8 +107,8 @@ export default function Navbar() {
 
       {/* Mobile menu */}
       {isOpen && (
-        <div className="md:hidden glassmorphism fixed inset-0 top-[72px] bg-[#F8F9FF] shadow-xl z-350">
-          <div className="p-2 flex flex-col space-y-1 max-w-md mx-auto bg-gradient-to-b from-[#F8F9FF] to-[#EEF1F6]">
+        <div className="md:hidden  top-[72px] bg-[transparent] z-350">
+          <div className="p-2 flex flex-col space-y-1 max-w-md mx-auto bg-gradient-to-b from-[transparent] to-[transparent]">
             {[
               { href: "/", label: "Home" },
               { href: "/features", label: "Features" },
