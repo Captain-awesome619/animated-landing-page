@@ -39,16 +39,34 @@ const Hero = ({
 }: HeroSectionProps) => {
     const heroRef = useRef<HTMLElement | null>(null);
   const imgRef = useRef<HTMLImageElement | null>(null);
-   useLayoutEffect(() => {
-    gsap.fromTo(heroRef.current,
+ useLayoutEffect(() => {
+  if (typeof window === "undefined" || window.innerWidth < 768) return;
+
+  const img = imgRef.current;
+  if (!img) return;
+
+  // Only animate after image is loaded
+  if (img.complete) {
+    startAnimation();
+  } else {
+    img.onload = startAnimation;
+  }
+
+  function startAnimation() {
+    gsap.fromTo(
+      heroRef.current,
       { y: 80, opacity: 0 },
-      { y: 0, opacity: 1, duration: .2, ease: 'power4.out' }
+      { y: 0, opacity: 1, duration: 0.2, ease: "power4.out" }
     );
-    gsap.fromTo(imgRef.current,
+
+    gsap.fromTo(
+      img,
       { scale: 1.2, opacity: 0 },
-      { scale: 1, opacity: 1, duration: .4, ease: 'power4.out', delay: 0.3 }
+      { scale: 1, opacity: 1, duration: 0.4, ease: "power4.out", delay: 0.3 }
     );
-  }, []);
+  }
+}, []);
+
   return (
     <>
     <section className={`${bgColor} sm:py-0 pt-6 lg:pt-40 lg:pb-6.5 px-4 lg:px-8 items-center justify-center p sm:px-6 hero z-0`} ref={heroRef}>
@@ -64,7 +82,7 @@ const Hero = ({
               <p className="text-sm sm:text-base md:text-lg lg:text-lg mb-5.5 text-[#151515]">
                 {description}
               </p>
-              <div className="flex justify-start gap-4">
+              <div className="flex justify-start gap-4 lg:justify-start md:justify-center lg:text-start">
                 <Link
                   href={ctaLink}
                   className="bg-[#4257D0] text-white px-8  py-3 rounded-full hover:bg-blue-700 transition md:text-lg lg:text-lg text-sm sm:text-sm md:mb-[0]"
@@ -100,6 +118,7 @@ const Hero = ({
                   className={imageClassName}
                   width={imgWidth}
                   height={imgHeight}
+                  priority
                 />
               </div>
             </div>
@@ -114,16 +133,17 @@ const Hero = ({
                 className={imageClassName}
                 width={imgWidth}
                 height={imgHeight}
+                priority
               />
             </div>
-            <div className='lg:w-1/3'>
+            <div className='lg:w-1/3 '>
               <h1 className="text-2xl md:text-5xl font-bold text-gray-900 mb-4 leading-tight hero__title">
                 {title}
               </h1>
               <p className="text-sm sm:text-base md:text-lg lg:text-lg mb-5.5 text-[#151515]">
                 {description}
               </p>
-              <div className="flex justify-start gap-4">
+              <div className="flex justify-center md:mx-0 sm:mx-auto md:text-center items-center gap-4 lg:justify-start md:justify-center lg:text-start">
                 <Link
                   href={ctaLink}
                   className="bg-[#4257D0] text-white px-8  py-3 rounded-full hover:bg-blue-700 transition md:text-lg lg:text-lg text-sm sm:text-sm md:mb-[0]"

@@ -120,66 +120,64 @@ const SavingsSection = ({ bgColor = "bg-[#1F2526]" }: SavingsSectionProps) => {
   gsap.registerPlugin(ScrollTrigger);
 
   // Use useGSAP for animations
-  useGSAP(() => {
-    const activeData = savingsData.find((data) => data.id === activeSection);
+useGSAP(() => {
+  if (typeof window === "undefined" || window.innerWidth < 768) return;
 
-    // Animate title parts swiping in from left and right
-    const tlTitle = gsap.timeline({
-      scrollTrigger: {
-        trigger: ".hero__title2",
-        start: "top 80%",
-        toggleActions: "play none none none",
-      },
-    });
+  const tlTitle = gsap.timeline({
+    scrollTrigger: {
+      trigger: ".hero__title2",
+      start: "top 80%",
+      toggleActions: "play none none none",
+    },
+  });
 
-    tlTitle
-      .from(".hero__title2:first-child", {
-        x: "-100%",
+  tlTitle
+    .from(".hero__title2:first-child", {
+      x: "-100%",
+      opacity: 0,
+      duration: 1,
+      ease: "power2.out",
+    })
+    .from(
+      ".hero__title2:last-child",
+      {
+        x: "100%",
         opacity: 0,
         duration: 1,
         ease: "power2.out",
-      })
-      .from(
-        ".hero__title2:last-child",
-        {
-          x: "100%",
-          opacity: 0,
-          duration: 1,
-          ease: "power2.out",
-        },
-        "<0.5"
-      );
-
-    // Animate text content sliding in from the right
-    const tlText = gsap.timeline({
-      scrollTrigger: {
-        trigger: ".hero",
-        start: "top 70%",
-        toggleActions: "play none none none",
       },
-    });
+      "<0.5"
+    );
 
-    tlText.from(".hero > div:nth-child(2) > div", {
-      x: "100%",
-      opacity: 0,
-      duration: 1.2,
-      stagger: 0.3,
-      ease: "power2.out",
-    });
+  const tlText = gsap.timeline({
+    scrollTrigger: {
+      trigger: ".hero",
+      start: "top 70%",
+      toggleActions: "play none none none",
+    },
+  });
 
-    // Animate phone image rising from the bottom
-    gsap.from(".phone-image", {
-      y: "100%",
-      opacity: 0,
-      duration: 1.2,
-      ease: "power2.out",
-      scrollTrigger: {
-        trigger: ".hero",
-        start: "top 70%",
-        toggleActions: "play none none none",
-      },
-    });
-  }, [activeSection]); // Re-run animations when activeSection changes
+  tlText.from(".hero > div:nth-child(2) > div", {
+    x: "100%",
+    opacity: 0,
+    duration: 1.2,
+    stagger: 0.3,
+    ease: "power2.out",
+  });
+
+  gsap.from(".phone-image", {
+    y: "100%",
+    opacity: 0,
+    duration: 1.2,
+    ease: "power2.out",
+    scrollTrigger: {
+      trigger: ".hero",
+      start: "top 70%",
+      toggleActions: "play none none none",
+    },
+  });
+}, [activeSection]);
+
 
   // Get the active data based on state
   const activeData = savingsData.find((data) => data.id === activeSection);

@@ -101,6 +101,7 @@ const TestimonialSection = ({
                   alt={testimonial.imageAlt}
                   width={50}
                   height={50}
+                  priority
                   className="rounded-full mr-4"
                 />
                 <div>

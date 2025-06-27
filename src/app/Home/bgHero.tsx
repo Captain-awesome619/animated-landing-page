@@ -28,6 +28,7 @@ const BackgroundHero = ({
           src={backgroundImageSrc}
           alt={backgroundImageAlt}
           fill
+          priority
           className={`object-cover ${imageClassName}`}
       
         />
