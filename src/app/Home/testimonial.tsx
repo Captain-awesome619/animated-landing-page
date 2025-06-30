@@ -77,7 +77,7 @@ const TestimonialSection = ({
     },
   ];
   return (
-    <section className={`${bgColor} py-12 lg:py-20 px-4 lg:px-8 hero`}>
+    <section className={`${bgColor} py-12 lg:py-20 px-4 lg:px-8 hero`} id="reviews">
       {/* Container */}
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Heading */}

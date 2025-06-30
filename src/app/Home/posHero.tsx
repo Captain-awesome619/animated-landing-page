@@ -14,7 +14,7 @@ const PosSection = ({
   posImageAlt = 'Xtrempay POS Agent',
 }: PosSectionProps) => {
   return (
-    <section className={`${bgColor} min-h-screen relative overflow-hidden py-12 lg:py-20 px-4 lg:px-8 hero`}>
+    <section className={`${bgColor} min-h-screen relative overflow-hidden py-12 lg:py-20 px-4 lg:px-8 hero`} id='features'>
       {/* Container */}
     <div className="text-center mx-auto">
           <h3 className="text-blue-600 text-xl md:text-2xl mb-2">Xtrempay POS?</h3>

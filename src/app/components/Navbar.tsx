@@ -23,12 +23,15 @@ export default function Navbar() {
       }`}>
       <div className="flex justify-between items-center">
         <div className="flex items-center">
+          <Link
+            href="/">
           <Image
             src="/images/logo.svg"
             alt="Xtrempay Logo"
             width={152}
             height={40}
           />
+          </Link>
         </div>
 
         {/* Navigation Links For Desktop View */}
@@ -42,7 +45,7 @@ export default function Navbar() {
             Home
           </Link>
           <Link
-            href="/features"
+            href="/#features"
             className={`text-[#000000B2] hover:text-[#4257D0] nav-link underline-custom ${
               pathname === "/features" ? "active" : "inactive"
             }`}
@@ -50,23 +53,23 @@ export default function Navbar() {
             Features
           </Link>
           <Link
-            href="/reviews"
+            href="/#reviews"
             className={`text-[#000000B2] hover:text-[#4257D0] nav-link underline-custom ${
               pathname === "/reviews" ? "active" : "inactive"
             }`}
           >
             Reviews
           </Link>
-          <Link
+          {/* <Link
             href="/contact"
             className={`text-[#000000B2] hover:text-[#4257D0] nav-link underline-custom ${
               pathname === "/contact" ? "active" : "inactive"
             }`}
           >
             Contact
-          </Link>
+          </Link> */}
           <Link
-            href="/faq"
+            href="/#faq"
             className={`text-[#000000B2] hover:text-[#4257D0] nav-link underline-custom ${
               pathname === "/faq" ? "active" : "inactive"
             }`}
@@ -111,9 +114,9 @@ export default function Navbar() {
           <div className="p-2 flex flex-col space-y-1 max-w-md mx-auto bg-gradient-to-b from-[transparent] to-[transparent]">
             {[
               { href: "/", label: "Home" },
-              { href: "/features", label: "Features" },
-              { href: "/reviews", label: "Reviews" },
-              { href: "/contact", label: "Contact" },
+              { href: "#features", label: "Features" },
+              { href: "#reviews", label: "Reviews" },
+              { href: "#contact", label: "Contact" },
               { href: "#faq", label: "FAQ" },
             ].map((link) => (
               <Link
@@ -121,6 +124,7 @@ export default function Navbar() {
                 href={link.href}
                 className="block text-gray-800 hover:text-[#4257D0] py-2 text-sm font-medium transition-colors duration-200"
                 onClick={() => setIsOpen(false)}
+                scroll={true} // Prevent scroll for FAQ link
               >
                 {link.label}
               </Link>
