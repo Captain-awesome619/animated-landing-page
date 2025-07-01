@@ -5,6 +5,9 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Image from 'next/image';
 
+// Register ScrollTrigger plugin
+gsap.registerPlugin(ScrollTrigger);
+
 type FAQ = {
   question: string;
   answer: string;
@@ -122,6 +125,7 @@ const faqData: FAQCategories = {
   ],
 };
 
+
 const categories = Object.keys(faqData) as Array<keyof FAQCategories>;
 
 // === Component ===
@@ -138,15 +142,77 @@ export default function FaqSection() {
   };
 
   // Refs for DOM elements
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const headingRef = useRef<HTMLDivElement>(null);
+  const descriptionRef = useRef<HTMLDivElement>(null);
+  const categoriesRef = useRef<HTMLDivElement>(null);
+  const faqsRef = useRef<HTMLDivElement>(null);
 
+  // GSAP Animations
+  useGSAP(() => {
+    if (!sectionRef.current) return;
 
+    // Set initial states (hidden)
+    gsap.set([headingRef.current, descriptionRef.current], {
+      y: -50,
+      opacity: 0,
+    });
+
+    gsap.set(categoriesRef.current, {
+      x: 100,
+      opacity: 0,
+    });
+
+    gsap.set(faqsRef.current, {
+      x: -100,
+      opacity: 0,
+    });
+
+    // Create timeline for sequential animations
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: 'top 80%',
+        end: 'bottom 20%',
+        toggleActions: 'play none none reverse',
+      }
+    });
+
+    // Animate title and description from top
+    tl.to([headingRef.current, descriptionRef.current], {
+      y: 0,
+      opacity: 1,
+      duration: 0.8,
+      ease: 'power2.out',
+      stagger: 0.2,
+    })
+    // Animate categories from right
+    .to(categoriesRef.current, {
+      x: 0,
+      opacity: 1,
+      duration: 0.8,
+      ease: 'power2.out',
+    }, '-=0.4')
+    // Animate FAQs from left
+    .to(faqsRef.current, {
+      x: 0,
+      opacity: 1,
+      duration: 0.8,
+      ease: 'power2.out',
+    }, '-=0.6');
+
+  }, []);
 
   return (
     <>
-      <div id="faq" className="bg-[#F5F5F5] py-16 px-4 md:px-16 hero">
+      <div 
+        ref={sectionRef}
+        id="faq" 
+        className="bg-[#F5F5F5] py-16 px-4 md:px-16 hero"
+      >
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-4 md:gap-8">
           {/* Left - Heading */}
-          <div className="md:w-2/1">
+          <div ref={headingRef} className="md:w-2/1">
             <h2 className="text-2xl md:text-4xl font-bold leading-snug text-black">
               Having Questions About Us? <br />
               We Have Just The Right Answer For You.
@@ -154,9 +220,12 @@ export default function FaqSection() {
           </div>
 
           {/* Right - Description */}
-          <div className="md:w-1/1.2 text-lg sm:text-[.875rem] text-gray-600">
+          <div 
+            ref={descriptionRef}
+            className="md:w-1/1.2 text-lg sm:text-[.875rem] text-gray-600"
+          >
             <p>
-              Everything you need to know about us. Can’t find the answer you’re
+              Everything you need to know about us. Can't find the answer you're
               looking for? Please chat with{' '}
               <a
                 href="#"
@@ -170,7 +239,7 @@ export default function FaqSection() {
 
         <div className="flex flex-col md:flex-row gap-6">
           {/* Left - Categories */}
-          <div  className="md:w-1/3 categories-card">
+          <div ref={categoriesRef} className="md:w-1/3 categories-card">
             <div className="bg-white rounded-xl p-6 shadow">
               <h3 className="text-xl font-semibold mb-4">Categories</h3>
               {categories.map((cat) => (
@@ -180,10 +249,10 @@ export default function FaqSection() {
                     setSelectedCategory(cat);
                     setOpenIndexes([]); // Reset FAQ on category switch
                   }}
-                  className={`w-full flex items-center justify-between px-4 py-3 rounded-md text-left mb-4 transition ${
+                  className={`w-full flex items-center justify-between px-4 py-3 rounded-md text-left mb-4 transition-all duration-300 hover:transform hover:scale-105 ${
                     selectedCategory === cat
-                      ? 'bg-[#4257D0] text-white'
-                      : 'bg-[#E9E9E9] text-black'
+                      ? 'bg-[#4257D0] text-white shadow-md'
+                      : 'bg-[#E9E9E9] text-black hover:bg-gray-200'
                   }`}
                 >
                   <span>{cat}</span>
@@ -194,21 +263,29 @@ export default function FaqSection() {
           </div>
 
           {/* Right - FAQs */}
-          <div  className="md:w-2/3 md:px-8 faqs-section">
+          <div ref={faqsRef} className="md:w-2/3 md:px-8 faqs-section">
             <div className="bg-white rounded-xl p-6 shadow">
               <h3 className="text-xl font-semibold mb-4">FAQs</h3>
               {faqData[selectedCategory].map((faq, index: number) => (
                 <div key={index} className="border-b py-3 border-[#0000001A]">
                   <button
-                    className="w-full flex justify-between items-center text-left text-[#333] font-semibold text-lg"
+                    className="w-full flex justify-between items-center text-left text-[#333] font-semibold text-lg hover:text-[#4257D0] transition-colors duration-200"
                     onClick={() => toggleQuestion(index)}
                   >
                     <span>{faq.question}</span>
-                    {openIndexes.includes(index) ? <MinusIcon /> : <PlusIcon />}
+                    <div className="transition-transform duration-200 ease-in-out">
+                      {openIndexes.includes(index) ? <MinusIcon /> : <PlusIcon />}
+                    </div>
                   </button>
-                  {openIndexes.includes(index) && (
-                    <p className="mt-2 text-sm text-gray-600">{faq.answer}</p>
-                  )}
+                  <div 
+                    className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                      openIndexes.includes(index) 
+                        ? 'max-h-96 opacity-100 mt-2' 
+                        : 'max-h-0 opacity-0'
+                    }`}
+                  >
+                    <p className="text-sm text-gray-600 pb-2">{faq.answer}</p>
+                  </div>
                 </div>
               ))}
             </div>

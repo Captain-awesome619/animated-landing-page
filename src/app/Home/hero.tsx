@@ -3,6 +3,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useLayoutEffect, useRef } from 'react';
 import { gsap } from 'gsap';
+import { useHeroAnimation } from '../hooks/useHeroAnimation';
+
+type AnimationType = 'fade-in' | 'slide-up' | 'zoom-in' | 'scroll-merge';
 
 interface HeroSectionProps {
   title: string;
@@ -19,6 +22,7 @@ interface HeroSectionProps {
   colSet?: string; // e.g., 'lg:w-1/3 lg:w-2/3' for custom column widths
   layoutVariant?: 'split' | 'centered';
   imgColset?: string; // e.g., 'lg:w-1/3 lg:w-2/3' for custom column widths
+  animationType?: AnimationType; // Type for animation options
 }
 
 const Hero = ({
@@ -36,42 +40,74 @@ const Hero = ({
   colSet,
   imgColset,
   layoutVariant = 'split',
+  animationType = 'fade-in', // Default animation type
 }: HeroSectionProps) => {
-    const heroRef = useRef<HTMLElement | null>(null);
-  const imgRef = useRef<HTMLImageElement | null>(null);
- useLayoutEffect(() => {
-  if (typeof window === "undefined" || window.innerWidth < 768) return;
+    const heroRef = useRef<HTMLElement>(null!);
+  const imgRef = useRef<HTMLImageElement>(null!);
+  const textRef = useRef<HTMLDivElement>(null!);
+  useLayoutEffect(() => {
+    if (typeof window === "undefined" || window.innerWidth < 768) return;
+    const img = imgRef.current;
+    if (!img) return;
 
-  const img = imgRef.current;
-  if (!img) return;
+    function startAnimation() {
+      if (animationType === 'fade-in') {
+        gsap.fromTo(
+          heroRef.current,
+          { opacity: 0 },
+          { opacity: 1, duration: 0.8, ease: "power2.out" }
+        );
+      } else if (animationType === 'slide-up') {
+        gsap.fromTo(
+          heroRef.current,
+          { y: 80, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.8, ease: "power4.out" }
+        );
+      } else if (animationType === 'zoom-in') {
+        gsap.fromTo(
+          img,
+          { scale: 1.2, opacity: 0 },
+          { scale: 1, opacity: 1, duration: 0.8, ease: "power4.out" }
+        );
+      } else {
+        // default or scroll-merge
+        gsap.fromTo(
+          heroRef.current,
+          { y: 80, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.2, ease: "power4.out" }
+        );
+        gsap.fromTo(
+          img,
+          { scale: 1.2, opacity: 0 },
+          { scale: 1, opacity: 1, duration: 0.4, ease: "power4.out", delay: 0.3 }
+        );
+      }
+    }
 
-  // Only animate after image is loaded
-  if (img.complete) {
-    startAnimation();
-  } else {
-    img.onload = startAnimation;
-  }
-
-  function startAnimation() {
-    gsap.fromTo(
-      heroRef.current,
-      { y: 80, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.2, ease: "power4.out" }
-    );
-
-    gsap.fromTo(
-      img,
-      { scale: 1.2, opacity: 0 },
-      { scale: 1, opacity: 1, duration: 0.4, ease: "power4.out", delay: 0.3 }
-    );
-  }
-}, []);
+    if (img.complete) {
+      startAnimation();
+    } else {
+      img.onload = startAnimation;
+    }
+  }, [animationType]);
+useHeroAnimation({
+    heroRef,
+    imgRef,
+    textRef,
+    animationType:animationType,
+    enableScrollAnimation: true,
+    customOptions: {
+      duration: 1.2,
+      scrollDistance: 300,
+      ease: "power4.out"
+    }
+  });
 
   return (
     <>
     <section className={`${bgColor} sm:py-0 pt-6 lg:pt-40 lg:pb-6.5 px-4 lg:px-8 items-center justify-center p sm:px-6 hero z-0`} ref={heroRef}>
       {/* Container */}
-      <div className="max-w-7xl mx-auto w-full font-medium">
+      <div className="max-w-7xl mx-auto w-full font-medium" ref={textRef}>
         {layoutVariant === 'split' ? (
           <div className={`flex flex-col lg:flex-row items-end justify-between ${colSet || 'lg:w-1/2'}`}>
             {/* Text Section */}
