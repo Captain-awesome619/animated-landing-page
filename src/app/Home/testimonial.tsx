@@ -1,7 +1,9 @@
 "use client";
+import { useGSAP } from "@gsap/react";
 import Image from "next/image";
 import Link from "next/link"
 import { useEffect, useRef } from "react";
+import gsap from 'gsap';
 
 interface Testimonial {
   id: number;
@@ -47,7 +49,37 @@ const TestimonialSection = ({
 
     return () => observer.disconnect();
   }, []);
+ useGSAP(() => {
+    if (!sectionRef.current) return;
 
+    // Set initial states (hidden)
+    gsap.set([headingRef.current], {
+      y: -50,
+      opacity: 0,
+    });
+    
+
+    // Create timeline for sequential animations
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: 'top 80%',
+        end: 'bottom 20%',
+        toggleActions: 'play none none reverse',
+      }
+    });
+
+    // Animate title and description from top
+    tl.to([headingRef.current], {
+      y: 0,
+      opacity: 1,
+      duration: 0.8,
+      ease: 'power2.out',
+      stagger: 0.2,
+    })
+    
+
+  }, []);
   const animateTestimonials = () => {
     // Animate heading first
     if (headingRef.current) {
@@ -111,11 +143,7 @@ const TestimonialSection = ({
       {/* Container */}
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Heading */}
-        <h1 className="text-3xl md:text-5xl font-bold text-gray-900 text-start mb-12" ref={headingRef} style={{
-            transform: 'translateY(30px)',
-            opacity: 0,
-            transition: 'transform 0.5s ease-out, opacity 0.5s ease-out',
-          }}>
+        <h1 className="text-3xl md:text-5xl font-bold text-gray-900 text-start mb-12" ref={headingRef}>
           What they say about us
         </h1>
 
