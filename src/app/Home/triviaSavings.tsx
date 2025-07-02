@@ -285,7 +285,7 @@ const SavingsSection = ({ bgColor = "bg-[#1F2526]" }: SavingsSectionProps) => {
       repeat: -1,
       scrollTrigger: {
         trigger: phoneRef.current,
-        start: 'top 30%',
+        start: 'top 10%',
         toggleActions: 'play none none reverse',
       }
     });
