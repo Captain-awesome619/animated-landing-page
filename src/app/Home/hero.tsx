@@ -3,7 +3,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { useLayoutEffect, useRef } from "react";
 import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useHeroAnimation } from "../hooks/useHeroAnimation";
+
+// Register ScrollTrigger plugin
+gsap.registerPlugin(ScrollTrigger);
 
 type AnimationType = "fade-in" | "slide-up" | "zoom-in" | "scroll-merge";
 
@@ -45,19 +49,40 @@ const Hero = ({
   const heroRef = useRef<HTMLElement>(null!);
   const imgRef = useRef<HTMLImageElement>(null!);
   const textRef = useRef<HTMLDivElement>(null!);
+  
+  // Store animation instances for cleanup
+  const animationsRef = useRef<gsap.core.Tween[]>([]);
+  const scrollTriggersRef = useRef<ScrollTrigger[]>([]);
+
   useLayoutEffect(() => {
     if (typeof window === "undefined" || window.innerWidth < 768) return;
     const img = imgRef.current;
     if (!img) return;
 
+    // Clear previous animations
+    animationsRef.current.forEach(tween => {
+      if (tween && tween.kill) {
+        tween.kill();
+      }
+    });
+    scrollTriggersRef.current.forEach(trigger => {
+      if (trigger && trigger.kill) {
+        trigger.kill();
+      }
+    });
+    animationsRef.current = [];
+    scrollTriggersRef.current = [];
+
     function startAnimation() {
       if (animationType === "fade-in") {
-        gsap.fromTo(
+        const fadeInTween = gsap.fromTo(
           heroRef.current,
           { opacity: 0 },
           { opacity: 1, duration: 0.8, ease: "power2.out" }
         );
-        gsap.to(imgRef.current, {
+        animationsRef.current.push(fadeInTween);
+
+        const floatTween = gsap.to(imgRef.current, {
           y: -15,
           duration: 2,
           ease: "power1.inOut",
@@ -69,19 +94,29 @@ const Hero = ({
             toggleActions: "play none none reverse",
           },
         });
+        
+        if (floatTween.scrollTrigger) {
+          scrollTriggersRef.current.push(floatTween.scrollTrigger);
+        }
+        animationsRef.current.push(floatTween);
+
       } else if (animationType === "slide-up") {
-        gsap.fromTo(
+        const slideUpTween = gsap.fromTo(
           heroRef.current,
           { y: 80, opacity: 0 },
           { y: 0, opacity: 1, duration: 0.8, ease: "power4.out" }
         );
+        animationsRef.current.push(slideUpTween);
+
       } else if (animationType === "zoom-in") {
-        gsap.fromTo(
+        const zoomInTween = gsap.fromTo(
           img,
           { scale: 1.2, opacity: 0 },
           { scale: 1, opacity: 1, duration: 0.8, ease: "power4.out" }
         );
-        gsap.to(imgRef.current, {
+        animationsRef.current.push(zoomInTween);
+
+        const floatTween = gsap.to(imgRef.current, {
           y: -15,
           duration: 2,
           ease: "power1.inOut",
@@ -93,14 +128,22 @@ const Hero = ({
             toggleActions: "play none none reverse",
           },
         });
+        
+        if (floatTween.scrollTrigger) {
+          scrollTriggersRef.current.push(floatTween.scrollTrigger);
+        }
+        animationsRef.current.push(floatTween);
+
       } else {
         // default or scroll-merge
-        gsap.fromTo(
+        const heroTween = gsap.fromTo(
           heroRef.current,
           { y: 80, opacity: 0 },
           { y: 0, opacity: 1, duration: 0.2, ease: "power4.out" }
         );
-        gsap.fromTo(
+        animationsRef.current.push(heroTween);
+
+        const imgTween = gsap.fromTo(
           img,
           { scale: 1.2, opacity: 0 },
           {
@@ -111,7 +154,9 @@ const Hero = ({
             delay: 0.3,
           }
         );
-        gsap.to(imgRef.current, {
+        animationsRef.current.push(imgTween);
+
+        const floatTween = gsap.to(imgRef.current, {
           y: -15,
           duration: 2,
           ease: "power1.inOut",
@@ -123,6 +168,11 @@ const Hero = ({
             toggleActions: "play none none reverse",
           },
         });
+        
+        if (floatTween.scrollTrigger) {
+          scrollTriggersRef.current.push(floatTween.scrollTrigger);
+        }
+        animationsRef.current.push(floatTween);
       }
     }
 
@@ -131,7 +181,39 @@ const Hero = ({
     } else {
       img.onload = startAnimation;
     }
+
+    // Cleanup function
+    return () => {
+      // Kill all animations
+      animationsRef.current.forEach(tween => {
+        if (tween && tween.kill) {
+          tween.kill();
+        }
+      });
+
+      // Kill all ScrollTriggers
+      scrollTriggersRef.current.forEach(trigger => {
+        if (trigger && trigger.kill) {
+          trigger.kill();
+        }
+      });
+
+      // Clear any remaining ScrollTriggers on these elements
+      ScrollTrigger.getAll().forEach(trigger => {
+        if (trigger.trigger === heroRef.current || 
+            trigger.trigger === imgRef.current || 
+            trigger.trigger === textRef.current) {
+          trigger.kill();
+        }
+      });
+
+      // Clear arrays
+      animationsRef.current = [];
+      scrollTriggersRef.current = [];
+    };
   }, [animationType]);
+
+  // Use the custom hook with proper cleanup handling
   useHeroAnimation({
     heroRef,
     imgRef,

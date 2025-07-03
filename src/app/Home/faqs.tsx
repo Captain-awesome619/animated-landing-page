@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -125,7 +125,6 @@ const faqData: FAQCategories = {
   ],
 };
 
-
 const categories = Object.keys(faqData) as Array<keyof FAQCategories>;
 
 // === Component ===
@@ -135,11 +134,18 @@ export default function FaqSection() {
   );
   const [openIndexes, setOpenIndexes] = useState<number[]>([]);
 
-  const toggleQuestion = (index: number) => {
+  // Memoize the toggle function to prevent unnecessary re-renders
+  const toggleQuestion = useCallback((index: number) => {
     setOpenIndexes((prev) =>
       prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index]
     );
-  };
+  }, []);
+
+  // Memoize category change handler
+  const handleCategoryChange = useCallback((cat: keyof FAQCategories) => {
+    setSelectedCategory(cat);
+    setOpenIndexes([]); // Reset FAQ on category switch
+  }, []);
 
   // Refs for DOM elements
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -147,60 +153,106 @@ export default function FaqSection() {
   const descriptionRef = useRef<HTMLDivElement>(null);
   const categoriesRef = useRef<HTMLDivElement>(null);
   const faqsRef = useRef<HTMLDivElement>(null);
+  
+  // Store GSAP context and timeline refs for cleanup
+  const contextRef = useRef<gsap.Context | null>(null);
+  const timelineRef = useRef<gsap.core.Timeline | null>(null);
 
-  // GSAP Animations
+  // GSAP Animations with proper cleanup
   useGSAP(() => {
     if (!sectionRef.current) return;
 
-    // Set initial states (hidden)
-    gsap.set([headingRef.current, descriptionRef.current], {
-      y: -50,
-      opacity: 0,
-    });
+    // Create GSAP context for better cleanup
+    contextRef.current = gsap.context(() => {
+      // Set initial states (hidden)
+      gsap.set([headingRef.current, descriptionRef.current], {
+        y: -50,
+        opacity: 0,
+      });
 
-    gsap.set(categoriesRef.current, {
-      x: 100,
-      opacity: 0,
-    });
+      gsap.set(categoriesRef.current, {
+        x: 100,
+        opacity: 0,
+      });
 
-    gsap.set(faqsRef.current, {
-      x: -100,
-      opacity: 0,
-    });
+      gsap.set(faqsRef.current, {
+        x: -100,
+        opacity: 0,
+      });
 
-    // Create timeline for sequential animations
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        start: 'top 80%',
-        end: 'bottom 20%',
-        toggleActions: 'play none none reverse',
+      // Create timeline for sequential animations
+      timelineRef.current = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top 80%',
+          end: 'bottom 20%',
+          toggleActions: 'play none none reverse',
+          // Add id for easier cleanup
+          id: 'faq-section-trigger',
+        }
+      });
+
+      // Animate title and description from top
+      timelineRef.current.to([headingRef.current, descriptionRef.current], {
+        y: 0,
+        opacity: 1,
+        duration: 0.8,
+        ease: 'power2.out',
+        stagger: 0.2,
+      })
+      // Animate categories from right
+      .to(categoriesRef.current, {
+        x: 0,
+        opacity: 1,
+        duration: 0.8,
+        ease: 'power2.out',
+      }, '-=0.4')
+      // Animate FAQs from left
+      .to(faqsRef.current, {
+        x: 0,
+        opacity: 1,
+        duration: 0.8,
+        ease: 'power2.out',
+      }, '-=0.6');
+
+    }, sectionRef.current);
+
+    // Cleanup function
+    return () => {
+      if (contextRef.current) {
+        contextRef.current.revert();
+        contextRef.current = null;
       }
-    });
+      if (timelineRef.current) {
+        timelineRef.current.kill();
+        timelineRef.current = null;
+      }
+      // Kill all ScrollTriggers for this component
+      ScrollTrigger.getAll().forEach(trigger => {
+        if (trigger.vars.id === 'faq-section-trigger') {
+          trigger.kill();
+        }
+      });
+    };
+  }, []);
 
-    // Animate title and description from top
-    tl.to([headingRef.current, descriptionRef.current], {
-      y: 0,
-      opacity: 1,
-      duration: 0.8,
-      ease: 'power2.out',
-      stagger: 0.2,
-    })
-    // Animate categories from right
-    .to(categoriesRef.current, {
-      x: 0,
-      opacity: 1,
-      duration: 0.8,
-      ease: 'power2.out',
-    }, '-=0.4')
-    // Animate FAQs from left
-    .to(faqsRef.current, {
-      x: 0,
-      opacity: 1,
-      duration: 0.8,
-      ease: 'power2.out',
-    }, '-=0.6');
-
+  // Additional cleanup on unmount
+  useEffect(() => {
+    return () => {
+      // Ensure all GSAP instances are cleaned up
+      if (contextRef.current) {
+        contextRef.current.revert();
+      }
+      if (timelineRef.current) {
+        timelineRef.current.kill();
+      }
+      // Kill any remaining ScrollTriggers
+      ScrollTrigger.getAll().forEach(trigger => {
+        if (trigger.vars.id === 'faq-section-trigger') {
+          trigger.kill();
+        }
+      });
+    };
   }, []);
 
   return (
@@ -245,10 +297,7 @@ export default function FaqSection() {
               {categories.map((cat) => (
                 <button
                   key={cat}
-                  onClick={() => {
-                    setSelectedCategory(cat);
-                    setOpenIndexes([]); // Reset FAQ on category switch
-                  }}
+                  onClick={() => handleCategoryChange(cat)}
                   className={`w-full flex items-center justify-between px-4 py-3 rounded-md text-left mb-4 transition-all duration-300 hover:transform hover:scale-105 ${
                     selectedCategory === cat
                       ? 'bg-[#4257D0] text-white shadow-md'
@@ -267,7 +316,7 @@ export default function FaqSection() {
             <div className="bg-white rounded-xl p-6 shadow">
               <h3 className="text-xl font-semibold mb-4">FAQs</h3>
               {faqData[selectedCategory].map((faq, index: number) => (
-                <div key={index} className="border-b py-3 border-[#0000001A]">
+                <div key={`${selectedCategory}-${index}`} className="border-b py-3 border-[#0000001A]">
                   <button
                     className="w-full flex justify-between items-center text-left text-[#333] font-semibold text-lg hover:text-[#4257D0] transition-colors duration-200"
                     onClick={() => toggleQuestion(index)}

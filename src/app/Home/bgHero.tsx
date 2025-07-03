@@ -34,37 +34,36 @@ const BackgroundHero = ({
   const titleRef = useRef<HTMLHeadingElement>(null);
   const bulletItemsRef = useRef<HTMLDivElement[]>([]);
 
-  // GSAP Animations
+  // GSAP Animations with proper cleanup
   useGSAP(() => {
     if (!sectionRef.current) return;
 
+    // Store animation instances for cleanup
+    const animations: gsap.core.Tween[] = [];
+    const scrollTriggers: ScrollTrigger[] = [];
+
     // Set initial states
-    // Background image starts scaled up
     gsap.set(backgroundImageRef.current, {
       scale: 1.3,
       opacity: 0.7,
     });
 
-    // Card starts off-screen to the left
     gsap.set(cardRef.current, {
       x: -400,
       opacity: 0,
       rotationY: -45,
     });
 
-    // Numbers container starts invisible
     gsap.set(numbersContainerRef.current, {
       opacity: 0,
       y: 100,
     });
 
-    // Title starts with clip-path for rolling effect
     gsap.set(titleRef.current, {
       y: 100,
       opacity: 0,
     });
 
-    // Bullet items start staggered
     const bulletItems = bulletItemsRef.current.filter(Boolean);
     gsap.set(bulletItems, {
       x: -50,
@@ -72,7 +71,6 @@ const BackgroundHero = ({
       rotationX: -90,
     });
 
-    // Individual number items
     const numberItems = numbersContainerRef.current?.children;
     if (numberItems) {
       gsap.set(numberItems, {
@@ -83,25 +81,29 @@ const BackgroundHero = ({
       });
     }
 
-    // Create master timeline triggered by scroll
+    // Create master timeline with ScrollTrigger
     const masterTl = gsap.timeline({
       scrollTrigger: {
         trigger: sectionRef.current,
         start: 'top 80%',
         end: 'bottom 20%',
         toggleActions: 'play none none reverse',
+       
       }
     });
 
-    // Phase 1: Background image animation (scales down to normal size)
+    // Store the ScrollTrigger for cleanup
+    if (masterTl.scrollTrigger) {
+      scrollTriggers.push(masterTl.scrollTrigger);
+    }
+
+    // Build the timeline
     masterTl.to(backgroundImageRef.current, {
       scale: 1,
       opacity: 1,
       duration: 1.5,
       ease: 'power2.out',
     })
-
-    // Phase 2: Card slides in with 3D effect
     .to(cardRef.current, {
       x: 0,
       opacity: 1,
@@ -109,16 +111,12 @@ const BackgroundHero = ({
       duration: 1.2,
       ease: 'back.out(1.7)',
     }, '-=0.8')
-
-    // Phase 3: Title rolls in
     .to(titleRef.current, {
       y: 0,
       opacity: 1,
       duration: 0.8,
       ease: 'power2.out',
     }, '-=0.6')
-
-    // Phase 4: Bullet items animate in with stagger
     .to(bulletItems, {
       x: 0,
       opacity: 1,
@@ -127,16 +125,12 @@ const BackgroundHero = ({
       ease: 'back.out(1.7)',
       stagger: 0.15,
     }, '-=0.4')
-
-    // Phase 5: Numbers container fades in
     .to(numbersContainerRef.current, {
       opacity: 1,
       y: 0,
       duration: 0.8,
       ease: 'power2.out',
     }, '-=0.3')
-
-    // Phase 6: Individual numbers animate to their positions
     .to(numberItems ? Array.from(numberItems) : [], {
       y: 0,
       opacity: 1,
@@ -147,8 +141,8 @@ const BackgroundHero = ({
       stagger: 0.2,
     }, '-=0.4');
 
-    // Parallax effect for background image
-    gsap.to(backgroundImageRef.current, {
+    // Parallax effect
+    const parallaxTween = gsap.to(backgroundImageRef.current, {
       yPercent: -20,
       ease: 'none',
       scrollTrigger: {
@@ -158,9 +152,13 @@ const BackgroundHero = ({
         scrub: true,
       }
     });
+    
+    if (parallaxTween.scrollTrigger) {
+      scrollTriggers.push(parallaxTween.scrollTrigger);
+    }
 
     // Continuous floating animation for the card
-    gsap.to(cardRef.current, {
+    const floatingTween = gsap.to(cardRef.current, {
       y: -10,
       duration: 3,
       ease: 'power1.inOut',
@@ -172,11 +170,16 @@ const BackgroundHero = ({
         toggleActions: 'play none none reverse',
       }
     });
+    
+    if (floatingTween.scrollTrigger) {
+      scrollTriggers.push(floatingTween.scrollTrigger);
+    }
+    animations.push(floatingTween);
 
     // Numbers bobbing animation
     if (numberItems) {
       Array.from(numberItems).forEach((item, index) => {
-        gsap.to(item as Element, {
+        const bobbingTween = gsap.to(item as Element, {
           y: index % 2 === 0 ? -15 : 15,
           duration: 2 + (index * 0.3),
           ease: 'power1.inOut',
@@ -189,11 +192,16 @@ const BackgroundHero = ({
             toggleActions: 'play none none reverse',
           }
         });
+        
+        if (bobbingTween.scrollTrigger) {
+          scrollTriggers.push(bobbingTween.scrollTrigger);
+        }
+        animations.push(bobbingTween);
       });
     }
 
     // Card scale effect on scroll progress
-    ScrollTrigger.create({
+    const scaleScrollTrigger = ScrollTrigger.create({
       trigger: cardRef.current,
       start: 'top 80%',
       end: 'bottom 20%',
@@ -204,9 +212,10 @@ const BackgroundHero = ({
         gsap.set(cardRef.current, { scale });
       }
     });
+    scrollTriggers.push(scaleScrollTrigger);
 
     // Background blur effect on scroll
-    ScrollTrigger.create({
+    const blurScrollTrigger = ScrollTrigger.create({
       trigger: sectionRef.current,
       start: 'top 50%',
       end: 'bottom 50%',
@@ -219,7 +228,38 @@ const BackgroundHero = ({
         });
       }
     });
+    scrollTriggers.push(blurScrollTrigger);
 
+    // Cleanup function
+    return () => {
+      // Kill all animations
+      animations.forEach(tween => {
+        if (tween && tween.kill) {
+          tween.kill();
+        }
+      });
+
+      // Kill all ScrollTriggers
+      scrollTriggers.forEach(trigger => {
+        if (trigger && trigger.kill) {
+          trigger.kill();
+        }
+      });
+
+      // Kill the master timeline
+      if (masterTl) {
+        masterTl.kill();
+      }
+
+      // Clear any remaining ScrollTriggers on this element
+      ScrollTrigger.getAll().forEach(trigger => {
+        if (trigger.trigger === sectionRef.current || 
+            trigger.trigger === cardRef.current || 
+            trigger.trigger === backgroundImageRef.current) {
+          trigger.kill();
+        }
+      });
+    };
   }, []);
 
   // Helper function to add refs to bullet items

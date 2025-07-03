@@ -121,6 +121,17 @@ const SavingsSection = ({ bgColor = "bg-[#1F2526]" }: SavingsSectionProps) => {
   const contentRef = useRef<HTMLDivElement>(null);
   const phoneRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLDivElement>(null);
+  
+  // Store animation references for cleanup
+  const animationsRef = useRef<{
+    scrollTriggers: ScrollTrigger[];
+    timelines: gsap.core.Timeline[];
+    tweens: gsap.core.Tween[];
+  }>({
+    scrollTriggers: [],
+    timelines: [],
+    tweens: []
+  });
 
   // Register ScrollTrigger plugin
   gsap.registerPlugin(ScrollTrigger);
@@ -138,6 +149,9 @@ const SavingsSection = ({ bgColor = "bg-[#1F2526]" }: SavingsSectionProps) => {
         setIsTransitioning(false);
       }
     });
+
+    // Store timeline reference for cleanup
+    animationsRef.current.timelines.push(tl);
 
     // Animate out current content
     tl.to([contentRef.current, phoneRef.current], {
@@ -178,6 +192,18 @@ const SavingsSection = ({ bgColor = "bg-[#1F2526]" }: SavingsSectionProps) => {
   useGSAP(() => {
     if (typeof window === "undefined" || window.innerWidth < 768) return;
 
+    // Clear previous animations
+    animationsRef.current.scrollTriggers.forEach(trigger => trigger.kill());
+    animationsRef.current.timelines.forEach(tl => tl.kill());
+    animationsRef.current.tweens.forEach(tween => tween.kill());
+    
+    // Reset arrays
+    animationsRef.current = {
+      scrollTriggers: [],
+      timelines: [],
+      tweens: []
+    };
+
     // Initial page load animations
     const tlInitial = gsap.timeline({
       scrollTrigger: {
@@ -186,6 +212,12 @@ const SavingsSection = ({ bgColor = "bg-[#1F2526]" }: SavingsSectionProps) => {
         toggleActions: "play none none none",
       },
     });
+
+    // Store references
+    animationsRef.current.timelines.push(tlInitial);
+    if (tlInitial.scrollTrigger) {
+      animationsRef.current.scrollTriggers.push(tlInitial.scrollTrigger);
+    }
 
     // Navigation fade in
     tlInitial.from(".nav-item", {
@@ -204,6 +236,11 @@ const SavingsSection = ({ bgColor = "bg-[#1F2526]" }: SavingsSectionProps) => {
         toggleActions: "play none none none",
       },
     });
+
+    animationsRef.current.timelines.push(tlTitle);
+    if (tlTitle.scrollTrigger) {
+      animationsRef.current.scrollTriggers.push(tlTitle.scrollTrigger);
+    }
 
     tlTitle
       .from(".hero__title2:first-child", {
@@ -234,6 +271,11 @@ const SavingsSection = ({ bgColor = "bg-[#1F2526]" }: SavingsSectionProps) => {
       },
     });
 
+    animationsRef.current.timelines.push(tlContent);
+    if (tlContent.scrollTrigger) {
+      animationsRef.current.scrollTriggers.push(tlContent.scrollTrigger);
+    }
+
     tlContent.from(".content-item", {
       y: 50,
       opacity: 0,
@@ -243,7 +285,7 @@ const SavingsSection = ({ bgColor = "bg-[#1F2526]" }: SavingsSectionProps) => {
     });
 
     // Enhanced phone animation with floating effect
-    gsap.from(".phone-image", {
+    const phoneInitTween = gsap.from(".phone-image", {
       y: "100%",
       opacity: 0,
       scale: 0.8,
@@ -256,8 +298,12 @@ const SavingsSection = ({ bgColor = "bg-[#1F2526]" }: SavingsSectionProps) => {
       },
     });
 
+    if (phoneInitTween.scrollTrigger) {
+      animationsRef.current.scrollTriggers.push(phoneInitTween.scrollTrigger);
+    }
+
     // Continuous floating animation for phone
-    gsap.to(".phone-image", {
+    const phoneFloatTween = gsap.to(".phone-image", {
       y: -10,
       duration: 2,
       ease: "power2.inOut",
@@ -266,8 +312,10 @@ const SavingsSection = ({ bgColor = "bg-[#1F2526]" }: SavingsSectionProps) => {
       delay: 1.5
     });
 
+    animationsRef.current.tweens.push(phoneFloatTween);
+
     // Parallax effect for background elements
-    gsap.to(".hero", {
+    const parallaxTween = gsap.to(".hero", {
       backgroundPosition: "50% 100%",
       ease: "none",
       scrollTrigger: {
@@ -277,21 +325,47 @@ const SavingsSection = ({ bgColor = "bg-[#1F2526]" }: SavingsSectionProps) => {
         scrub: true
       }
     });
- gsap.to(phoneRef.current, {
-      y: -15,
-      duration: 2,
-      ease: 'power1.inOut',
-      yoyo: true,
-      repeat: -1,
-      scrollTrigger: {
-        trigger: phoneRef.current,
-        start: 'top 10%',
-        toggleActions: 'play none none reverse',
+
+    if (parallaxTween.scrollTrigger) {
+      animationsRef.current.scrollTriggers.push(parallaxTween.scrollTrigger);
+    }
+
+    // Phone ref floating animation
+    if (phoneRef.current) {
+      const phoneRefTween = gsap.to(phoneRef.current, {
+        y: -15,
+        duration: 2,
+        ease: 'power1.inOut',
+        yoyo: true,
+        repeat: -1,
+        scrollTrigger: {
+          trigger: phoneRef.current,
+          start: 'top 10%',
+          toggleActions: 'play none none reverse',
+        }
+      });
+
+      animationsRef.current.tweens.push(phoneRefTween);
+      if (phoneRefTween.scrollTrigger) {
+        animationsRef.current.scrollTriggers.push(phoneRefTween.scrollTrigger);
       }
-    });
-    // Cleanup function
+    }
+
+    // Cleanup function - only kill animations created by this component
     return () => {
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+      animationsRef.current.scrollTriggers.forEach(trigger => trigger.kill());
+      animationsRef.current.timelines.forEach(tl => tl.kill());
+      animationsRef.current.tweens.forEach(tween => tween.kill());
+    };
+  }, []);
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      // Additional cleanup on component unmount
+      animationsRef.current.scrollTriggers.forEach(trigger => trigger.kill());
+      animationsRef.current.timelines.forEach(tl => tl.kill());
+      animationsRef.current.tweens.forEach(tween => tween.kill());
     };
   }, []);
 
@@ -316,20 +390,17 @@ const SavingsSection = ({ bgColor = "bg-[#1F2526]" }: SavingsSectionProps) => {
                     : "border-transparent hover:border-[#4257D0]/50"
                 }`}
               >
-                <a
-                  href="#"
-                  className={`text-[#ffffff] transition-all duration-300 block py-2 ${
+                <button
+                  className={`text-[#ffffff] transition-all duration-300 block py-2 w-full text-left ${
                     activeSection === data.id 
                       ? "font-bold text-[#4257D0]" 
                       : "hover:text-blue-300"
                   }`}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleSectionChange(data.id);
-                  }}
+                  onClick={() => handleSectionChange(data.id)}
+                  disabled={isTransitioning}
                 >
                   {data.title} {data.subTitle}
-                </a>
+                </button>
               </li>
             ))}
           </ul>
