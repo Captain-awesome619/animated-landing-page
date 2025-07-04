@@ -4,6 +4,7 @@ import "./globals.css";
 import "../app/styles/main.scss";
 import Header from "./components/Header";
 import PageTransition from "./components/pageTransitioning";
+import Footer from "./components/footer";
 
 
 
@@ -36,6 +37,7 @@ export default function RootLayout({
 
         <Header />
         {children}
+        <Footer />
          </PageTransition>
       </body>
     </html>
