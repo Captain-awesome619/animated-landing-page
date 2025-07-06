@@ -60,14 +60,14 @@ export default function Navbar() {
           >
             Reviews
           </Link>
-          {/* <Link
-            href="/contact"
+          <Link
+            href="/Privacy"
             className={`text-[#000000B2] hover:text-[#4257D0] nav-link underline-custom ${
-              pathname === "/contact" ? "active" : "inactive"
+              pathname === "/privacy" ? "active" : "inactive"
             }`}
           >
-            Contact
-          </Link> */}
+           Privacy Policy
+          </Link>
           <Link
             href="/#faq"
             className={`text-[#000000B2] hover:text-[#4257D0] nav-link underline-custom ${
