@@ -118,6 +118,7 @@ export default function Navbar() {
               { href: "#reviews", label: "Reviews" },
               { href: "#contact", label: "Contact" },
               { href: "#faq", label: "FAQ" },
+              { href: "/Privacy", label: "Privacy Policy" },
             ].map((link) => (
               <Link
                 key={link.href}

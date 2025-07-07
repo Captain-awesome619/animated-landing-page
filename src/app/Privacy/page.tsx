@@ -1,7 +1,7 @@
 const PrivacyPolicy = () => {
   return (
     <>
-      <div className="flex flex-col text-start justify-center  bg-gray-100 hero px-25">
+      <div className="flex flex-col md:text-start text-center justify-center  bg-gray-100 hero lg:px-25 sm:px-10 md:p-5">
         <h1 className="text-3xl font-bold mb-6 mt-20">Privacy Policy</h1>
         <p className="text-lg mb-4">
           At Xtrempay Nigeria ("we," "our," "us"), we prioritize the privacy of
