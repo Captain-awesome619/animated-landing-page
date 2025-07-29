@@ -34,240 +34,6 @@ const BackgroundHero = ({
   const titleRef = useRef<HTMLHeadingElement>(null);
   const bulletItemsRef = useRef<HTMLDivElement[]>([]);
 
-  // GSAP Animations with proper cleanup
-  useGSAP(() => {
-    if (!sectionRef.current) return;
-
-    // Store animation instances for cleanup
-    const animations: gsap.core.Tween[] = [];
-    const scrollTriggers: ScrollTrigger[] = [];
-
-    // Set initial states
-    gsap.set(backgroundImageRef.current, {
-      scale: 1.3,
-      opacity: 0.7,
-    });
-
-    gsap.set(cardRef.current, {
-      x: -400,
-      opacity: 0,
-      rotationY: -45,
-    });
-
-    gsap.set(numbersContainerRef.current, {
-      opacity: 0,
-      y: 100,
-    });
-
-    gsap.set(titleRef.current, {
-      y: 100,
-      opacity: 0,
-    });
-
-    const bulletItems = bulletItemsRef.current.filter(Boolean);
-    gsap.set(bulletItems, {
-      x: -50,
-      opacity: 0,
-      rotationX: -90,
-    });
-
-    const numberItems = numbersContainerRef.current?.children;
-    if (numberItems) {
-      gsap.set(numberItems, {
-        y: (index) => index % 2 === 0 ? -200 : 200,
-        opacity: 0,
-        scale: 0.5,
-        rotation: (index) => index % 2 === 0 ? -45 : 45,
-      });
-    }
-
-    // Create master timeline with ScrollTrigger
-    const masterTl = gsap.timeline({
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        start: 'top 80%',
-        end: 'bottom 20%',
-        toggleActions: 'play none none reverse',
-       
-      }
-    });
-
-    // Store the ScrollTrigger for cleanup
-    if (masterTl.scrollTrigger) {
-      scrollTriggers.push(masterTl.scrollTrigger);
-    }
-
-    // Build the timeline
-    masterTl.to(backgroundImageRef.current, {
-      scale: 1,
-      opacity: 1,
-      duration: 1.5,
-      ease: 'power2.out',
-    })
-    .to(cardRef.current, {
-      x: 0,
-      opacity: 1,
-      rotationY: 0,
-      duration: 1.2,
-      ease: 'back.out(1.7)',
-    }, '-=0.8')
-    .to(titleRef.current, {
-      y: 0,
-      opacity: 1,
-      duration: 0.8,
-      ease: 'power2.out',
-    }, '-=0.6')
-    .to(bulletItems, {
-      x: 0,
-      opacity: 1,
-      rotationX: 0,
-      duration: 0.6,
-      ease: 'back.out(1.7)',
-      stagger: 0.15,
-    }, '-=0.4')
-    .to(numbersContainerRef.current, {
-      opacity: 1,
-      y: 0,
-      duration: 0.8,
-      ease: 'power2.out',
-    }, '-=0.3')
-    .to(numberItems ? Array.from(numberItems) : [], {
-      y: 0,
-      opacity: 1,
-      scale: 1,
-      rotation: 0,
-      duration: 1,
-      ease: 'elastic.out(1, 0.5)',
-      stagger: 0.2,
-    }, '-=0.4');
-
-    // Parallax effect
-    const parallaxTween = gsap.to(backgroundImageRef.current, {
-      yPercent: -20,
-      ease: 'none',
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        start: 'top bottom',
-        end: 'bottom top',
-        scrub: true,
-      }
-    });
-    
-    if (parallaxTween.scrollTrigger) {
-      scrollTriggers.push(parallaxTween.scrollTrigger);
-    }
-
-    // Continuous floating animation for the card
-    const floatingTween = gsap.to(cardRef.current, {
-      y: -10,
-      duration: 3,
-      ease: 'power1.inOut',
-      yoyo: true,
-      repeat: -1,
-      scrollTrigger: {
-        trigger: cardRef.current,
-        start: 'top 90%',
-        toggleActions: 'play none none reverse',
-      }
-    });
-    
-    if (floatingTween.scrollTrigger) {
-      scrollTriggers.push(floatingTween.scrollTrigger);
-    }
-    animations.push(floatingTween);
-
-    // Numbers bobbing animation
-    if (numberItems) {
-      Array.from(numberItems).forEach((item, index) => {
-        const bobbingTween = gsap.to(item as Element, {
-          y: index % 2 === 0 ? -15 : 15,
-          duration: 2 + (index * 0.3),
-          ease: 'power1.inOut',
-          yoyo: true,
-          repeat: -1,
-          delay: index * 0.2,
-          scrollTrigger: {
-            trigger: item as Element,
-            start: 'top 90%',
-            toggleActions: 'play none none reverse',
-          }
-        });
-        
-        if (bobbingTween.scrollTrigger) {
-          scrollTriggers.push(bobbingTween.scrollTrigger);
-        }
-        animations.push(bobbingTween);
-      });
-    }
-
-    // Card scale effect on scroll progress
-    const scaleScrollTrigger = ScrollTrigger.create({
-      trigger: cardRef.current,
-      start: 'top 80%',
-      end: 'bottom 20%',
-      scrub: true,
-      onUpdate: (self) => {
-        const progress = self.progress;
-        const scale = 1 + (progress * 0.05);
-        gsap.set(cardRef.current, { scale });
-      }
-    });
-    scrollTriggers.push(scaleScrollTrigger);
-
-    // Background blur effect on scroll
-    const blurScrollTrigger = ScrollTrigger.create({
-      trigger: sectionRef.current,
-      start: 'top 50%',
-      end: 'bottom 50%',
-      scrub: true,
-      onUpdate: (self) => {
-        const progress = self.progress;
-        const blur = progress * 2;
-        gsap.set(backgroundImageRef.current, { 
-          filter: `blur(${blur}px)` 
-        });
-      }
-    });
-    scrollTriggers.push(blurScrollTrigger);
-
-    // Cleanup function
-    return () => {
-      // Kill all animations
-      animations.forEach(tween => {
-        if (tween && tween.kill) {
-          tween.kill();
-        }
-      });
-
-      // Kill all ScrollTriggers
-      scrollTriggers.forEach(trigger => {
-        if (trigger && trigger.kill) {
-          trigger.kill();
-        }
-      });
-
-      // Kill the master timeline
-      if (masterTl) {
-        masterTl.kill();
-      }
-
-      // Clear any remaining ScrollTriggers on this element
-      ScrollTrigger.getAll().forEach(trigger => {
-        if (trigger.trigger === sectionRef.current || 
-            trigger.trigger === cardRef.current || 
-            trigger.trigger === backgroundImageRef.current) {
-          trigger.kill();
-        }
-      });
-    };
-  }, []);
-
-  // Helper function to add refs to bullet items
-  const addToBulletRefs = (el: HTMLDivElement | null, index: number) => {
-    if (el) {
-      bulletItemsRef.current[index] = el;
-    }
-  };
 
   return (
     <section
@@ -307,7 +73,7 @@ const BackgroundHero = ({
           
           <div className="text-sm md:text-base space-y-2">
             <div 
-              ref={(el) => addToBulletRefs(el, 0)}
+           
               className="flex justify-between items-start transform hover:translate-x-2 transition-transform duration-300 p-2 rounded hover:bg-white/10"
             >
               <Image
@@ -324,7 +90,7 @@ const BackgroundHero = ({
             </div>
             
             <div 
-              ref={(el) => addToBulletRefs(el, 1)}
+             
               className="flex justify-between items-start transform hover:translate-x-2 transition-transform duration-300 p-2 rounded hover:bg-white/10"
             >
               <Image
@@ -341,7 +107,7 @@ const BackgroundHero = ({
             </div>
             
             <div 
-              ref={(el) => addToBulletRefs(el, 2)}
+              
               className="flex justify-between items-start transform hover:translate-x-2 transition-transform duration-300 p-2 rounded hover:bg-white/10"
             >
               <Image
@@ -358,7 +124,7 @@ const BackgroundHero = ({
             </div>
             
             <div 
-              ref={(el) => addToBulletRefs(el, 3)}
+             
               className="flex justify-between items-start transform hover:translate-x-2 transition-transform duration-300 p-2 rounded hover:bg-white/10"
             >
               <Image
