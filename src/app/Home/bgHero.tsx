@@ -4,8 +4,10 @@ import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Image from "next/image";
+import Afri from '../../../public/images/afri.svg'
+import { useLayoutEffect } from 'react';
+import { forwardRef } from "react"
 
-// Register ScrollTrigger plugin
 gsap.registerPlugin(ScrollTrigger);
 
 interface BackgroundHeroProps {
@@ -15,57 +17,52 @@ interface BackgroundHeroProps {
   backgroundImageAlt: string;
   imageClassName?: string;
   bgColor?: string;
+  statsRef?: React.RefObject<HTMLDivElement | null>;
 }
 
-const BackgroundHero = ({
-  title,
-  description,
-  backgroundImageSrc = "/images/african-man.png",
-  backgroundImageAlt = "Xtrempay Background",
-  imageClassName,
-  bgColor = "bg-[#e6a69b]",
-}: BackgroundHeroProps) => {
+const BackgroundHero = forwardRef<HTMLDivElement, BackgroundHeroProps>(
+  (
+    {
+      title,
+      description,
+      backgroundImageSrc = "/images/african-man.png",
+      backgroundImageAlt = "Xtrempay Background",
+      imageClassName,
+      bgColor = "bg-[#e6a69b]",
+       statsRef, // 👈 Add here too
+    },
+    ref
+  ) => {
   
-  // Refs for animation targets
-  const sectionRef = useRef<HTMLElement>(null);
-  const backgroundImageRef = useRef<HTMLDivElement>(null);
-  const cardRef = useRef<HTMLDivElement>(null);
-  const numbersContainerRef = useRef<HTMLDivElement>(null);
-  const titleRef = useRef<HTMLHeadingElement>(null);
-  const bulletItemsRef = useRef<HTMLDivElement[]>([]);
-
-
   return (
     <section
-      ref={sectionRef}
-      className={`${bgColor} min-h-screen relative overflow-hidden hero z-0`}
+   
+      className='h-screen'
     >
       {/* Background Image with enhanced effects */}
-      <div ref={backgroundImageRef} className="absolute inset-0 z-0 transform-gpu">
-        <Image
-          src={backgroundImageSrc}
-          alt={backgroundImageAlt}
-          fill
-          priority
-          className={`object-cover transition-all duration-1000 ${imageClassName}`}
-        />
+     
+       
         {/* Overlay for better text readability */}
-        <div className="absolute inset-0 bg-black/20"></div>
-      </div>
+        <div className="h-screen w-screen  bg-[url('/images/afri.svg')]   bg-no-repeat bg-cover bg-center ">
+     
 
       {/* Container */}
-      <div className="max-w-7xl mx-auto relative z-10 lg:h-[125vh] flex items-center justify-between py-12 lg:py-10 px-4 lg:px-8">
+      <div className="max-w-7xl mx-auto relative z-10 lg:h-screen flex items-center justify-between py-12 lg:py-10 px-4 lg:px-8"
+      
+      >
         
         {/* Enhanced Card with Glassmorphism and 3D effects */}
+
         <div 
-          ref={cardRef}
-          className="bg-black/40 backdrop-blur-lg mb-28 text-white p-4 rounded-2xl w-3/3 lg:w-[33%] shadow-2xl border border-white/20 transform-gpu hover:bg-black/50 transition-all duration-500"
+       ref={ref}
+          className="bg-black/40 backdrop-blur-lg mb-25 text-white p-4 rounded-2xl w-3/3 lg:w-[30%] shadow-2xl border border-white/20 transform-gpu hover:bg-black/50 opacity-0 translate-x-[-50px]"
           style={{ 
             boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.1)' 
           }}
+           
         >
           <h2 
-            ref={titleRef}
+         
             className="text-3xl md:text-2xl font-bold mb-6 bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent transform"
           >
             Why Xtrempay?
@@ -144,11 +141,14 @@ const BackgroundHero = ({
 
         {/* Enhanced Numbers Overlay with 3D effects */}
         <div 
-          ref={numbersContainerRef}
-          className="absolute inset-0 flex items-center justify-around text-white text-center z-10 w-full top-8/12 mt-15 transform"
+         
+          className="absolute inset-0 flex items-center justify-around text-white text-center z-10 w-full  mt-[45%] transform"
+            ref={statsRef}
         >
           {/* 10M (Odd, up) */}
-          <div className="transform -translate-y-16 text-4xl md:text-8xl font-bold border-s px-8 h-50 hover:scale-110 transition-all duration-500 cursor-pointer group">
+          <div className="transform mt-[10rem] -translate-y-16 text-2xl md:text-8xl font-bold border-s px-8 h-50 hover:scale-110 transition-all duration-500 cursor-pointer group"
+        
+          >
             <div className="bg-gradient-to-b from-white to-blue-200 bg-clip-text text-transparent group-hover:from-yellow-300 group-hover:to-orange-400 transition-all duration-500">
               10M
             </div>
@@ -187,9 +187,11 @@ const BackgroundHero = ({
             </p>
           </div>
         </div>
+
       </div>
+</div>
     </section>
   );
-};
+});
 
 export default BackgroundHero;
