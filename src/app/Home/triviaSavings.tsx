@@ -1,9 +1,107 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+
+import { useState, useEffect, useRef, forwardRef } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
+import screen1 from "../../../public/images/screen1.svg";
+import screen2 from "../../../public/images/screen2.svg";
+import screen3 from "../../../public/images/screen3.svg";
+
+
+
+   export  const savingsData: SavingsData[] = [
+      {
+        id: 1,
+        title: "Trivia",
+        subTitle: "Savings",
+        description: `Save Weekly  Answer Smart Win Cash. Trivia Savings makes saving fun, you save money, answer trivia, and stand a chance to win cool cash!`,
+        howItWorks: {
+          title: "How it works:",
+          text: "Save ₦3000/week = Entry unlocked Play our weekly trivia quiz",
+          items: [
+            "Get answers right! Boost your chance",
+            "Winners get picked and rewarded with real cash!",
+          ],
+        },
+        whyItBangs: [
+          "Fun + saving in one",
+          "Real rewards for being smart",
+          "For sharp minds & goal-getters",
+          "Don't just save. Outsmart. Outwin. Trivia Saving only on Xtrempay.",
+        ],
+        imageSrc: "/images/phone2.png",
+        imageAlt: "Trivia Savings App",
+      },
+      {
+        id: 2,
+        title: "Spin & Win",
+        subTitle: "Savings",
+        description:
+          "Spin & Win - Save. Spin. Win Big. With Spin & Win Savings, every token you spin gives a chance to win instant rewards, fun, fast, and built for the bold.",
+        howItWorks: {
+          title: "How it works:",
+          text: "Save ₦500 = 1 spin token",
+          items: [
+            "Use your token to spin the wheel",
+            "Could you win airtime, saving boosts, or even real cash",
+          ],
+        },
+        whyItBangs: [
+          "Every spin is a shot at winning instant rewards",
+          "Fun, fast, and built for the bold",
+          "Only on Xtrempay where saving gets exciting!",
+        ],
+        imageSrc: "/images/phone2_spin.png",
+        imageAlt: "Spin & Win Savings App",
+      },
+      {
+        id: 3,
+        title: "Raffle",
+        subTitle: "Savings",
+        description:
+          "Raffle Savings on Xtrempay rewards you with cash prizes just for saving, no interest, no stress.",
+        howItWorks: {
+          title: "How it works:",
+          text: "Save ₦1000 = 1 ticket",
+          items: [
+            "More savings = more tickets = Higher chances",
+            "We draw winners weekly/monthly and yes, it's real cash",
+          ],
+        },
+        whyItBangs: [
+          "No boring interest",
+          "Real wins, made for hustlers & dreamers like you",
+          "Stack your savings. Stack your chances. Join the Raffle.",
+        ],
+        imageSrc: "/images/phone2_raffle.png",
+        imageAlt: "Raffle Savings App",
+      },
+      {
+        id: 4,
+        title: "Send Money. ",
+        subTitle: "Pay Bills",
+        description:
+          "Raffle Savings on Xtrempay rewards you with cash prizes just for saving, no interest, no stress.",
+        howItWorks: {
+          title: "How it works:",
+          text: "Save ₦1000 = 1 ticket",
+          items: [
+            "More savings = more tickets = Higher chances",
+            "We draw winners weekly/monthly and yes, it's real cash",
+          ],
+        },
+        whyItBangs: [
+          "No boring interest",
+          "Real wins, made for hustlers & dreamers like you",
+          "Stack your savings. Stack your chances. Join the Raffle.",
+        ],
+        imageSrc: "/images/savemoney.png",
+        imageAlt: "Raffle Savings App",
+      },
+    ];
+
 
 interface SavingsData {
   id: number;
@@ -18,305 +116,137 @@ interface SavingsData {
 
 interface SavingsSectionProps {
   bgColor?: string;
+  innerDivRef?: React.Ref<HTMLDivElement>;
+  image1Ref?: React.Ref<HTMLImageElement>;
+  image2Ref?: React.Ref<HTMLImageElement>;
+  image3Ref?: React.Ref<HTMLImageElement>;
+ titleRefss: (el: HTMLHeadingElement) => void;
+  subtitleRefss: (el: HTMLHeadingElement) => void;
+   descriptRefss: (el: HTMLHeadingElement) => void;
 }
 
-const SavingsSection = ({ bgColor = "bg-[#1F2526]" }: SavingsSectionProps) => {
-  // Data array for different savings sections
-  const savingsData: SavingsData[] = [
-    {
-      id: 1,
-      title: "Trivia",
-      subTitle: "Savings",
-      description: `Save Weekly  Answer Smart Win Cash. Trivia Savings makes saving fun, you save money, answer trivia, and stand a chance to win cool cash!`,
-      howItWorks: {
-        title: "How it works:",
-        text: "Save ₦3000/week = Entry unlocked Play our weekly trivia quiz",
-        items: [
-          "Get answers right! Boost your chance",
-          "Winners get picked and rewarded with real cash!",
-        ],
-      },
-      whyItBangs: [
-        "Fun + saving in one",
-        "Real rewards for being smart",
-        "For sharp minds & goal-getters",
-        "Don't just save. Outsmart. Outwin. Trivia Saving only on Xtrempay.",
-      ],
-      imageSrc: "/images/phone2.png",
-      imageAlt: "Trivia Savings App",
-    },
-    {
-      id: 2,
-      title: "Spin & Win",
-      subTitle: "Savings",
-      description:
-        "Spin & Win - Save. Spin. Win Big. With Spin & Win Savings, every token you spin gives a chance to win instant rewards, fun, fast, and built for the bold.",
-      howItWorks: {
-        title: "How it works:",
-        text: "Save ₦500 = 1 spin token",
-        items: [
-          "Use your token to spin the wheel",
-          "Could you win airtime, saving boosts, or even real cash",
-        ],
-      },
-      whyItBangs: [
-        "Every spin is a shot at winning instant rewards",
-        "Fun, fast, and built for the bold",
-        "Only on Xtrempay where saving gets exciting!",
-      ],
-      imageSrc: "/images/phone2_spin.png",
-      imageAlt: "Spin & Win Savings App",
-    },
-    {
-      id: 3,
-      title: "Raffle",
-      subTitle: "Savings",
-      description:
-        "Raffle Savings on Xtrempay rewards you with cash prizes just for saving, no interest, no stress.",
-      howItWorks: {
-        title: "How it works:",
-        text: "Save ₦1000 = 1 ticket",
-        items: [
-          "More savings = more tickets = Higher chances",
-          "We draw winners weekly/monthly and yes, it's real cash",
-        ],
-      },
-      whyItBangs: [
-        "No boring interest",
-        "Real wins, made for hustlers & dreamers like you",
-        "Stack your savings. Stack your chances. Join the Raffle.",
-      ],
-      imageSrc: "/images/phone2_raffle.png",
-      imageAlt: "Raffle Savings App",
-    },
-    {
-      id: 4,
-      title: "Send Money. ",
-      subTitle: "Pay Bills",
-      description:
-        "Raffle Savings on Xtrempay rewards you with cash prizes just for saving, no interest, no stress.",
-      howItWorks: {
-        title: "How it works:",
-        text: "Save ₦1000 = 1 ticket",
-        items: [
-          "More savings = more tickets = Higher chances",
-          "We draw winners weekly/monthly and yes, it's real cash",
-        ],
-      },
-      whyItBangs: [
-        "No boring interest",
-        "Real wins, made for hustlers & dreamers like you",
-        "Stack your savings. Stack your chances. Join the Raffle.",
-      ],
-      imageSrc: "/images/savemoney.png",
-      imageAlt: "Raffle Savings App",
-    },
-  ];
 
-  // State to manage the active section and animation state
-  const [activeSection, setActiveSection] = useState(savingsData[0].id);
-  const [isTransitioning, setIsTransitioning] = useState(false);
-  
-  // Refs for animation targets
-  const contentRef = useRef<HTMLDivElement>(null);
-  const phoneRef = useRef<HTMLDivElement>(null);
-  const titleRef = useRef<HTMLDivElement>(null);
-  
-  // Store animation references for cleanup
-  const animationsRef = useRef<{
-    scrollTriggers: ScrollTrigger[];
-    timelines: gsap.core.Timeline[];
-    tweens: gsap.core.Tween[];
-  }>({
-    scrollTriggers: [],
-    timelines: [],
-    tweens: []
-  });
 
-  // Register ScrollTrigger plugin
-  gsap.registerPlugin(ScrollTrigger);
+const SavingsSection = forwardRef<HTMLDivElement, SavingsSectionProps>(
+  ({ bgColor = "bg-[#1F2526]", image1Ref, image2Ref, image3Ref,titleRefss,subtitleRefss,  descriptRefss}, ref) => {
 
-  // Function to handle section change with smooth transition
-  const handleSectionChange = (newSectionId: number) => {
-    if (newSectionId === activeSection || isTransitioning) return;
-    
-    setIsTransitioning(true);
-    
-    // Create timeline for content transition
-    const tl = gsap.timeline({
-      onComplete: () => {
-        setActiveSection(newSectionId);
-        setIsTransitioning(false);
-      }
-    });
 
-    // Store timeline reference for cleanup
-    animationsRef.current.timelines.push(tl);
-
-    // Animate out current content
-    tl.to([contentRef.current, phoneRef.current], {
-      opacity: 0,
-      y: 20,
-      duration: 0.3,
-      ease: "power2.inOut",
-      stagger: 0.1
-    })
-    // Animate in new content
-    .to([contentRef.current, phoneRef.current], {
-      opacity: 1,
-      y: 0,
-      duration: 0.4,
-      ease: "power2.out",
-      stagger: 0.1
-    }, "+=0.1");
-    
-
-    // Special animation for titles
-    if (titleRef.current) {
-      tl.to(".hero__title2", {
-        scale: 0.95,
-        opacity: 0.7,
-        duration: 0.2,
-        ease: "power2.inOut"
-      }, 0)
-      .to(".hero__title2", {
-        scale: 1,
-        opacity: 1,
-        duration: 0.3,
-        ease: "back.out(1.7)"
-      }, 0.4);
-    }
-  };
-
-  const activeData = savingsData.find((data) => data.id === activeSection);
-
-  return (
-    <section
-      className={`${bgColor} min-h-screen relative overflow-hidden text-white py-12 lg:py-20 px-4 lg:px-8 hero`}
-    >
-      {/* Container */}
-      <div className="max-w-7xl mx-auto relative z-10 flex flex-col lg:flex-row items-center justify-between">
-        {/* Left Navigation */}
-        <nav className="w-full lg:w-1/3 mb-8 lg:mb-0">
-          <ul className="space-y-4">
+    return (
+      <section
+        className={`${bgColor} h-screen relative overflow-hidden text-white py-12 lg:py-30 px-4 lg:px-8 hero`}
+        ref={ref}
+      >
+        <div className="grid px-[1.5rem]  grid-cols-[20%_50%_30%] pt-[2rem] ">
+          {/* Left Navigation */}
+           <nav className="">
+          <ul className="space-y-4 w-full">
             {savingsData.map((data) => (
               <li
                 key={data.id}
-                className={`nav-item border-s-4 ps-3 transition-all duration-300 hover:translate-x-2 ${
-                  activeSection === data.id
-                    ? "border-[#4257D0]"
-                    : "border-transparent hover:border-[#4257D0]/50"
-                }`}
+                className={`nav-item w-full border-s-4 ps-3 transition-all duration-300 hover:translate-x-2 `}
               >
                 <button
-                  className={`text-[#ffffff] transition-all duration-300 block py-2 w-full text-left ${
-                    activeSection === data.id 
-                      ? "font-bold text-[#4257D0]" 
-                      : "hover:text-blue-300"
-                  }`}
-                  onClick={() => handleSectionChange(data.id)}
-                  disabled={isTransitioning}
+                  className={`text-[#ffffff]  flex flex-row  transition-all duration-300   py-2 w-full text-left`}
+
+                
                 >
-                  {data.title} {data.subTitle}
+               {data.title}
+               {" "}
+                   {data.subTitle}
+
                 </button>
               </li>
             ))}
           </ul>
         </nav>
 
-        {/* Main Content */}
-        <div 
-          ref={contentRef}
-          className="w-full lg:w-2/3 transform lg:-translate-x-1/4 content-section"
-        >
-          <div ref={titleRef}>
-            <h1 className="text-4xl md:text-6xl font-bold mb-6 hero__title2 transition-all duration-500">
-              {activeData?.title}
-            </h1>
-            <h1 className="text-4xl md:text-6xl font-bold mb-6 hero__title2 pl-14 transition-all duration-500">
-              {activeData?.subTitle}
-            </h1>
-          </div>
+
+          {/* Main Content */}
           
-          <div className="space-y-6">
-            <div className="content-item">
-              <p className="text-sm sm:text-base md:text-[1rem] lg:text-lg transition-all duration-500">
-                {(() => {
-                  const desc = activeData?.description || "";
-                  const parts = desc.split(",");
+           <div className= "relative w-full h-32 flex flex-col ">
+  {savingsData.map((data, index) => (
+    <div key={data.id} className="w-screen flex flex-col  ">
+    <div
+            key={index}
+            className="absolute top-0 left-0 w-full h-full flex flex-col  "
+          >
+        <h4 className=" text-white text-[60px] font-[400]"
+       ref={titleRefss}
+       >
+          {data.title}
+          
+        </h4>
+        <h4 className=" text-white text-[60px] mt-[-4%] relative pl-[15%] font-[400]"
+       ref={subtitleRefss}
+        >
+          {data.subTitle}
+        </h4>
+      </div>
 
-                  const chunks = [];
-                  for (let i = 0; i < parts.length; i += 3) {
-                    chunks.push(parts.slice(i, i + 1).join(","));
-                  }
+      <div ref={descriptRefss}  className=" absolute top-[150%] left-0 w-full h-full flex flex-col gap-[2rem]  ">
+       <h4 className="text-[20px] font-[400]" > {data.description}</h4>
+      
+<div className="flex flex-col gap-[1rem]">
+<div className="flex flex-row gap-[0.5rem] items-center">
+  <h4 className="font-bold text-lg">{data.howItWorks.title}</h4>
+  <p>{data.howItWorks.text}</p>
+</div>
+  <ul className="list-disc pl-5">
+    {data.howItWorks.items.map((item, idx) => (
+      <li key={idx}>{item}</li>
+    ))}
+  </ul>
+<div className="flex flex-col gap-[0.3rem]">
+  <h4 className="text-[18px] font-[600]">Why it bangs:</h4>
+  <ul className="list-disc pl-5">
+    {data.whyItBangs.map((item, idx) => (
+      <li key={idx}>{item}</li>
+    ))}
+  </ul>
+  </div>
+</div>
+</div>
+      
 
-                  return chunks.map((chunk, idx) => (
-                    <span key={idx}>
-                      {chunk}
-                      {idx < chunks.length - 1 && <br />}
-                    </span>
-                  ));
-                })()}
-              </p>
-            </div>
-            
-            <div className="content-item">
-              <div className="mb-2">
-                <b className="text-base md:text-xl font-semibold">
-                  {activeData?.howItWorks.title}
-                </b>{" "}
-                <span>{activeData?.howItWorks.text}</span>
-              </div>
-              <ul className="list-disc list-inside space-y-2 text-sm sm:text-base md:text-lg lg:text-lg">
-                {activeData?.howItWorks.items.map((item, index) => (
-                  <div key={index} className="flex items-start transition-all duration-300 hover:translate-x-2">
-                    <Image
-                      src="/images/bullet2.svg"
-                      height={20}
-                      width={20}
-                      alt="icon"
-                      className="me-2 mt-1 flex-shrink-0"
-                    />
-                    <span>{item}</span>
-                  </div>
-                ))}
-              </ul>
-            </div>
-            
-            <div className="content-item">
-              <h3 className="text-xl md:text-2xl font-semibold mb-2">
-                Why it bangs:
-              </h3>
-              <ul className="list-disc list-inside space-y-2 text-sm md:text-[1rem]">
-                {activeData?.whyItBangs.map((item, index) => (
-                  <div 
-                    key={index} 
-                    className="transition-all duration-300 hover:translate-x-2 hover:text-blue-300"
-                  >
-                    {item}
-                  </div>
-                ))}
-              </ul>
-            </div>
+    </div>
+  ))}
+</div>
+
+         
+
+          {/* Smartphone Mockup */}
+          <div className="hidden lg:block absolute  right-[10%] w-[300px] h-[600px]  bg-[url('/images/phonecover.svg')] bg-no-repeat bg-cover overflow-hidden">
+           <div className="w-full">
+            <Image
+              ref={image1Ref}
+              src={screen1}
+              height={100}
+              width={100}
+              alt="screen1"
+              className="absolute top-0 left-0 h-[96%] w-full -ml-[2.8%] z-10"
+            />
+</div>
+            <Image
+              ref={image2Ref}
+              src={screen2}
+              height={100}
+              width={100}
+              alt="screen2"
+              className="absolute top-0 left-0 h-[96%] w-full -ml-[2.8%] z-20"
+            />
+            <Image
+              ref={image3Ref}
+              src={screen3}
+              height={100}
+              width={100}
+              alt="screen3"
+              className="absolute top-0 left-0 h-[96%] w-full -ml-[2.8%] z-30"
+            />
           </div>
         </div>
-
-        {/* Smartphone Mockup */}
-        <div 
-          ref={phoneRef}
-          className="hidden lg:block absolute lg:top-1/8 transform lg:-translate-x-[-1/3] lg:translate-y-0 lg:right-0 phone-image transition-all duration-500"
-        >
-          <Image
-            src={activeData?.imageSrc || "/images/phone2.png"}
-            alt={activeData?.imageAlt || "Savings App"}
-            width={300}
-            height={600}
-            className="object-contain transition-all duration-300 hover:scale-105"
-          />
-        </div>
-      </div>
-    </section>
-  );
-};
+      </section>
+    );
+  }
+);
 
 export default SavingsSection;
