@@ -123,12 +123,17 @@ interface SavingsSectionProps {
  titleRefss: (el: HTMLHeadingElement) => void;
   subtitleRefss: (el: HTMLHeadingElement) => void;
    descriptRefss: (el: HTMLHeadingElement) => void;
+     NavSideRef: (el: HTMLLIElement) => void;
+      Navtitle: (el: HTMLHeadingElement) => void;
+      Navsubtitle:  (el: HTMLHeadingElement) => void;
+   func : (act: any) => void;
+   activeIndex?: any;
 }
 
 
 
 const SavingsSection = forwardRef<HTMLDivElement, SavingsSectionProps>(
-  ({ bgColor = "bg-[#1F2526]", image1Ref, image2Ref, image3Ref,titleRefss,subtitleRefss,  descriptRefss}, ref) => {
+  ({ bgColor = "bg-[#1F2526]", image1Ref, image2Ref, image3Ref,titleRefss,subtitleRefss,  descriptRefss,NavSideRef,Navsubtitle,Navtitle}, ref) => {
 
 
     return (
@@ -140,22 +145,31 @@ const SavingsSection = forwardRef<HTMLDivElement, SavingsSectionProps>(
           {/* Left Navigation */}
            <nav className="">
           <ul className="space-y-4 w-full">
-            {savingsData.map((data) => (
-              <li
-                key={data.id}
-                className={`nav-item w-full border-s-4 ps-3 transition-all duration-300 hover:translate-x-2 `}
+            {savingsData.map((data,index) => (
+             <li
+              key={data.id}
+              className="nav-item w-full border-s-4 ps-3 transition-all duration-300"
+              ref={NavSideRef}
+            >
+              <button
+                className="text-[#ffffff] flex flex-col transition-all duration-300 py-2 w-full text-left"
               >
-                <button
-                  className={`text-[#ffffff]  flex flex-row  transition-all duration-300   py-2 w-full text-left`}
 
+
+
+             <h2 ref={Navtitle}  className="">
+                  {data.title}
+                </h2> 
+               
+         
+                 <h2 ref={Navsubtitle} className="">
+                  {data.subTitle}
+                </h2> 
+              
                 
-                >
-               {data.title}
-               {" "}
-                   {data.subTitle}
 
-                </button>
-              </li>
+              </button>
+            </li>
             ))}
           </ul>
         </nav>
@@ -168,7 +182,7 @@ const SavingsSection = forwardRef<HTMLDivElement, SavingsSectionProps>(
     <div key={data.id} className="w-screen flex flex-col  ">
     <div
             key={index}
-            className="absolute top-0 left-0 w-full h-full flex flex-col  "
+            className="absolute top-0  gap-[1.5rem] left-0 w-full h-full flex flex-col  "
           >
         <h4 className=" text-white text-[60px] font-[400]"
        ref={titleRefss}

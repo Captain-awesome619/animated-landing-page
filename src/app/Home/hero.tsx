@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { useLayoutEffect, useRef } from "react";
+import { useLayoutEffect, useRef,useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { savingsData } from "./triviaSavings";
@@ -59,10 +59,29 @@ const Hero = ({
   const titleRefs = useRef<HTMLHeadingElement[]>([]);
 const subtitleRefs = useRef<HTMLHeadingElement[]>([]);
 const descriptRefs = useRef<HTMLDivElement[]>([]);
+const navItemRefs = useRef<HTMLLIElement[]>([]);
+const navTitleRefs = useRef<HTMLHeadingElement[]>([]);
+const navSubtitleRefs =useRef<HTMLHeadingElement[]>([]);
 
 descriptRefs.current = [];
 titleRefs.current = [];
 subtitleRefs.current = [];
+
+ const [activeIndex, setActiveIndex] = useState();
+function Active(act : any) {
+  setActiveIndex(act);
+}
+
+const AddNavTitleRefs = (el:  HTMLHeadingElement) => {
+  if (el && !navTitleRefs.current.includes(el)) navTitleRefs.current.push(el);
+};
+const addToNavItemRefs = (el: HTMLLIElement) => {
+  if (el && !navItemRefs.current.includes(el)) navItemRefs.current.push(el);
+};
+const addNavSubtitleRefs = (el: HTMLHeadingElement) => {
+  if (el && !navSubtitleRefs.current.includes(el)) navSubtitleRefs.current.push(el);
+};
+
 
 const addToDescriptRefs = (el: HTMLDivElement) => {
   if (el && !descriptRefs.current.includes(el)) descriptRefs.current.push(el);
@@ -99,28 +118,28 @@ const addToSubtitleRefs = (el: HTMLHeadingElement) => {
       });
 
       tl.to(bigImgRef.current, {
-        y: "-150%",
+        y: "-350%",
         ease: "power1.out",
-        duration: 1,
+        duration: 2,
       }, "start");
 
       tl.to(smallImgRef.current, {
         x: "-75%",
         y: "-75%",
         ease: "power2.out",
-        duration: 1,
+        duration: 2,
       }, "start+=0.2");
 
       tl.to(smallImgRef.current, {
         rotateZ: -90,
         transformOrigin: "center center",
         ease: "power1.inOut",
-        duration: 1,
+        duration: 2,
       }, "+=0.2");
 
       tl.to(contentImgRef.current, {
         opacity: 0,
-        duration: 1,
+        duration: 2,
         ease: "power1.inOut",
       }, "<");
 
@@ -149,7 +168,7 @@ const addToSubtitleRefs = (el: HTMLHeadingElement) => {
         ease: "power2.inOut",
         onComplete: () => {
           gsap.fromTo(xtrempayRef.current,
-            { x: -100, opacity: 0 },
+            { x: -200, opacity: 0 },
             {
               x: 0,
               opacity: 1,
@@ -191,6 +210,12 @@ for (let i = 0; i < 3; i++) {
   const nextSubtitle = subtitleRefs.current[i + 1];
 const currentDescript = descriptRefs.current[i];
  const nextDescript = descriptRefs.current[i + 1];
+ const currentNavItem = navItemRefs.current[i];
+const nextNavItem = navItemRefs.current[i + 1];
+ const currentnavTitle = navTitleRefs.current[i];
+const nextnavTitle = navTitleRefs.current[i + 1];
+ const currentnavSubtitle = navSubtitleRefs.current[i];
+const nextnavSubtitle = navSubtitleRefs.current[i + 1];
   tl.add(slideLabel, `+=1`);
   tl.fromTo(
     imgRef.current,
@@ -235,6 +260,66 @@ if (currentDescript && nextDescript) {
     slideLabel
   );
 }
+// First, set ALL items to gray and low opacity except the first one
+navItemRefs.current.forEach((item, i) => {
+  gsap.set(item, { borderColor: "#ffffff" });
+});
+navTitleRefs.current.forEach((title, i) => {
+  gsap.set(title, { opacity: 0.5, color: "#9ca3af" }); // gray
+});
+navSubtitleRefs.current.forEach((subtitle, i) => {
+  gsap.set(subtitle, { opacity: 0.5, color: "#9ca3af" });
+});
+
+// Highlight the first item by default
+gsap.set(navItemRefs.current[0], { borderColor: "#4257D0" });
+gsap.set(navTitleRefs.current[0], { opacity: 1, color: "#ffffff" });
+gsap.set(navSubtitleRefs.current[0], { opacity: 1, color: "#ffffff" });
+
+// Animation when scrolling between items
+tl.to(currentNavItem, {
+  borderColor: "#ffffff",
+  duration: 2,
+  ease: "power2.inOut",
+}, slideLabel);
+
+tl.to(nextNavItem, {
+  borderColor: "#4257D0",
+  duration: 2,
+  ease: "power2.inOut",
+}, slideLabel);
+
+// Title color & opacity change
+tl.to(currentnavTitle, {
+  opacity: 0.5,
+  color: "#9ca3af", // gray
+  duration: 2,
+  ease: "power2.inOut",
+}, slideLabel);
+
+tl.to(nextnavTitle, {
+  opacity: 1,
+  color: "#ffffff",
+  duration: 2,
+  ease: "power2.inOut",
+}, slideLabel);
+
+// Subtitle color & opacity change
+tl.to(currentnavSubtitle, {
+  opacity: 0.5,
+  color: "#9ca3af",
+  duration: 2,
+  ease: "power2.inOut",
+}, slideLabel);
+
+tl.to(nextnavSubtitle, {
+  opacity: 1,
+  color: "#ffffff",
+  duration: 2,
+  ease: "power2.inOut",
+}, slideLabel);
+
+
 }
     }, heroRef);
 
@@ -247,7 +332,7 @@ if (currentDescript && nextDescript) {
       ref={heroRef}
     >
       <div className="max-w-7xl h-screen flex mx-auto w-full font-medium">
-        <div className="flex flex-col lg:flex-row items-end justify-between h-full">
+        <div className="flex flex-col lg:flex-row items-end justify-between h-screen">
           <div
             ref={textContentRef}
             className="text-center lg:text-left lg:w-1/3 mt-12 lg:mt-0 mb-8"
@@ -351,6 +436,11 @@ if (currentDescript && nextDescript) {
   titleRefss={addToTitleRefs}
   subtitleRefss={addToSubtitleRefs}
             descriptRefss={addToDescriptRefs}
+              NavSideRef={addToNavItemRefs}
+  Navtitle = {AddNavTitleRefs}
+  Navsubtitle= {addNavSubtitleRefs}
+  func={Active}
+  activeIndex={activeIndex}
         />
       </div>
     </section>
