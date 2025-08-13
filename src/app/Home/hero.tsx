@@ -11,6 +11,8 @@ import small from "../../../public/images/Small.svg";
 import big from "../../../public/images/Big.svg";
 import content from "../../../public/images/content.svg";
 import afri from "../../../public/images/african-american2.png";
+import PosSection from "./posHero";
+
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -62,6 +64,12 @@ const descriptRefs = useRef<HTMLDivElement[]>([]);
 const navItemRefs = useRef<HTMLLIElement[]>([]);
 const navTitleRefs = useRef<HTMLHeadingElement[]>([]);
 const navSubtitleRefs =useRef<HTMLHeadingElement[]>([]);
+const posRef = useRef<HTMLDivElement>(null);
+const imageRef  = useRef<HTMLImageElement>(null);
+const contentRef = useRef<HTMLDivElement>(null);
+const containerRef = useRef<HTMLDivElement>(null);
+const pRef = useRef<HTMLDivElement>(null);
+
 
 descriptRefs.current = [];
 titleRefs.current = [];
@@ -145,26 +153,26 @@ const addToSubtitleRefs = (el: HTMLHeadingElement) => {
 
       tl.to(landscapeImgRef.current, {
         opacity: 1,
-        duration: 1,
+        duration: 2,
         ease: "power1.inOut",
       }, "<");
 
       tl.to(smallImgRef.current, {
         scale: 2,
         opacity: 0,
-        duration: 1.2,
+        duration: 2,
         ease: "power2.inOut",
       }, "+=0.2");
 
       tl.to(textContentRef.current, {
         opacity: 0,
-        duration: 1,
+        duration: 2,
         ease: "power2.inOut",
       }, "<");
 
       tl.to(bgHeroRef.current, {
         opacity: 1,
-        duration: 1.2,
+        duration: 2,
         ease: "power2.inOut",
         onComplete: () => {
           gsap.fromTo(xtrempayRef.current,
@@ -196,11 +204,21 @@ const addToSubtitleRefs = (el: HTMLHeadingElement) => {
         },
         "+=0.5"
       );
-      tl.to(savingsRef.current, {
-        top: 0,
-        duration: 1.5,
-        ease: "power2.out",
-      }, "+=0.5");
+     // Move SavingsSection in AND fade out bgHero at the same time
+tl.to(savingsRef.current, {
+  top: 0,
+  duration: 1.5,
+  ease: "power2.out",
+  onUpdate: function () {
+    // progress gives you how far into this animation we are
+    const progress = this.progress();
+    gsap.to(bgHeroRef.current, { 
+      opacity: 1 - progress, // fades out proportionally
+      overwrite: true 
+    });
+  }
+}, "+=0.5");
+
 for (let i = 0; i < 3; i++) {
   const slideLabel = `slide${i}`;
   const imgRef = [image1Ref, image2Ref, image3Ref][i];
@@ -289,7 +307,7 @@ tl.to(nextNavItem, {
   ease: "power2.inOut",
 }, slideLabel);
 
-// Title color & opacity change
+
 tl.to(currentnavTitle, {
   opacity: 0.5,
   color: "#9ca3af", // gray
@@ -319,8 +337,28 @@ tl.to(nextnavSubtitle, {
   ease: "power2.inOut",
 }, slideLabel);
 
-
 }
+
+tl.to(posRef.current, {
+  top: 0,
+  duration: 2.5,
+  ease: "power2.inOut",
+  onStart: () => {
+    gsap.set(posRef.current, { autoAlpha: 1 }); // make container visible immediately
+  },
+  onUpdate: function () {
+    const progress = this.progress();
+    // Savings fades out inside PosSection
+    gsap.to(savingsRef.current, {
+      autoAlpha: 1 - progress,
+      overwrite: true
+    });
+  }
+}, "+=0.5");
+
+  
+
+
     }, heroRef);
 
     return () => ctx.revert();
@@ -328,7 +366,7 @@ tl.to(nextnavSubtitle, {
 
   return (
     <section
-      className={`${bgColor} h-screen px-4 lg:px-8 hero z-0 relative`}
+      className={`${bgColor}  h-screen px-4 lg:px-8 hero z-0 relative`}
       ref={heroRef}
     >
       <div className="max-w-7xl h-screen flex mx-auto w-full font-medium">
@@ -443,6 +481,14 @@ tl.to(nextnavSubtitle, {
   activeIndex={activeIndex}
         />
       </div>
+       <div  ref={posRef} className="z-40 absolute top-0 left-0 w-screen h-screen opacity-0">
+       <PosSection 
+       conttentref={contentRef}
+       imageref={imageRef}
+       containerref={containerRef}
+       pref={pRef}
+       />
+       </div>
     </section>
   );
 };

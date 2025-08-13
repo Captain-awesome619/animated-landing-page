@@ -13,23 +13,30 @@ interface PosSectionProps {
   bgColor?: string;
   posImageSrc?: string;
   posImageAlt?: string;
+    imageref:React.Ref<HTMLImageElement>;
+conttentref: React.RefObject<HTMLDivElement | null>;
+  containerref: React.RefObject<HTMLDivElement | null>;
+pref: React.RefObject<HTMLDivElement | null>;
+
 }
 
 const PosSection = ({
   bgColor = 'bg-white',
   posImageSrc = '/images/pos-lady.png',
   posImageAlt = 'Xtrempay POS Agent',
+  imageref,
+  conttentref,
+  containerref,
+  pref,
 }: PosSectionProps) => {
   // Refs for animation targets
   const sectionRef = useRef<HTMLElement>(null);
-  const h3Ref = useRef<HTMLHeadingElement>(null);
-  const h1Ref = useRef<HTMLHeadingElement>(null);
+  
   const pRef = useRef<HTMLParagraphElement>(null);
-  const imageRef = useRef<HTMLDivElement>(null);
+
   const contentRef = useRef<HTMLDivElement>(null);
   const benefitsRef = useRef<HTMLUListElement>(null);
-  const whoCanApplyRef = useRef<HTMLDivElement>(null);
-  const ctaButtonRef = useRef<HTMLAnchorElement>(null);
+
   const containerRef = useRef<HTMLDivElement>(null);
 
  
@@ -37,24 +44,26 @@ const PosSection = ({
 
   return (
     <section 
-      ref={sectionRef}
-      className={`${bgColor} min-h-screen relative overflow-hidden py-12 lg:py-20 px-4 lg:px-8 hero transition-colors duration-1000`} 
+     
+      className={`${bgColor} h-screen relative overflow-hidden py-12 lg:py-20 px-4 lg:px-8 hero transition-colors duration-1000`} 
       id='features'
     >
       {/* Container with parallax effect */}
-      <div ref={containerRef} className="text-center mx-auto">
+      <div  className="text-center mx-auto ">
+         <div ref={containerRef} className='flex flex-col '>
         <h3 
-          ref={h3Ref}
+       
           className="text-blue-600 text-xl md:text-2xl mb-2 transform"
         >
           Xtrempay POS?
         </h3>
         <h1 
-          ref={h1Ref}
+        
           className="text-3xl md:text-5xl font-bold mb-4 transform"
         >
           Free POS for Agents & Merchants
         </h1>
+        </div>
         <p 
           ref={pRef}
           className="text-gray-600 text-base md:text-lg mb-10 transform"
@@ -66,8 +75,8 @@ const PosSection = ({
       <div className="max-w-7xl mx-auto relative z-10 flex flex-col lg:flex-row items-center justify-between">
         
         {/* Image Section with enhanced effects */}
-        <div 
-          ref={imageRef}
+        <div
+    
           className="w-full lg:w-1/2 mb-8 lg:mb-0 transform"
         >
           <Image
@@ -75,13 +84,13 @@ const PosSection = ({
             alt={posImageAlt}
             width={610}
             height={600}
-            className="object-contain mx-auto transition-all duration-500 hover:scale-110 hover:rotate-2"
+            className="object-contain mx-auto transition-all duration-500 "
           />
         </div>
 
         {/* Text Content with enhanced structure */}
-        <div 
-          ref={contentRef}
+        <div
+         
           className="w-full lg:w-1/2 lg:pl-6 text-center lg:text-left transform"
         >
           <div className="space-y-8">
@@ -141,7 +150,7 @@ const PosSection = ({
               </ul>
             </div>
             
-            <div ref={whoCanApplyRef}>
+            <div >
               <h4 className="text-lg md:text-xl font-semibold mb-4 text-gray-800">Who Can Apply</h4>
               <div className="space-y-1 text-base md:text-lg">
                 <div className="transition-all duration-300 hover:translate-x-4 hover:text-blue-600 cursor-pointer transform p-1 rounded hover:bg-blue-50">Small business owners</div>
@@ -151,7 +160,7 @@ const PosSection = ({
             </div>
             
             <Link
-              ref={ctaButtonRef}
+            
               href="#"
               className="inline-block bg-[#4257D0] text-white px-8 py-3 rounded-full hover:bg-blue-700 transition-all duration-500 hover:scale-110 hover:shadow-2xl text-base md:text-sm transform hover:-translate-y-1 relative overflow-hidden group"
             >
@@ -160,6 +169,7 @@ const PosSection = ({
             </Link>
           </div>
         </div>
+
       </div>
     </section>
   );
