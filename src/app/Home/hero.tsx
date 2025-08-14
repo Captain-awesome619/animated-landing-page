@@ -12,7 +12,7 @@ import big from "../../../public/images/Big.svg";
 import content from "../../../public/images/content.svg";
 import afri from "../../../public/images/african-american2.png";
 import PosSection from "./posHero";
-import TestimonialSection from "./testimonial";
+import TestimonialSection, { defaultTestimonials } from "./testimonial";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -70,7 +70,9 @@ const contentRef = useRef<HTMLDivElement>(null);
 const containerRef = useRef<HTMLDivElement>(null);
 const sectionRef = useRef<HTMLDivElement>(null);
 const pRef = useRef<HTMLDivElement>(null);
-
+const tesimonialref = useRef<HTMLDivElement>(null);
+const cardsgroupref = useRef<HTMLDivElement>(null);
+const textref = useRef<HTMLDivElement>(null);
 
 descriptRefs.current = [];
 titleRefs.current = [];
@@ -177,7 +179,7 @@ const addToSubtitleRefs = (el: HTMLHeadingElement) => {
         ease: "power2.inOut",
         onComplete: () => {
           gsap.fromTo(xtrempayRef.current,
-            { x: -200, opacity: 0 },
+            { x: -250, opacity: 0 },
             {
               x: 0,
               opacity: 1,
@@ -200,25 +202,22 @@ const addToSubtitleRefs = (el: HTMLHeadingElement) => {
         {
           yPercent: 0,
           opacity: 1,
-          duration: 1.5,
+          duration: 2,
           ease: "power1.out",
         },
         "+=0.5"
       );
-     // Move SavingsSection in AND fade out bgHero at the same time
-tl.to(savingsRef.current, {
+    
+tl.to(bgHeroRef.current, {
+  autoAlpha: 0, // fade out
+  duration: 3,
+  ease: "power2.inOut"
+}, "+=0.5") // both start after a 0.5s delay from previous animation
+.to(savingsRef.current, {
   top: 0,
   duration: 1.5,
-  ease: "power2.out",
-  onUpdate: function () {
-    // progress gives you how far into this animation we are
-    const progress = this.progress();
-    gsap.to(bgHeroRef.current, { 
-      opacity: 1 - progress, // fades out proportionally
-      overwrite: true 
-    });
-  }
-}, "+=0.5");
+  ease: "power2.out"
+}, "<"); 
 
 for (let i = 0; i < 3; i++) {
   const slideLabel = `slide${i}`;
@@ -340,28 +339,26 @@ tl.to(nextnavSubtitle, {
 
 }
 
+// Fade out SavingsSection and fade in PosSection at the same time
+tl.to(savingsRef.current, {
+  autoAlpha: 0, // fade out
+  duration: 2,
+  ease: "power2.inOut"
+}, "+=0.5") // delay until after last savings animation
+
+gsap.set(containerRef.current, { y: 50, zIndex: 2, position: "relative" });
+gsap.set(pRef.current, { y: -50, zIndex: 1, position: "relative" });
+
 tl.to(posRef.current, {
-  top: 0,
-  duration: 2.5,
-  ease: "power2.inOut",
-  onStart: () => {
-    gsap.set(posRef.current, { autoAlpha: 1 });
-  },
-  onUpdate: function () {
-    const progress = this.progress();
-    gsap.to(savingsRef.current, {
-      autoAlpha: 1 - progress,
-      overwrite: true
-    });
-  }
-}, "+=0.5")
+  autoAlpha: 1, // fade in
+  duration: 2,
+  ease: "power2.inOut"
+}, "<") // "<" = start at the same time as the savings fade-out
 .add(() => {
   const container = containerRef.current;
   const p = pRef.current;
 
-  // Make sure their positions overlap so they can swap
-  gsap.set(container, { y: 50, zIndex: 2, position: "relative" });
-  gsap.set(p, { y: -50, zIndex: 1, position: "relative" });
+  
 
   // Animate swap
   gsap.timeline()
@@ -377,12 +374,13 @@ tl.to(posRef.current, {
     }, 0);
 });
 
+
 tl.fromTo(imageRef.current,
         { xPercent: -250, opacity: 0 },
         {
           xPercent: 0,
           opacity: 1,
-          duration: 2.5,
+          duration: 2,
           ease: "power1.out",
         },
         "+=0.8"
@@ -393,14 +391,87 @@ tl.fromTo(contentRef.current,
         {
           xPercent: 0,
           opacity: 1,
-          duration: 2.5,
+          duration: 2,
           ease: "power1.out",
         },
         "+=0.8"
       );
 
+
+
+      
+if (cardsgroupref.current) {
+  const cards = cardsgroupref.current.querySelectorAll(".card");
+
+  // Initial dramatic deck spread setup
+  gsap.set(cards, {
+    autoAlpha: 0,
+    y: 300, // start lower
+    scale: 0.95,
+    zIndex: (i) => defaultTestimonials.length - i,
+    position: "absolute",
+    top: '50px',
+    left: "50%",
+    xPercent: -50,
+    rotation: (i) => (i - (defaultTestimonials.length - 1) / 2) * 12,
+    x: (i) => (i - (defaultTestimonials.length - 1) / 2) * 80
+  });
+
+  // Container setup
+  cardsgroupref.current.style.position = "relative";
+  cardsgroupref.current.style.height = "280px";
+  cardsgroupref.current.style.width = "80%"
+
+  // Timeline
+  tl.to(posRef.current, {
+    autoAlpha: 0,
+    duration: 0.6, // faster fade out
+    ease: "power2.out"
+  })
+  .to(tesimonialref.current, {
+    autoAlpha: 1,
+    duration: 0.6, // faster fade in
+    ease: "power2.out",
+    onComplete: () => {
+      // Animate cards to spread out
+      gsap.to(cards, {
+        autoAlpha: 1,
+        y: 0,
+        scale: 1,
+        duration: 1.5,
+        ease: "power3.out",
+      
+      });
+    }
+  }, "<")
+
+
+  tl.to(cards, {
+  rotation: 0,
+  x: 0,
+  duration: 1.5,
+  ease: "power3.inOut",
+  stagger: 0.05,
+  position: "relative",
+  xPercent: 0
+}, "+=0.5") // you can reduce or remove this delay if you want them to start sooner
+.fromTo(textref.current,
+  { xPercent: -150, opacity: 0 },
+  {
+    xPercent: 0,
+    opacity: 1,
+    duration: 1,
+    ease: "power1.out"
+  },
+  "<+0.3" // start 0.3s after the card animation starts
+);
+}
+
     }, heroRef);
 
+
+
+    
     return () => ctx.revert();
   }, [num]);
 
@@ -530,8 +601,11 @@ tl.fromTo(contentRef.current,
        section = {sectionRef}
        />
        </div>
-       <div>
-       <TestimonialSection />
+       <div ref={tesimonialref} className="z-50 absolute top-0 left-0 w-screen h-screen opacity-0" >
+       <TestimonialSection 
+       cardsgroup = {cardsgroupref}
+       text={textref}
+       />
        </div>
     </section>
   );

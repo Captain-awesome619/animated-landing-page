@@ -19,57 +19,43 @@ interface Testimonial {
 interface TestimonialSectionProps {
   bgColor?: string;
   testimonials?: Testimonial[];
+    cardsgroup?: React.RefObject<HTMLDivElement | null>;
+    text? : React.RefObject<HTMLDivElement | null>
 }
 
 const TestimonialSection = ({
   bgColor = "bg-gray-100",
   testimonials = defaultTestimonials,
+  cardsgroup,
+  text
 }: TestimonialSectionProps) => {
 
 
   const data = [
-    {
-      id: 4,
-      heading: "Xtrempay fits my hustle. ",
-      quote:
-        "Between saving for rent and helping my mum's shop with a POS, Xtrempay has become my go-to app. It's not just a savings app, it's a financial hack.",
-      name: "Kemi O.",
-      title: "Side Hustler | Abeokuta",
-      imageSrc: "/images/avatar-2.png",
-      imageAlt: "Kemi O.",
-    },
-    {
-      id: 5,
-      heading: "Free POS helped me grow my shop.",
-      quote:
-        " I got a free POS from Xtrempay. No rent, no stress. Now customers pay easily, and I earn commissions daily. It's the best decision I made for my business.",
-      name: "Blessing E.",
-      title: "Seller | Benin City",
-      imageSrc: "/images/avatar-1.png",
-      imageAlt: "Blessing E.",
-    },
+  
   ];
 
   return (
     <section 
       
-      className={`${bgColor} py-12 lg:py-20 px-4 lg:px-8 hero`} 
+      className={`${bgColor} py-12 lg:py-20 px-4 lg:px-8 hero h-screen`} 
       id="reviews"
     >
       {/* Container */}
-      <div className="max-w-7xl mx-auto relative z-10">
+      <div className="max-w-7xl mx-auto relative  ">
         {/* Heading */}
-        <h1 className="text-3xl md:text-5xl font-bold text-gray-900 text-start mb-12" >
+        <div ref={text} className="pt-[1rem]">
+        <h1 className="text-3xl md:text-5xl font-bold  text-gray-900 text-start " >
           What they say about us
         </h1>
-
-        {/* Testimonial Grid */}
+</div>
+         <div ref={cardsgroup} className="mt-[-2rem]">
         <div className="flex justify-center">
-          <div className="grid grid-cols-1 md:grid-cols-2 md:px-0 lg:grid-cols-3 gap-6 mb-6 place-items-center">
+          <div className="grid grid-cols-1 md:grid-cols-2 md:px-0 lg:grid-cols-3 gap-6   place-items-center">
             {testimonials.map((testimonial, index) => (
               <div
                 key={testimonial.id}
-                className="testimonial-card bg-white p-8 rounded-lg shadow-md h-full cursor-pointer hover:shadow-xl transition-all duration-300 hover:-translate-y-2 hover:scale-105"
+                className="card bg-white p-8 rounded-lg shadow-md h-full cursor-pointer hover:shadow-xl  hover:-translate-y-2 hover:scale-105"
                 style={{
                   zIndex: testimonials.length - index,
                 }}
@@ -94,79 +80,18 @@ const TestimonialSection = ({
             ))}
           </div>
         </div>
+</div>
 
-        <div className="flex justify-center">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6 max-w-4xl w-full place-items-center">
-            {data.map((testimonial, index) => (
-              <div
-                key={testimonial.id}
-                className="testimonial-card-secondary bg-white p-8 rounded-lg shadow-md w-full max-w-md h-full cursor-pointer hover:shadow-xl transition-all duration-300 hover:-translate-y-2 hover:scale-105"
-                style={{
-                  zIndex: data.length - index + 10,
-                }}
-              >
-                <b>{testimonial.heading}</b>
-                <p className="text-gray-600 mb-4">{testimonial.quote}</p>
-                <div className="flex items-center">
-                  <Image
-                    src={testimonial.imageSrc}
-                    alt={testimonial.imageAlt}
-                    width={50}
-                    height={50}
-                    className="rounded-full mr-4"
-                  />
-                  <div>
-                    <p className="font-semibold">{testimonial.name}</p>
-                    <p className="text-gray-500 text-sm">{testimonial.title}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
 
         {/* CTA Banner */}
-        <div 
-          className="cta-banner bg-[#4257D0] text-white mt-15 p-6 rounded-lg text-center flex flex-col md:flex-row items-center justify-between"
-         
-        >
-          <p className="text-base md:text-lg mb-4 md:mb-0">
-            Join the X-Force winning big and paying smarter every day.
-          </p>
-          <div className="flex space-x-4">
-            <Link 
-              href="#" 
-              className="flex items-center transition-transform duration-300 hover:scale-105 hover:-translate-y-1"
-            >
-              <Image
-                src="/images/store-app.png"
-                alt="App Store"
-                width={120}
-                height={40}
-                className="object-contain"
-              />
-            </Link>
-            <Link 
-              href="#" 
-              className="flex items-center transition-transform duration-300 hover:scale-105 hover:-translate-y-1"
-            >
-              <Image
-                src="/images/playstore.svg"
-                alt="Google Play"
-                width={120}
-                height={40}
-                className="object-contain"
-              />
-            </Link>
-          </div>
-        </div>
+        
       </div>
     </section>
   );
 };
 
 // Default Testimonial Data
-const defaultTestimonials: Testimonial[] = [
+export const defaultTestimonials: Testimonial[] = [
   {
     id: 1,
     heading: "Saving with Xtrempay is fun and addictive!",
@@ -197,6 +122,26 @@ const defaultTestimonials: Testimonial[] = [
     imageSrc: "/images/avatar-2.png",
     imageAlt: "Ahmed S.",
   },
+    {
+      id: 4,
+      heading: "Xtrempay fits my hustle. ",
+      quote:
+        "Between saving for rent and helping my mum's shop with a POS, Xtrempay has become my go-to app. It's not just a savings app, it's a financial hack.",
+      name: "Kemi O.",
+      title: "Side Hustler | Abeokuta",
+      imageSrc: "/images/avatar-2.png",
+      imageAlt: "Kemi O.",
+    },
+    {
+      id: 5,
+      heading: "Free POS helped me grow my shop.",
+      quote:
+        " I got a free POS from Xtrempay. No rent, no stress. Now customers pay easily, and I earn commissions daily. It's the best decision I made for my business.",
+      name: "Blessing E.",
+      title: "Seller | Benin City",
+      imageSrc: "/images/avatar-1.png",
+      imageAlt: "Blessing E.",
+    },
 ];
 
 export default TestimonialSection;
