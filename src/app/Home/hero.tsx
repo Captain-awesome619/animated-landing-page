@@ -12,7 +12,7 @@ import big from "../../../public/images/Big.svg";
 import content from "../../../public/images/content.svg";
 import afri from "../../../public/images/african-american2.png";
 import PosSection from "./posHero";
-
+import TestimonialSection from "./testimonial";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -68,6 +68,7 @@ const posRef = useRef<HTMLDivElement>(null);
 const imageRef  = useRef<HTMLImageElement>(null);
 const contentRef = useRef<HTMLDivElement>(null);
 const containerRef = useRef<HTMLDivElement>(null);
+const sectionRef = useRef<HTMLDivElement>(null);
 const pRef = useRef<HTMLDivElement>(null);
 
 
@@ -344,20 +345,59 @@ tl.to(posRef.current, {
   duration: 2.5,
   ease: "power2.inOut",
   onStart: () => {
-    gsap.set(posRef.current, { autoAlpha: 1 }); // make container visible immediately
+    gsap.set(posRef.current, { autoAlpha: 1 });
   },
   onUpdate: function () {
     const progress = this.progress();
-    // Savings fades out inside PosSection
     gsap.to(savingsRef.current, {
       autoAlpha: 1 - progress,
       overwrite: true
     });
   }
-}, "+=0.5");
+}, "+=0.5")
+.add(() => {
+  const container = containerRef.current;
+  const p = pRef.current;
 
+  // Make sure their positions overlap so they can swap
+  gsap.set(container, { y: 50, zIndex: 2, position: "relative" });
+  gsap.set(p, { y: -50, zIndex: 1, position: "relative" });
+
+  // Animate swap
+  gsap.timeline()
+    .to(container, {
+      y: 0,
+      duration: 2,
+      ease: "power2.inOut"
+    }, 0)
+    .to(p, {
+      y: 0,
+      duration: 2,
+      ease: "power2.inOut"
+    }, 0);
+});
+
+tl.fromTo(imageRef.current,
+        { xPercent: -250, opacity: 0 },
+        {
+          xPercent: 0,
+          opacity: 1,
+          duration: 2.5,
+          ease: "power1.out",
+        },
+        "+=0.8"
+      );
   
-
+tl.fromTo(contentRef.current,
+        { xPercent: 250, opacity: 0 },
+        {
+          xPercent: 0,
+          opacity: 1,
+          duration: 2.5,
+          ease: "power1.out",
+        },
+        "+=0.8"
+      );
 
     }, heroRef);
 
@@ -487,7 +527,11 @@ tl.to(posRef.current, {
        imageref={imageRef}
        containerref={containerRef}
        pref={pRef}
+       section = {sectionRef}
        />
+       </div>
+       <div>
+       <TestimonialSection />
        </div>
     </section>
   );

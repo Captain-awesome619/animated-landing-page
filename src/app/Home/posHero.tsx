@@ -5,7 +5,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Image from 'next/image';
 import Link from 'next/link';
-
+import { useLayoutEffect } from 'react';
 // Register ScrollTrigger plugin
 gsap.registerPlugin(ScrollTrigger);
 
@@ -17,7 +17,7 @@ interface PosSectionProps {
 conttentref: React.RefObject<HTMLDivElement | null>;
   containerref: React.RefObject<HTMLDivElement | null>;
 pref: React.RefObject<HTMLDivElement | null>;
-
+ section: React.RefObject<HTMLDivElement | null>;
 }
 
 const PosSection = ({
@@ -28,16 +28,14 @@ const PosSection = ({
   conttentref,
   containerref,
   pref,
+  section,
+
 }: PosSectionProps) => {
   // Refs for animation targets
-  const sectionRef = useRef<HTMLElement>(null);
   
-  const pRef = useRef<HTMLParagraphElement>(null);
-
-  const contentRef = useRef<HTMLDivElement>(null);
   const benefitsRef = useRef<HTMLUListElement>(null);
 
-  const containerRef = useRef<HTMLDivElement>(null);
+  
 
  
   
@@ -45,12 +43,12 @@ const PosSection = ({
   return (
     <section 
      
-      className={`${bgColor} h-screen relative overflow-hidden py-12 lg:py-20 px-4 lg:px-8 hero transition-colors duration-1000`} 
+      className={`${bgColor} h-screen relative overflow-hidden py-12 lg:py-25 px-4 lg:px-8 hero transition-colors duration-1000`} 
       id='features'
     >
       {/* Container with parallax effect */}
       <div  className="text-center mx-auto ">
-         <div ref={containerRef} className='flex flex-col '>
+         <div ref={containerref}  className='flex flex-col '>
         <h3 
        
           className="text-blue-600 text-xl md:text-2xl mb-2 transform"
@@ -65,18 +63,20 @@ const PosSection = ({
         </h1>
         </div>
         <p 
-          ref={pRef}
+         ref={pref}
           className="text-gray-600 text-base md:text-lg mb-10 transform"
         >
           Xtrempay gives you a POS machine at no cost, so you can grow your hustle and serve your community.
         </p>
       </div>
 
-      <div className="max-w-7xl mx-auto relative z-10 flex flex-col lg:flex-row items-center justify-between">
+      <div className="max-w-7xl mx-auto relative z-10 flex flex-col lg:flex-row items-center justify-between"
+      ref={section}
+      >
         
         {/* Image Section with enhanced effects */}
         <div
-    
+    ref={imageref}
           className="w-full lg:w-1/2 mb-8 lg:mb-0 transform"
         >
           <Image
@@ -90,7 +90,7 @@ const PosSection = ({
 
         {/* Text Content with enhanced structure */}
         <div
-         
+         ref={conttentref}
           className="w-full lg:w-1/2 lg:pl-6 text-center lg:text-left transform"
         >
           <div className="space-y-8">
@@ -171,6 +171,7 @@ const PosSection = ({
         </div>
 
       </div>
+      
     </section>
   );
 };

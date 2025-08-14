@@ -26,140 +26,6 @@ const TestimonialSection = ({
   testimonials = defaultTestimonials,
 }: TestimonialSectionProps) => {
 
-  const sectionRef = useRef<HTMLElement>(null);
-  const headingRef = useRef<HTMLHeadingElement>(null);
-  const ctaBannerRef = useRef<HTMLDivElement>(null);
-  const isAnimated = useRef(false);
-  
-  // Store animation references for cleanup
-  const animationsRef = useRef<{
-    scrollTriggers: ScrollTrigger[];
-    timelines: gsap.core.Timeline[];
-    timeouts: NodeJS.Timeout[];
-  }>({
-    scrollTriggers: [],
-    timelines: [],
-    timeouts: []
-  });
-
-  // Register ScrollTrigger
-  gsap.registerPlugin(ScrollTrigger);
-
-  useGSAP(() => {
-    if (!sectionRef.current) return;
-
-    // Clear previous animations
-    animationsRef.current.scrollTriggers.forEach(trigger => trigger.kill());
-    animationsRef.current.timelines.forEach(tl => tl.kill());
-    animationsRef.current.timeouts.forEach(timeout => clearTimeout(timeout));
-    
-    // Reset arrays
-    animationsRef.current = {
-      scrollTriggers: [],
-      timelines: [],
-      timeouts: []
-    };
-
-    // Set initial states for all elements
-    gsap.set([headingRef.current], {
-      y: -50,
-      opacity: 0,
-    });
-
-    gsap.set('.testimonial-card', {
-      scale: 0.7,
-      opacity: 0,
-      filter: 'blur(3px)',
-      rotationZ: (index) => (index - 1) * 8,
-      x: (index) => -200 + (index * 15),
-      y: (index) => -100 + (index * 8),
-    });
-
-    gsap.set('.testimonial-card-secondary', {
-      scale: 0.7,
-      opacity: 0,
-      filter: 'blur(3px)',
-      rotationZ: (index) => (index - 0.5) * 10,
-      x: (index) => -150 + (index * 25),
-      y: (index) => -80 + (index * 12),
-    });
-
-    gsap.set(ctaBannerRef.current, {
-      y: 60,
-      opacity: 0,
-    });
-
-    // Create main timeline
-    const mainTl = gsap.timeline({
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        start: 'top 80%',
-        end: 'bottom 20%',
-        toggleActions: 'play none none reverse',
-      }
-    });
-
-    // Store references
-    animationsRef.current.timelines.push(mainTl);
-    if (mainTl.scrollTrigger) {
-      animationsRef.current.scrollTriggers.push(mainTl.scrollTrigger);
-    }
-
-    // Animate heading first
-    mainTl.to([headingRef.current], {
-      y: 0,
-      opacity: 1,
-      duration: 0.8,
-      ease: 'power2.out',
-    })
-    // Animate first set of testimonial cards
-    .to('.testimonial-card', {
-      scale: 1,
-      opacity: 1,
-      filter: 'blur(0px)',
-      rotationZ: 0,
-      x: 0,
-      y: 0,
-      duration: 0.8,
-      ease: 'back.out(1.7)',
-      stagger: 0.2,
-    }, '-=0.2')
-    // Animate second set of testimonial cards
-    .to('.testimonial-card-secondary', {
-      scale: 1,
-      opacity: 1,
-      filter: 'blur(0px)',
-      rotationZ: 0,
-      x: 0,
-      y: 0,
-      duration: 0.8,
-      ease: 'back.out(1.7)',
-      stagger: 0.2,
-    }, '-=0.4')
-    // Animate CTA banner
-    .to(ctaBannerRef.current, {
-      y: 0,
-      opacity: 1,
-      duration: 0.6,
-      ease: 'power2.out',
-    }, '-=0.2');
-
-    // Cleanup function
-    return () => {
-      animationsRef.current.scrollTriggers.forEach(trigger => trigger.kill());
-      animationsRef.current.timelines.forEach(tl => tl.kill());
-      animationsRef.current.timeouts.forEach(timeout => clearTimeout(timeout));
-    };
-  }, []);
-
-  // Cleanup on unmount
-  useEffect(() => {
-    return () => {
-      animationsRef.current.scrollTriggers.forEach(trigger => trigger.kill());
-      animationsRef.current.timelines.forEach(tl => tl.kill());
-      animationsRef.current.timeouts.forEach(timeout => clearTimeout(timeout));
-    };
-  }, []);
 
   const data = [
     {
@@ -186,14 +52,14 @@ const TestimonialSection = ({
 
   return (
     <section 
-      ref={sectionRef} 
+      
       className={`${bgColor} py-12 lg:py-20 px-4 lg:px-8 hero`} 
       id="reviews"
     >
       {/* Container */}
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Heading */}
-        <h1 className="text-3xl md:text-5xl font-bold text-gray-900 text-start mb-12" ref={headingRef}>
+        <h1 className="text-3xl md:text-5xl font-bold text-gray-900 text-start mb-12" >
           What they say about us
         </h1>
 
@@ -262,7 +128,7 @@ const TestimonialSection = ({
         {/* CTA Banner */}
         <div 
           className="cta-banner bg-[#4257D0] text-white mt-15 p-6 rounded-lg text-center flex flex-col md:flex-row items-center justify-between"
-          ref={ctaBannerRef}
+         
         >
           <p className="text-base md:text-lg mb-4 md:mb-0">
             Join the X-Force winning big and paying smarter every day.
