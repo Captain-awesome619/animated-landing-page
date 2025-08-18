@@ -21,13 +21,15 @@ interface TestimonialSectionProps {
   testimonials?: Testimonial[];
     cardsgroup?: React.RefObject<HTMLDivElement | null>;
     text? : React.RefObject<HTMLDivElement | null>
+    cta? : React.RefObject<HTMLDivElement | null>
 }
 
 const TestimonialSection = ({
   bgColor = "bg-gray-100",
   testimonials = defaultTestimonials,
   cardsgroup,
-  text
+  text,
+  cta
 }: TestimonialSectionProps) => {
 
 
@@ -38,30 +40,30 @@ const TestimonialSection = ({
   return (
     <section 
       
-      className={`${bgColor} py-12 lg:py-20 px-4 lg:px-8 hero h-screen`} 
+      className={`${bgColor} py-12 lg:py-20 px-4 lg:px-8 hero h-screen flex flex-col justify-around` } 
       id="reviews"
     >
       {/* Container */}
       <div className="max-w-7xl mx-auto relative  ">
         {/* Heading */}
-        <div ref={text} className="pt-[1rem]">
+        <div ref={text} className="pt-[0.5rem] pb-[0.5rem] ">
         <h1 className="text-3xl md:text-5xl font-bold  text-gray-900 text-start " >
           What they say about us
         </h1>
 </div>
-         <div ref={cardsgroup} className="mt-[-2rem]">
+         <div ref={cardsgroup} className="mt-[-1rem]">
         <div className="flex justify-center">
-          <div className="grid grid-cols-1 md:grid-cols-2 md:px-0 lg:grid-cols-3 gap-6   place-items-center">
+          <div className="grid grid-cols-1 md:grid-cols-2 md:px-0 lg:grid-cols-3 gap-4   place-items-center">
             {testimonials.map((testimonial, index) => (
               <div
                 key={testimonial.id}
-                className="card bg-white p-8 rounded-lg shadow-md h-full cursor-pointer hover:shadow-xl  hover:-translate-y-2 hover:scale-105"
+                className="card bg-white p-4 rounded-lg shadow-md h-full cursor-pointer hover:shadow-xl  hover:-translate-y-2 hover:scale-105"
                 style={{
                   zIndex: testimonials.length - index,
                 }}
               >
                 <b>{testimonial.heading}</b>
-                <p className="text-gray-600 mb-4">{testimonial.quote}</p>
+                <p className="text-gray-600 mb-2">{testimonial.quote}</p>
                 <div className="flex items-center">
                   <Image
                     src={testimonial.imageSrc}
@@ -86,6 +88,42 @@ const TestimonialSection = ({
         {/* CTA Banner */}
         
       </div>
+  <div className="  relative top-[22%] "ref={cta}>
+      <div
+  className="cta-banner bg-[#4257D0] text-white p-[1rem] rounded-lg text-center flex flex-col md:flex-row items-center justify-between"
+
+>
+  <p className="text-base md:text-lg mb-4 md:mb-0">
+    Join the X-Force winning big and paying smarter every day.
+  </p>
+  <div className="flex space-x-4">
+    <Link
+      href="#"
+      className="flex items-center transition-transform duration-300 hover:scale-105 hover:-translate-y-1"
+    >
+      <Image
+        src="/images/store-app.png"
+        alt="App Store"
+        width={120}
+        height={40}
+        className="object-contain"
+      />
+    </Link>
+    <Link
+      href="#"
+      className="flex items-center transition-transform duration-300 hover:scale-105 hover:-translate-y-1"
+    >
+      <Image
+        src="/images/playstore.svg"
+        alt="Google Play"
+        width={120}
+        height={40}
+        className="object-contain"
+      />
+    </Link>
+  </div>
+</div>
+</div>
     </section>
   );
 };

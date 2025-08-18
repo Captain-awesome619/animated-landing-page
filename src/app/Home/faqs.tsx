@@ -147,25 +147,19 @@ export default function FaqSection() {
     setOpenIndexes([]); // Reset FAQ on category switch
   }, []);
 
-  // Refs for DOM elements
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const headingRef = useRef<HTMLDivElement>(null);
-  const descriptionRef = useRef<HTMLDivElement>(null);
-  const categoriesRef = useRef<HTMLDivElement>(null);
-  const faqsRef = useRef<HTMLDivElement>(null);
-  
+
 
 
   return (
     <>
       <div 
-        ref={sectionRef}
+       
         id="faq" 
         className="bg-[#F5F5F5] py-16 px-4 md:px-16 hero"
       >
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-4 md:gap-8">
           {/* Left - Heading */}
-          <div ref={headingRef} className="md:w-2/1">
+          <div className="md:w-2/1">
             <h2 className="text-2xl md:text-4xl font-bold leading-snug text-black">
               Having Questions About Us? <br />
               We Have Just The Right Answer For You.
@@ -174,7 +168,7 @@ export default function FaqSection() {
 
           {/* Right - Description */}
           <div 
-            ref={descriptionRef}
+           
             className="md:w-1/1.2 text-lg sm:text-[.875rem] text-gray-600"
           >
             <p>
@@ -192,7 +186,7 @@ export default function FaqSection() {
 
         <div className="flex flex-col md:flex-row gap-6">
           {/* Left - Categories */}
-          <div ref={categoriesRef} className="md:w-1/3 categories-card">
+          <div className="md:w-1/3 categories-card">
             <div className="bg-white rounded-xl p-6 shadow">
               <h3 className="text-xl font-semibold mb-4">Categories</h3>
               {categories.map((cat) => (
@@ -213,7 +207,7 @@ export default function FaqSection() {
           </div>
 
           {/* Right - FAQs */}
-          <div ref={faqsRef} className="md:w-2/3 md:px-8 faqs-section">
+          <div className="md:w-2/3 md:px-8 faqs-section">
             <div className="bg-white rounded-xl p-6 shadow">
               <h3 className="text-xl font-semibold mb-4">FAQs</h3>
               {faqData[selectedCategory].map((faq, index: number) => (

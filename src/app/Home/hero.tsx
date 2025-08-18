@@ -13,7 +13,8 @@ import content from "../../../public/images/content.svg";
 import afri from "../../../public/images/african-american2.png";
 import PosSection from "./posHero";
 import TestimonialSection, { defaultTestimonials } from "./testimonial";
-
+import Needhelp from "./needHelp";
+import FaqSection from "./faqs";
 gsap.registerPlugin(ScrollTrigger);
 
 type HeroSectionProps = {
@@ -73,6 +74,8 @@ const pRef = useRef<HTMLDivElement>(null);
 const tesimonialref = useRef<HTMLDivElement>(null);
 const cardsgroupref = useRef<HTMLDivElement>(null);
 const textref = useRef<HTMLDivElement>(null);
+const ctaref = useRef<HTMLDivElement>(null);
+const helpref = useRef<HTMLDivElement>(null);
 
 descriptRefs.current = [];
 titleRefs.current = [];
@@ -82,7 +85,6 @@ subtitleRefs.current = [];
 function Active(act : any) {
   setActiveIndex(act);
 }
-
 const AddNavTitleRefs = (el:  HTMLHeadingElement) => {
   if (el && !navTitleRefs.current.includes(el)) navTitleRefs.current.push(el);
 };
@@ -92,8 +94,6 @@ const addToNavItemRefs = (el: HTMLLIElement) => {
 const addNavSubtitleRefs = (el: HTMLHeadingElement) => {
   if (el && !navSubtitleRefs.current.includes(el)) navSubtitleRefs.current.push(el);
 };
-
-
 const addToDescriptRefs = (el: HTMLDivElement) => {
   if (el && !descriptRefs.current.includes(el)) descriptRefs.current.push(el);
 };
@@ -322,7 +322,7 @@ tl.to(nextnavTitle, {
   ease: "power2.inOut",
 }, slideLabel);
 
-// Subtitle color & opacity change
+
 tl.to(currentnavSubtitle, {
   opacity: 0.5,
   color: "#9ca3af",
@@ -339,12 +339,11 @@ tl.to(nextnavSubtitle, {
 
 }
 
-// Fade out SavingsSection and fade in PosSection at the same time
 tl.to(savingsRef.current, {
   autoAlpha: 0, // fade out
   duration: 2,
   ease: "power2.inOut"
-}, "+=0.5") // delay until after last savings animation
+}, "+=0.5") 
 
 gsap.set(containerRef.current, { y: 50, zIndex: 2, position: "relative" });
 gsap.set(pRef.current, { y: -50, zIndex: 1, position: "relative" });
@@ -353,14 +352,11 @@ tl.to(posRef.current, {
   autoAlpha: 1, // fade in
   duration: 2,
   ease: "power2.inOut"
-}, "<") // "<" = start at the same time as the savings fade-out
+}, "<") 
 .add(() => {
   const container = containerRef.current;
   const p = pRef.current;
 
-  
-
-  // Animate swap
   gsap.timeline()
     .to(container, {
       y: 0,
@@ -373,7 +369,6 @@ tl.to(posRef.current, {
       ease: "power2.inOut"
     }, 0);
 });
-
 
 tl.fromTo(imageRef.current,
         { xPercent: -250, opacity: 0 },
@@ -396,33 +391,30 @@ tl.fromTo(contentRef.current,
         },
         "+=0.8"
       );
-
-
-
-      
+    
 if (cardsgroupref.current) {
   const cards = cardsgroupref.current.querySelectorAll(".card");
-
-  // Initial dramatic deck spread setup
   gsap.set(cards, {
     autoAlpha: 0,
     y: 300, // start lower
-    scale: 0.95,
+
     zIndex: (i) => defaultTestimonials.length - i,
-    position: "absolute",
-    top: '50px',
-    left: "50%",
-    xPercent: -50,
-    rotation: (i) => (i - (defaultTestimonials.length - 1) / 2) * 12,
-    x: (i) => (i - (defaultTestimonials.length - 1) / 2) * 80
+  position: "relative",
+  top: "30px",
+  left: "110%",
+  xPercent: -50, // centers better
+  rotation: (i) => (i - (defaultTestimonials.length - 1) / 2) * 75, // much smaller tilt
+  x: 5,
+
+
   });
 
-  // Container setup
+
   cardsgroupref.current.style.position = "relative";
   cardsgroupref.current.style.height = "280px";
-  cardsgroupref.current.style.width = "80%"
+  cardsgroupref.current.style.width = "90%"
 
-  // Timeline
+
   tl.to(posRef.current, {
     autoAlpha: 0,
     duration: 0.6, // faster fade out
@@ -437,41 +429,59 @@ if (cardsgroupref.current) {
       gsap.to(cards, {
         autoAlpha: 1,
         y: 0,
-        scale: 1,
-        duration: 1.5,
+        duration: 0.5,
         ease: "power3.out",
       
       });
     }
   }, "<")
 
-
   tl.to(cards, {
   rotation: 0,
+  left: "50%",
   x: 0,
-  duration: 1.5,
+  duration: 2,
   ease: "power3.inOut",
-  stagger: 0.05,
   position: "relative",
+
   xPercent: 0
-}, "+=0.5") // you can reduce or remove this delay if you want them to start sooner
+}, "+=0.5") 
 .fromTo(textref.current,
   { xPercent: -150, opacity: 0 },
   {
     xPercent: 0,
     opacity: 1,
-    duration: 1,
+    duration: 2,
     ease: "power1.out"
   },
-  "<+0.3" // start 0.3s after the card animation starts
+  "<+0.3" 
 );
 }
+ tl.fromTo(ctaref.current,
+        { yPercent: 50, opacity: 0 },
+        {
+          yPercent: 0,
+          opacity: 1,
+          duration: 2,
+          ease: "power1.out",
+        },
+        "+=0.5"
+      );
+
+tl.to(tesimonialref.current, {
+    autoAlpha: 0,
+    duration: 1.5, 
+     y: 200,
+    ease: "power2.out"
+      
+  })
+  .to(helpref.current, {
+    autoAlpha: 1,
+    duration: 0.6, // faster fade in
+    ease: "power2.out",
+  }, "<")
 
     }, heroRef);
-
-
-
-    
     return () => ctx.revert();
   }, [num]);
 
@@ -556,8 +566,6 @@ if (cardsgroupref.current) {
           </div>
         </div>
       </div>
-
-      {/* BackgroundHero wrapper - initially hidden */}
       <div
         ref={bgHeroRef}
         className="opacity-0 absolute top-0 left-0 h-full w-screen z-[-1]"
@@ -572,8 +580,6 @@ if (cardsgroupref.current) {
           ref={xtrempayRef}
         />
       </div>
-
-      {/* SavingsSection overlay */}
       <div
         ref={savingsRef}
         className="fixed top-full left-0 w-full h-screen bg-white z-50"
@@ -605,10 +611,13 @@ if (cardsgroupref.current) {
        <TestimonialSection 
        cardsgroup = {cardsgroupref}
        text={textref}
+       cta ={ctaref}
        />
        </div>
+      <div ref={helpref} className="z-50 absolute top-0 left-0 w-screen h-screen opacity-0">
+       <Needhelp/>
+      </div>
     </section>
   );
 };
-
 export default Hero;
