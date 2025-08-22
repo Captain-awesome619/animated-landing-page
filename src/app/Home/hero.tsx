@@ -438,7 +438,7 @@ if (cardsgroupref.current) {
 
   tl.to(cards, {
   rotation: 0,
-  left: "50%",
+  left: "40%",
   x: 0,
   duration: 2,
   ease: "power3.inOut",
@@ -471,13 +471,13 @@ if (cardsgroupref.current) {
 tl.to(tesimonialref.current, {
     autoAlpha: 0,
     duration: 1.5, 
-     y: 200,
+     y: 1000,
     ease: "power2.out"
       
   })
   .to(helpref.current, {
     autoAlpha: 1,
-    duration: 0.6, // faster fade in
+    duration: 1.5, // faster fade in
     ease: "power2.out",
   }, "<")
 
@@ -614,7 +614,7 @@ tl.to(tesimonialref.current, {
        cta ={ctaref}
        />
        </div>
-      <div ref={helpref} className="z-50 absolute top-0 left-0 w-screen h-screen opacity-0">
+      <div ref={helpref} className="z-50 absolute top-0 overflow-y-auto left-0 w-screen  opacity-0">
        <Needhelp/>
       </div>
     </section>
