@@ -76,6 +76,11 @@ const cardsgroupref = useRef<HTMLDivElement>(null);
 const textref = useRef<HTMLDivElement>(null);
 const ctaref = useRef<HTMLDivElement>(null);
 const helpref = useRef<HTMLDivElement>(null);
+const formpref = useRef<HTMLDivElement>(null);
+const faqpref = useRef<HTMLDivElement>(null);
+const catref = useRef<HTMLDivElement>(null);
+const queref = useRef<HTMLDivElement>(null);
+const topfaqref = useRef<HTMLDivElement>(null);
 
 descriptRefs.current = [];
 titleRefs.current = [];
@@ -172,30 +177,22 @@ const addToSubtitleRefs = (el: HTMLHeadingElement) => {
         duration: 2,
         ease: "power2.inOut",
       }, "<");
-
+gsap.set(xtrempayRef.current, { x: -350, zIndex: 2, position: "relative" });
       tl.to(bgHeroRef.current, {
         opacity: 1,
         duration: 2,
         ease: "power2.inOut",
-        onComplete: () => {
-          gsap.fromTo(xtrempayRef.current,
-            { x: -250, opacity: 0 },
-            {
-              x: 0,
-              opacity: 1,
-              duration: 1.5,
-              ease: "power3.out",
-              scrollTrigger: {
-                trigger: bgHeroRef.current,
-                start: "top center",
-                once: true,
-                scrub: true,
-                pin: false,
-              },
-            }
-          );
-        },
-      }, "<");
+      }, "<").add(() => {
+  gsap.timeline()
+    .to(xtrempayRef.current,{
+        autoAlpha: 1,
+        x: 0,
+        duration: 0.5,
+        ease: "power3.out",
+      
+    }, 0)
+}
+)
 
       tl.fromTo(statsRef.current,
         { yPercent: 50, opacity: 0 },
@@ -424,17 +421,20 @@ if (cardsgroupref.current) {
     autoAlpha: 1,
     duration: 0.6, // faster fade in
     ease: "power2.out",
-    onComplete: () => {
-      // Animate cards to spread out
-      gsap.to(cards, {
+  }, "<")
+.add(() => {
+  gsap.timeline()
+    .to(cards, {
         autoAlpha: 1,
         y: 0,
         duration: 0.5,
         ease: "power3.out",
       
-      });
-    }
-  }, "<")
+    }, 0)
+}
+)
+
+
 
   tl.to(cards, {
   rotation: 0,
@@ -463,23 +463,76 @@ if (cardsgroupref.current) {
           yPercent: 0,
           opacity: 1,
           duration: 2,
-          ease: "power1.out",
+          ease: "power2.out",
         },
         "+=0.5"
       );
 
+
+     
+
+// First animation: testimonial -> help
+// Timeline for testimonial -> help
+
+gsap.set(formpref.current, { x: 800, zIndex: 1, position: "relative" });
 tl.to(tesimonialref.current, {
+  autoAlpha: 0,
+  duration: 0.7,
+  y: 1000,
+  ease: "power2.out",
+})
+.to(helpref.current, {
+  autoAlpha: 1,
+  duration: 1,
+  ease: "power2.out",
+}, "<")  
+.add(() => {
+  const formm = formpref.current;
+  gsap.timeline()
+    .to(formm, {
+      x: 0,
+      duration: 1,
+      ease: "power2.inOut"
+    }, 0)
+   
+}, "<");
+tl.to(helpref.current, {
     autoAlpha: 0,
-    duration: 1.5, 
-     y: 1000,
-    ease: "power2.out"
-      
-  })
-  .to(helpref.current, {
+    duration: 1, 
+    ease: "power2.out"     
+  })  
+gsap.set(topfaqref.current, { y: 500, zIndex: 1, position: "relative" });
+gsap.set(catref.current, { x: -900, zIndex: 1, position: "relative" });
+gsap.set(queref.current, { x: 900, zIndex: 1, position: "relative" });
+  tl.to(faqpref.current, {
     autoAlpha: 1,
-    duration: 1.5, // faster fade in
+    duration: 1, // faster fade in
     ease: "power2.out",
   }, "<")
+  .add(() => {
+  const topa = topfaqref.current;
+  const catty = catref.current;
+  const quee = queref.current;
+  gsap.timeline()
+    .to(topa, {
+      y: 0,
+      duration: 1,
+      ease: "power2.inOut"
+    }, 0)
+    .to(catty, {
+      x: 0,
+      duration: 1,
+      ease: "power2.inOut"
+    }, 0)
+    .to(quee, {
+      x: 0,
+      duration: 1,
+      ease: "power2.inOut"
+    }, 0)
+}, "<");
+
+
+
 
     }, heroRef);
     return () => ctx.revert();
@@ -614,8 +667,11 @@ tl.to(tesimonialref.current, {
        cta ={ctaref}
        />
        </div>
-      <div ref={helpref} className="z-50 absolute top-0 overflow-y-auto left-0 w-screen  opacity-0">
-       <Needhelp/>
+      <div ref={helpref} className="z-60 absolute top-0 overflow-y-auto left-0 w-screen  opacity-0">
+       <Needhelp form={formpref}/>
+      </div>
+      <div ref={faqpref} className="z-70 absolute top-0  left-0 w-screen  opacity-0">
+       <FaqSection top={topfaqref} cat={catref} que={queref}/>
       </div>
     </section>
   );

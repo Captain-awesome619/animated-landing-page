@@ -127,8 +127,26 @@ const faqData: FAQCategories = {
 
 const categories = Object.keys(faqData) as Array<keyof FAQCategories>;
 
-// === Component ===
-export default function FaqSection() {
+
+interface faqSectionProps {
+  
+   top? : React.RefObject<HTMLDivElement | null>
+   que? : React.RefObject<HTMLDivElement | null>
+   cat? : React.RefObject<HTMLDivElement | null>
+}
+
+
+const FaqSection  = ({
+ 
+  top,
+  que,
+  cat,
+
+}: faqSectionProps) => {
+
+
+
+
   const [selectedCategory, setSelectedCategory] = useState<keyof FAQCategories>(
     categories[0]
   );
@@ -157,9 +175,9 @@ export default function FaqSection() {
         id="faq" 
         className="bg-[#F5F5F5] py-16 px-4 md:px-16 hero"
       >
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-4 md:gap-8">
+        <div ref={top} className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-4 md:gap-8">
           {/* Left - Heading */}
-          <div className="md:w-2/1">
+          <div className="md:w-2/1 pt-[2rem]">
             <h2 className="text-2xl md:text-4xl font-bold leading-snug text-black">
               Having Questions About Us? <br />
               We Have Just The Right Answer For You.
@@ -186,7 +204,7 @@ export default function FaqSection() {
 
         <div className="flex flex-col md:flex-row gap-6">
           {/* Left - Categories */}
-          <div className="md:w-1/3 categories-card">
+          <div ref={cat} className="md:w-1/3 categories-card">
             <div className="bg-white rounded-xl p-6 shadow">
               <h3 className="text-xl font-semibold mb-4">Categories</h3>
               {categories.map((cat) => (
@@ -207,7 +225,7 @@ export default function FaqSection() {
           </div>
 
           {/* Right - FAQs */}
-          <div className="md:w-2/3 md:px-8 faqs-section">
+          <div ref={que} className="md:w-2/3 md:px-8 faqs-section">
             <div className="bg-white rounded-xl p-6 shadow">
               <h3 className="text-xl font-semibold mb-4">FAQs</h3>
               {faqData[selectedCategory].map((faq, index: number) => (
@@ -239,3 +257,4 @@ export default function FaqSection() {
     </>
   );
 }
+export default FaqSection

@@ -141,10 +141,11 @@ const SavingsSection = forwardRef<HTMLDivElement, SavingsSectionProps>(
         className={`${bgColor} h-screen relative overflow-hidden text-white py-12 lg:py-30 px-4 lg:px-8 hero`}
         ref={ref}
       >
-        <div className="grid px-[1.5rem]  grid-cols-[20%_50%_30%] pt-[2rem] ">
+        <div className=" grid lg:px-[1.5rem] px-[0.2rem] w-screen  lg:grid-cols-[55%_20%] grid-rows-2  pt-[1.7rem] lg:pt-[1rem] ">
           {/* Left Navigation */}
-           <nav className="">
-          <ul className="space-y-4 w-full">
+ <div className="flex lg:gap-[12%] justify-between lg:items-start ">
+           <nav className=" ">
+          <ul className="space-y-4 lg:w-[150px]">
             {savingsData.map((data,index) => (
              <li
               key={data.id}
@@ -154,82 +155,68 @@ const SavingsSection = forwardRef<HTMLDivElement, SavingsSectionProps>(
               <button
                 className="text-[#ffffff] flex flex-col transition-all duration-300 py-2 w-full text-left"
               >
-
-
-
              <h2 ref={Navtitle}  className="">
                   {data.title}
                 </h2> 
-               
-         
                  <h2 ref={Navsubtitle} className="">
                   {data.subTitle}
                 </h2> 
-              
-                
-
               </button>
             </li>
             ))}
           </ul>
         </nav>
-
-
           {/* Main Content */}
-          
-           <div className= "relative w-full h-32 flex flex-col ">
+           <div className= "relative w-[62%]  lg:w-full lg:h-32 h-15 flex flex-col items-center  justify-center">
   {savingsData.map((data, index) => (
-    <div key={data.id} className="w-screen flex flex-col  ">
+    <div key={data.id} className="lg:w-screen flex flex-col items-center justify-center   ">
     <div
             key={index}
-            className="absolute top-0  gap-[1.5rem] left-0 w-full h-full flex flex-col  "
+            className="absolute top-5 lg:top-0 gap-[0.5rem] lg:gap-[1.5rem] left-0 w-full h-full flex flex-col  "
           >
-        <h4 className=" text-white text-[60px] font-[400]"
+        <h4 className=" text-white text-[20px] lg:text-[60px] font-[400]"
        ref={titleRefss}
        >
           {data.title}
           
         </h4>
-        <h4 className=" text-white text-[60px] mt-[-4%] relative pl-[15%] font-[400]"
+        <h4 className=" text-white text-[20px] lg:text-[60px] mt-[-4%] relative lg:pl-[15%] font-[400]"
        ref={subtitleRefss}
         >
           {data.subTitle}
         </h4>
       </div>
 
-      <div ref={descriptRefss}  className=" absolute top-[150%] left-0 w-full h-full flex flex-col gap-[2rem]  ">
-       <h4 className="text-[20px] font-[400]" > {data.description}</h4>
+      <div ref={descriptRefss}  className="  gap-[0.5rem] absolute top-[150%] left-0 w-full h-full lg:pr-0 pr-[0.3rem] flex flex-col lg:gap-[2rem]  ">
+       <h4 className="text-[14px] lg:text-[20px] font-[400]" > {data.description}</h4>
       
-<div className="flex flex-col gap-[1rem]">
-<div className="flex flex-row gap-[0.5rem] items-center">
-  <h4 className="font-bold text-lg">{data.howItWorks.title}</h4>
+<div className="flex flex-col   lg:gap-[1rem]">
+<div className="grid lg:flex  lg:flex-row lg:gap-[0.5rem]  pr-[0.3rem] items-center">
+  <h4 className="font-bold text-[14px] lg:text-lg">{data.howItWorks.title}</h4>
   <p>{data.howItWorks.text}</p>
 </div>
-  <ul className="list-disc pl-5">
+  <ul className="list-disc lg:not-visited:pl-5">
     {data.howItWorks.items.map((item, idx) => (
-      <li key={idx}>{item}</li>
+      <li className="text-[14px] lg:text-[18px]" key={idx}>{item}</li>
     ))}
   </ul>
-<div className="flex flex-col gap-[0.3rem]">
-  <h4 className="text-[18px] font-[600]">Why it bangs:</h4>
-  <ul className="list-disc pl-5">
+<div className="flex flex-col lg:gap-[0.3rem]">
+  <h4 className="text-[15px] lg:text-[18px] font-[600]">Why it bangs:</h4>
+  <ul className="list-disc lg:pl-5">
     {data.whyItBangs.map((item, idx) => (
-      <li key={idx}>{item}</li>
+      <li className="text-[14px] lg:text-[18px]" key={idx}>{item}</li>
     ))}
   </ul>
   </div>
 </div>
 </div>
-      
-
     </div>
   ))}
 </div>
-
-         
+</div>
 
           {/* Smartphone Mockup */}
-          <div className="hidden lg:block absolute  right-[10%] w-[300px] h-[600px]  bg-[url('/images/phonecover.svg')] bg-no-repeat bg-cover overflow-hidden">
+          <div className=" lg:block absolute lg:top-auto left-[-5%] lg:left-auto top-[55%]  lg:right-[5%] w-[200px] h-[350px] lg:w-[300px] lg:h-[600px]  bg-[url('/images/phonecover.svg')] bg-no-repeat bg-cover overflow-hidden">
            <div className="w-full">
             <Image
               ref={image1Ref}
@@ -237,7 +224,7 @@ const SavingsSection = forwardRef<HTMLDivElement, SavingsSectionProps>(
               height={100}
               width={100}
               alt="screen1"
-              className="absolute top-0 left-0 h-[96%] w-full -ml-[2.8%] z-10"
+              className="absolute top-0 left-0 lg:h-[96%] h-[100%] lg:w-full lg:-ml-[2.8%] w-[250px]  -ml-[6.5%] z-10"
             />
 </div>
             <Image
@@ -246,7 +233,7 @@ const SavingsSection = forwardRef<HTMLDivElement, SavingsSectionProps>(
               height={100}
               width={100}
               alt="screen2"
-              className="absolute top-0 left-0 h-[96%] w-full -ml-[2.8%] z-20"
+              className="absolute top-0 left-0 lg:h-[96%] h-[100%] lg:w-full lg:-ml-[2.8%] w-[250px]  -ml-[6.5%] z-10"
             />
             <Image
               ref={image3Ref}
@@ -254,7 +241,7 @@ const SavingsSection = forwardRef<HTMLDivElement, SavingsSectionProps>(
               height={100}
               width={100}
               alt="screen3"
-              className="absolute top-0 left-0 h-[96%] w-full -ml-[2.8%] z-30"
+className="absolute top-0 left-0 lg:h-[96%] h-[100%] lg:w-full lg:-ml-[2.8%] w-[250px]  -ml-[6.5%] z-10"
             />
           </div>
         </div>

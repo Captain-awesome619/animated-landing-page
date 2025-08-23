@@ -7,7 +7,19 @@ import x from '../../../public/images/x.svg'
 import ig from '../../../public/images/ig.svg'
 import facebook from '../../../public/images/facebook.svg'
 
-const Needhelp = () => {
+
+
+interface helpSectionProps {
+  
+   form? : React.RefObject<HTMLDivElement | null>
+}
+
+const Needhelp  = ({
+ 
+  form,
+
+}: helpSectionProps) => {
+  // Refs for animation ta
   return (
     <div className="h-screen flex gap-[2rem]  justify-center ">
       {/* Responsive wrapper */}
@@ -97,7 +109,7 @@ const Needhelp = () => {
         </div>
 
         {/* RIGHT SECTION */}
-        <div className="flex flex-col gap-[2rem]  text-center md:text-left">
+        <div ref={form} className="flex flex-col gap-[2rem]  text-center md:text-left">
           <div className="flex flex-col mt-[1.5rem]">
             <h2 className="font-[600] lg:text-[38px] text-black">Get in Touch </h2>
             <h2 className="font-[400] lg:text-[20px] text-black/65">You can reach us anytime</h2>
