@@ -195,7 +195,7 @@ gsap.set(xtrempayRef.current, { x: -350, zIndex: 2, position: "relative" });
 )
 
       tl.fromTo(statsRef.current,
-        { yPercent: 50, opacity: 0 },
+        { yPercent: 250, opacity: 0 },
         {
           yPercent: 0,
           opacity: 1,
@@ -211,7 +211,7 @@ tl.to(bgHeroRef.current, {
   ease: "power2.inOut"
 }, "+=0.5") // both start after a 0.5s delay from previous animation
 .to(savingsRef.current, {
-  top: 0,
+  top: 50,
   duration: 1.5,
   ease: "power2.out"
 }, "<"); 
@@ -547,7 +547,7 @@ gsap.set(queref.current, { x: 900, zIndex: 1, position: "relative" });
         <div className="flex flex-col lg:flex-row items-end justify-between h-screen">
           <div
             ref={textContentRef}
-            className="text-center lg:text-left lg:w-1/3 mt-12 lg:mt-0 mb-8"
+            className="text-center lg:text-left lg:w-1/3 mt-[5rem] lg:mt-0 mb-8"
           >
             <h1 className="text-2xl md:text-5xl font-bold text-gray-900 mb-4 leading-tight hero__title">
               {title}
@@ -590,7 +590,8 @@ gsap.set(queref.current, { x: 900, zIndex: 1, position: "relative" });
                 priority
               />
               <div
-                className="flex items-center inset-2 justify-center mt-[90%] ml-[-40%] bg-[url('/images/phonecase.svg')] bg-no-repeat bg-cover w-[100%] h-[100%] relative"
+                className="flex items-center inset-2 justify-center mt-[85%] ml-[-45%] lg:mt-[90%] lg:ml-[-40%] bg-[url('/images/phonecase.svg')] bg-no-repeat bg-cover
+                 lg:w-[100%] lg:h-[100%] w-[300px] h-[60%] relative"
                 ref={smallImgRef}
               >
                 <div className="w-[100%] z-0 h-[100%] relative flex items-center justify-center">
@@ -598,7 +599,7 @@ gsap.set(queref.current, { x: 900, zIndex: 1, position: "relative" });
                     ref={contentImgRef}
                     src={content}
                     alt="Content"
-                    className="absolute z-0 w-[90%] h-[90%]"
+                    className="absolute z-0 w-[80%] lg:mr-auto mr-[-1.2rem] lg:w-[90%] h-[90%]"
                     width={450}
                     height={150}
                     priority
@@ -607,7 +608,7 @@ gsap.set(queref.current, { x: 900, zIndex: 1, position: "relative" });
                     ref={landscapeImgRef}
                     src={afri}
                     alt="Afri"
-                    className="absolute rounded-3xl w-[75.2%] h-[89%] opacity-0"
+                    className="absolute rounded-3xl lg:w-[75.2%] w-[82%] lg:mr-auto mr-[-1.2rem] h-[89%] opacity-0"
                     width={450}
                     height={150}
                     priority

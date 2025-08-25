@@ -141,7 +141,7 @@ const SavingsSection = forwardRef<HTMLDivElement, SavingsSectionProps>(
         className={`${bgColor} h-screen relative overflow-hidden text-white py-12 lg:py-30 px-4 lg:px-8 hero`}
         ref={ref}
       >
-        <div className=" grid lg:px-[1.5rem] px-[0.2rem] w-screen  lg:grid-cols-[55%_20%] grid-rows-2  pt-[1.7rem] lg:pt-[1rem] ">
+        <div className=" grid lg:px-[1.5rem] px-[0.2rem] w-screen  lg:grid-cols-[55%_20%] grid-rows-2  pt-[1.7rem] lg:pt-[0rem] ">
           {/* Left Navigation */}
  <div className="flex lg:gap-[12%] justify-between lg:items-start ">
            <nav className=" ">
@@ -216,7 +216,7 @@ const SavingsSection = forwardRef<HTMLDivElement, SavingsSectionProps>(
 </div>
 
           {/* Smartphone Mockup */}
-          <div className=" lg:block absolute lg:top-auto left-[-5%] lg:left-auto top-[55%]  lg:right-[5%] w-[200px] h-[350px] lg:w-[300px] lg:h-[600px]  bg-[url('/images/phonecover.svg')] bg-no-repeat bg-cover overflow-hidden">
+          <div className=" lg:block absolute lg:top-[15%] left-[-5%] lg:left-auto top-[55%]  lg:right-[5%] w-[200px] h-[350px] lg:w-[300px] lg:h-[600px]  bg-[url('/images/phonecover.svg')] bg-no-repeat bg-cover overflow-hidden">
            <div className="w-full">
             <Image
               ref={image1Ref}

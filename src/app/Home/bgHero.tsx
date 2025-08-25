@@ -55,7 +55,7 @@ const BackgroundHero = forwardRef<HTMLDivElement, BackgroundHeroProps>(
 
         <div 
        ref={ref}
-          className="bg-black/40 backdrop-blur-lg mb-25 text-white p-4 rounded-2xl w-3/3 lg:w-[30%] shadow-2xl border border-white/20 transform-gpu hover:bg-black/50 opacity-0 translate-x-[-50px]"
+          className="bg-black/40 lg:mt-0 mt-[2rem] backdrop-blur-lg lg:mb-25 text-white p-4 rounded-2xl w-3/1 lg:w-[30%] shadow-2xl border border-white/20 transform-gpu hover:bg-black/50 opacity-0 translate-x-[-50px]"
           style={{ 
             boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.1)' 
           }}
@@ -63,7 +63,7 @@ const BackgroundHero = forwardRef<HTMLDivElement, BackgroundHeroProps>(
         >
           <h2 
          
-            className="text-3xl md:text-2xl font-bold mb-6 bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent transform"
+            className="lg:text-3xl text-2xl md:text-2xl font-bold mb-6 bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent transform"
           >
             Why Xtrempay?
           </h2>
@@ -142,11 +142,11 @@ const BackgroundHero = forwardRef<HTMLDivElement, BackgroundHeroProps>(
         {/* Enhanced Numbers Overlay with 3D effects */}
         <div 
          
-          className="absolute inset-0 flex items-center justify-around text-white text-center z-10 w-full  mt-[45%] transform"
+          className="absolute inset-0 flex items-center justify-around text-white text-center z-10 w-full lg:w-full mt-[170%] lg:mt-[45%] transform"
             ref={statsRef}
         >
           {/* 10M (Odd, up) */}
-          <div className="transform mt-[10rem] -translate-y-16 text-2xl md:text-8xl font-bold border-s px-8 h-50 hover:scale-110 transition-all duration-500 cursor-pointer group"
+          <div className="transform mt-[10rem] -translate-y-16 text-2xl md:text-8xl font-bold border-s px-4 h-50 hover:scale-110 transition-all duration-500 cursor-pointer group"
         
           >
             <div className="bg-gradient-to-b from-white to-blue-200 bg-clip-text text-transparent group-hover:from-yellow-300 group-hover:to-orange-400 transition-all duration-500">
@@ -158,7 +158,7 @@ const BackgroundHero = forwardRef<HTMLDivElement, BackgroundHeroProps>(
           </div>
           
           {/* 100K (Even, down) */}
-          <div className="transform translate-y-16 text-4xl md:text-8xl font-bold border-s px-8 h-50 hover:scale-110 transition-all duration-500 cursor-pointer group">
+          <div className="transform translate-y-16 text-2xl md:text-8xl font-bold border-s px-4 h-50 hover:scale-110 transition-all duration-500 cursor-pointer group">
             <div className="bg-gradient-to-b from-white to-blue-200 bg-clip-text text-transparent group-hover:from-green-300 group-hover:to-emerald-400 transition-all duration-500">
               100K
             </div>
@@ -168,7 +168,7 @@ const BackgroundHero = forwardRef<HTMLDivElement, BackgroundHeroProps>(
           </div>
           
           {/* 24/7 (Odd, up) */}
-          <div className="transform -translate-y-16 text-4xl md:text-8xl font-bold border-s px-8 h-50 hover:scale-110 transition-all duration-500 cursor-pointer group">
+          <div className="transform -translate-y-16 text-2xl md:text-8xl font-bold border-s px-4 h-50 hover:scale-110 transition-all duration-500 cursor-pointer group">
             <div className="bg-gradient-to-b from-white to-blue-200 bg-clip-text text-transparent group-hover:from-purple-300 group-hover:to-pink-400 transition-all duration-500">
               24/7
             </div>
@@ -178,7 +178,7 @@ const BackgroundHero = forwardRef<HTMLDivElement, BackgroundHeroProps>(
           </div>
           
           {/* 100M (Even, down) */}
-          <div className="transform translate-y-16 text-4xl md:text-8xl font-bold border-s px-8 h-50 hover:scale-110 transition-all duration-500 cursor-pointer group">
+          <div className="transform translate-y-16 text-2xl md:text-8xl font-bold border-s px-4 h-50 hover:scale-110 transition-all duration-500 cursor-pointer group">
             <div className="bg-gradient-to-b from-white to-blue-200 bg-clip-text text-transparent group-hover:from-cyan-300 group-hover:to-blue-400 transition-all duration-500">
               100M
             </div>
