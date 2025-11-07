@@ -20,28 +20,27 @@ const Needhelp = () => {
       const helpTl = gsap.timeline({
         scrollTrigger: {
           trigger: helpref.current,
-          start: 'top top',
+          start: 'top-=120px top',
           end: 'bottom top',
-          scrub: 1,
-          pin: true,
-          anticipatePin: 1,
+          toggleActions: 'play none none reverse',
+          // pin: true,
+          // anticipatePin: 1,
         },
       })
 
-      helpTl
-        .to(helpref.current, { autoAlpha: 1, duration: 0 })
-        .to(formpref.current, {
-          x: 0,
-          autoAlpha: 1,
-          ease: 'power2.inOut',
-        })
+      helpTl.to(formpref.current, {
+        x: 0,
+        duration: 1,
+        autoAlpha: 1,
+        ease: 'power2.inOut',
+      })
     },
     { scope: helpref }
   )
 
   // Refs for animation ta
   return (
-    <div ref={helpref} className="z-60 opacity-0">
+    <div ref={helpref} className="z-60">
       <div className="min-h-screen flex gap-8 overflow-hidden justify-center pt-20 md:py-16">
         {/* Responsive wrapper */}
         <div className="flex flex-col md:grid md:grid-cols-2 gap-10 container items-center">

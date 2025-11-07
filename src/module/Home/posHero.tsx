@@ -35,9 +35,9 @@ const PosSection = ({
         defaults: { duration: 0.25 },
         scrollTrigger: {
           trigger: posRef.current,
-          start: 'top top',
-          end: 'bottom+=500px top',
-          scrub: 0.5,
+          start: 'top-=70px top',
+          end: 'bottom top',
+          scrub: 1,
           pin: true,
           anticipatePin: 1,
         },
@@ -46,11 +46,6 @@ const PosSection = ({
       const headerLabel = 'header_label'
 
       posTl
-        .to(posRef.current, {
-          autoAlpha: 1, // fade in
-          duration: 0,
-          ease: 'power2.inOut',
-        })
         .to(
           containerRef.current,
           {
@@ -95,7 +90,10 @@ const PosSection = ({
       >
         <div className="text-center mx-auto">
           <div className="overflow-hidden">
-            <div ref={containerRef} className="flex flex-col translate-y-full">
+            <div
+              ref={containerRef}
+              className="flex flex-col translate-y-[150%]"
+            >
               <h3 className="text-blue-600 text-xl md:text-2xl mb-2">
                 Xtrempay POS?
               </h3>
@@ -108,7 +106,7 @@ const PosSection = ({
           <div className="overflow-hidden">
             <p
               ref={pRef}
-              className="text-gray-600 text-base md:text-lg mb-10 -translate-y-full"
+              className="text-gray-600 text-base md:text-lg mb-10 -translate-y-[150%]"
             >
               Xtrempay gives you a POS machine at no cost, so you can grow your
               hustle and serve your community.

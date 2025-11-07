@@ -42,7 +42,7 @@ export default function Navbar() {
     const target = document.querySelector(`#${id}`) as HTMLElement
 
     const scrollOpt: ScrollToOptions = {
-      offset: id === 'reviews' ? 80 : id === 'faq' ? 200 : 0,
+      offset: id === 'reviews' ? 80 : id === 'faq' ? 35 : 0,
       duration: 1.2,
       onComplete: () => {
         setTimeout(() => {

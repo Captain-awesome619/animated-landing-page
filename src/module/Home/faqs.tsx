@@ -159,11 +159,11 @@ const FaqSection = () => {
       const faqTl = gsap.timeline({
         scrollTrigger: {
           trigger: faqpref.current,
-          start: 'top top',
+          start: 'top-=70px top',
           end: 'bottom top',
-          scrub: 1,
-          pin: true,
-          anticipatePin: 1,
+          toggleActions: 'play none none reverse',
+          // pin: true,
+          // anticipatePin: 1,
           onEnter: () => setActive('faq'),
           onEnterBack: () => setActive('faq'),
         },
