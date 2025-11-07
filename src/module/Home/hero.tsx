@@ -204,7 +204,7 @@ const Hero = ({
                   priority
                 />
                 <div
-                  className="flex items-center justify-center w-[300px] md:w-[350px] h-[60%] absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-[60%] md:translate-y-[50%] lg:translate-x-[70%] lg:translate-y-[40%] origin-center"
+                  className="flex items-center justify-center w-[300px] md:w-[350px] h-[60%] absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-[250px] md:translate-y-[50%] lg:translate-x-[70%] lg:translate-y-[40%] origin-center"
                   ref={smallImgRef}
                 >
                   <div className="w-full z-0 h-full relative flex items-center justify-center">
