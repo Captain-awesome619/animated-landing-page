@@ -38,7 +38,7 @@ const BackgroundHero = forwardRef<HTMLDivElement, BackgroundHeroProps>(
         {/* Background Image with enhanced effects */}
 
         {/* Overlay for better text readability */}
-        <div className="african-man-bg h-screen w-screen overflow-hidden  bg-[url('/images/afri.png')] bg-no-repeat bg-cover">
+        <div className="african-man-bg h-screen w-screen overflow-hidden  bg-[url('/images/afri.png')] bg-center lg:bg-top bg-no-repeat bg-cover">
           {/* Container */}
           <div className="container relative z-10 lg:h-screen flex items-center justify-between py-12 lg:py-10">
             {/* Enhanced Card with Glassmorphism and 3D effects */}

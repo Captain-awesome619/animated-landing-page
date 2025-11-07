@@ -91,7 +91,7 @@ const Hero = ({
         scrollTrigger: {
           trigger: heroRef.current,
           start: 'top top',
-          end: `bottom+=${10 * window.innerHeight}`,
+          end: `bottom+=${3 * window.innerHeight}`,
           scrub: 1,
           pin: true,
           anticipatePin: 1,
