@@ -40,7 +40,6 @@ const PosSection = ({
           scrub: 0.5,
           pin: true,
           anticipatePin: 1,
-          markers: true,
         },
       })
 

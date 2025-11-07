@@ -182,7 +182,6 @@ const SavingsSection = forwardRef<HTMLDivElement, SavingsSectionProps>(
             scrub: true,
             pin: true,
             anticipatePin: 1,
-            markers: true,
             onEnter: () => setActive('features'),
             onEnterBack: () => setActive('features'),
           },
