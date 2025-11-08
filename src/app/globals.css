@@ -12,6 +12,10 @@
   font-display: swap; /* Improves FOUT (Flash of Unstyled Text) */
 }
 
+@theme {
+  --breakpoint-xs: 26.25rem;
+}
+
 body{
   font-family: 'CustomFont', sans-serif;
 }

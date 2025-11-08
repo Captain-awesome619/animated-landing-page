@@ -73,6 +73,12 @@ const Hero = ({
 
   const isSmallRef = useRef(isSmallDevice)
 
+  const phoneHeight = window.innerHeight
+  const translateVal =
+    phoneHeight > 750
+      ? 'translate-y-[25%] md:translate-y-[50%] lg:translate-y-[40%]'
+      : 'translate-y-[50%]  md:translate-y-[50%] lg:translate-y-[40%]'
+
   useEffect(() => {
     isSmallRef.current = isSmallDevice
 
@@ -91,7 +97,7 @@ const Hero = ({
         scrollTrigger: {
           trigger: heroRef.current,
           start: 'top top',
-          end: `bottom+=${3 * window.innerHeight}`,
+          end: `bottom+=${2 * window.innerHeight}`,
           scrub: 1,
           pin: true,
           anticipatePin: 1,
@@ -204,7 +210,7 @@ const Hero = ({
                   priority
                 />
                 <div
-                  className="flex items-center justify-center w-[300px] md:w-[350px] h-[60%] absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-[250px] md:translate-y-[50%] lg:translate-x-[70%] lg:translate-y-[40%] origin-center"
+                  className={`flex items-center justify-center w-[300px] md:w-[350px] h-[60%] absolute bottom-0 left-1/2 -translate-x-1/2 ${translateVal} lg:translate-x-[70%] origin-center`}
                   ref={smallImgRef}
                 >
                   <div className="w-full z-0 h-full relative flex items-center justify-center">
