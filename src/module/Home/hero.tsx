@@ -91,14 +91,15 @@ const Hero = ({
       const secondSection = gsap.utils.selector(xtrempayRef.current)
 
       const heroTl = gsap.timeline({
-        defaults: { duration: 0.5 },
+        defaults: {
+          duration: 0.5,
+        },
         scrollTrigger: {
           trigger: heroRef.current,
           start: 'top top',
-          end: `bottom top`,
-          toggleActions: 'play none none reverse',
-
+          end: `bottom  top`,
           anticipatePin: 1,
+          toggleActions: 'play none none reverse',
           onEnter: () => setActive('home'),
           onEnterBack: () => setActive('home'),
         },
@@ -106,9 +107,10 @@ const Hero = ({
 
       heroTl
         .to(bigImgRef.current, {
-          y: '-350%',
+          y: '-250%',
           autoAlpha: 0,
           ease: 'none',
+          duration: 1,
         })
         .to(
           smallImgRef.current,
