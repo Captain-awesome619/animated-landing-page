@@ -173,7 +173,7 @@ const Hero = ({
               <div className="flex justify-start gap-4 lg:justify-start md:justify-center lg:text-start">
                 <Link
                   href={ctaLink}
-                  className="bg-[#4257D0] text-white px-8 py-3 rounded-full hover:bg-blue-700 transition md:text-lg lg:text-lg text-sm sm:text-sm md:mb-[0]"
+                  className="bg-[#4257D0] text-white px-8 py-3 rounded-full hover:bg-blue-700 transition md:text-lg lg:text-lg text-sm sm:text-sm md:mb-0"
                 >
                   {ctaText}
                 </Link>

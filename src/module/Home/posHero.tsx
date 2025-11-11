@@ -151,7 +151,7 @@ const PosSection = ({
                       height={20}
                       width={20}
                       alt="icon"
-                      className="me-3 flex-shrink-0 transition-transform duration-300 hover:scale-125"
+                      className="me-3 shrink-0 transition-transform duration-300 hover:scale-125"
                     />
                     <span>Free POS device</span>
                   </li>
@@ -161,7 +161,7 @@ const PosSection = ({
                       height={20}
                       width={20}
                       alt="icon"
-                      className="me-3 flex-shrink-0 transition-transform duration-300 hover:scale-125"
+                      className="me-3 shrink-0 transition-transform duration-300 hover:scale-125"
                     />
                     <span>Fast & secure</span>
                   </li>
@@ -171,7 +171,7 @@ const PosSection = ({
                       height={20}
                       width={20}
                       alt="icon"
-                      className="me-3 flex-shrink-0 transition-transform duration-300 hover:scale-125"
+                      className="me-3 shrink-0 transition-transform duration-300 hover:scale-125"
                     />
                     <span>Instant settlement</span>
                   </li>
