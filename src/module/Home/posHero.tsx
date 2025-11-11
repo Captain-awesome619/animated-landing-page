@@ -35,10 +35,9 @@ const PosSection = ({
         defaults: { duration: 0.25 },
         scrollTrigger: {
           trigger: posRef.current,
-          start: 'top-=70px top',
+          start: 'top-=50px top',
           end: 'bottom top',
-          scrub: 1,
-          pin: true,
+          toggleActions: 'play none none reverse',
           anticipatePin: 1,
         },
       })

@@ -73,7 +73,7 @@ const Hero = ({
 
   const isSmallRef = useRef(isSmallDevice)
 
-  const phoneHeight = window.innerHeight
+  const phoneHeight = window ? window.innerHeight : 100
   const translateVal =
     phoneHeight > 750
       ? 'translate-y-[25%] md:translate-y-[50%] lg:translate-y-[40%]'
@@ -90,16 +90,14 @@ const Hero = ({
       const africanManSelector = smallImgRef.current?.querySelector('.african')
       const secondSection = gsap.utils.selector(xtrempayRef.current)
 
-      console.log(isSmallRef)
-
       const heroTl = gsap.timeline({
-        defaults: { duration: 0.25 },
+        defaults: { duration: 0.5 },
         scrollTrigger: {
           trigger: heroRef.current,
           start: 'top top',
-          end: `bottom+=${2 * window.innerHeight}`,
-          scrub: 1,
-          pin: true,
+          end: `bottom top`,
+          toggleActions: 'play none none reverse',
+
           anticipatePin: 1,
           onEnter: () => setActive('home'),
           onEnterBack: () => setActive('home'),
@@ -132,11 +130,10 @@ const Hero = ({
           scale: 2.5,
           autoAlpha: 0,
           ease: 'back.out',
-          duration: 0.5,
+          duration: 1,
         })
-        .to(landscapeImgRef.current, { autoAlpha: 0, ease: 'none' }, '-=0.5')
         .to(textContentRef.current, { opacity: 0, ease: 'none' }, '<')
-        .to(bgHeroRef.current, { opacity: 1, ease: 'none' }, '-=0.5')
+        .to(bgHeroRef.current, { opacity: 1, ease: 'none' }, '<')
         .to(
           secondSection('.reason-info'),
           { x: 0, autoAlpha: 1, zIndex: 2 },
