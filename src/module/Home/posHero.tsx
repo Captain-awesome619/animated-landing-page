@@ -29,8 +29,8 @@ const PosSection = ({
 
   gsap.registerPlugin(ScrollTrigger)
 
-  useGSAP(() => {
-    const ctx = gsap.context(() => {
+  useGSAP(
+    () => {
       const posTl = gsap.timeline({
         defaults: { duration: 0.25 },
         scrollTrigger: {
@@ -38,7 +38,7 @@ const PosSection = ({
           start: 'top-=50px top',
           end: 'bottom top',
           toggleActions: 'play none none reverse',
-          anticipatePin: 1,
+          // anticipatePin: 1,
         },
       })
 
@@ -65,7 +65,7 @@ const PosSection = ({
           imageRef.current,
           {
             xPercent: -100,
-            opacity: 0,
+            autoAlpha: 0,
             duration: 0.5,
             ease: 'none',
           },
@@ -73,14 +73,12 @@ const PosSection = ({
         )
         .from(
           contentRef.current,
-          { xPercent: 100, opacity: 0, duration: 0.5, ease: 'none' },
+          { xPercent: 100, autoAlpha: 0, duration: 0.5, ease: 'none' },
           '<'
         )
-    }, posRef)
-    // .to(posRef.current, { autoAlpha: 0, ease: 'none' })
-
-    return () => ctx.revert()
-  }, [])
+    },
+    { scope: posRef }
+  )
 
   return (
     <div ref={posRef} className="pos-section">

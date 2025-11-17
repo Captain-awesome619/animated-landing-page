@@ -53,6 +53,8 @@ const Hero = ({
   bgColor = 'bg-gray-100',
   imgColset,
 }: HeroSectionProps) => {
+  const [deviceHeight, setDeviceHeight] = useState(100)
+
   const heroRef = useRef<HTMLDivElement>(null)
   const bigImgRef = useRef<HTMLImageElement>(null)
   const smallImgRef = useRef<HTMLDivElement>(null)
@@ -73,11 +75,14 @@ const Hero = ({
 
   const isSmallRef = useRef(isSmallDevice)
 
-  const phoneHeight = window ? window.innerHeight : 100
   const translateVal =
-    phoneHeight > 750
+    deviceHeight > 750
       ? 'translate-y-[25%] md:translate-y-[50%] lg:translate-y-[40%]'
       : 'translate-y-[50%]  md:translate-y-[50%] lg:translate-y-[40%]'
+
+  useEffect(() => {
+    if (window) setDeviceHeight(window.innerHeight)
+  }, [])
 
   useEffect(() => {
     isSmallRef.current = isSmallDevice
@@ -98,7 +103,7 @@ const Hero = ({
           trigger: heroRef.current,
           start: 'top top',
           end: `bottom  top`,
-          anticipatePin: 1,
+          // anticipatePin: 1,
           toggleActions: 'play none none reverse',
           onEnter: () => setActive('home'),
           onEnterBack: () => setActive('home'),
