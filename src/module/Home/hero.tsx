@@ -184,8 +184,7 @@ const Hero = ({
                 </Link>
                 <div
                   className="flex cursor-pointer lg:ms-3 items-center justify-center lg:mt-1"
-                  onClick={() =>
-                    window.open('https://example.com/video', '_blank')
+                
                   }
                 >
                   <div className="border-2 border-[#151515] bg-transparent rounded-full text-center p-2 flex items-center justify-center h-[38px] w-[38px] lg:me-2">
